@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交通指南：從應現院到 Shinnyo Yana</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- END: 框架與樣式替換 -->
+    <link rel="stylesheet" href="main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--theme-purple);
+            border-color: var(--theme-purple);
+            color: white;
+        }
+        .nav-tabs .nav-link {
+            color: var(--bs-link-hover-color);
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            cursor: pointer; /* 新增：顯示可點擊的游標 */
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none; /* 新增：讓點擊事件穿透 iframe */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>應現院交通指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">從應現院到 Shinnyo Yana</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">一份清晰的交通攻略，指引您輕鬆地從應現院前往 Shinnyo Yana，讓您的參訪行程順暢無憂。</p>
+        </section>
+
+        <section id="preparation" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">🚶‍♀️ 出發前的準備</h2>
+            <div class="row g-4">
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">1. 確認位置</h5><p class="card-text text-muted">本指南的起點為「應現院」，地址位於東京都立川市泉町935-32。請由此處開始您的行程。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 準備IC交通卡</h5><p class="card-text text-muted">建議使用 Suica 或 PASMO 等IC交通卡搭乘巴士，可免去現金購票的麻煩，上下車刷卡更快捷。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 前往巴士站</h5><p class="card-text text-muted">從應現院出發，需先步行約 9 分鐘 (650公尺) 前往最近的<span class="fw-bold" style="color:var(--theme-purple)">「裁判所前 (Saibanshomae)」</span>巴士站。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="route-selection" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">🚌 選擇您的最佳路線</h2>
+            <p class="text-center text-muted mb-4">所有方案皆有其優勢。點擊下方頁籤，探索最適合您的交通方式。</p>
+            
+            <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#bus-panel" type="button">推薦路線：巴士轉乘</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#taxi-panel" type="button">替代方案：計程車</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#walk-panel" type="button">替代方案：全程步行</button></li>
+            </ul>
+
+            <div class="tab-content" id="routeTabContent">
+                <div class="tab-pane fade show active" id="bus-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5"><h3 class="fw-bold mb-3">A: 巴士轉乘 (Google Maps 推薦)</h3><p class="text-muted mb-4">兼具經濟與效率的選擇，透過兩段巴士銜接，是前往目的地最推薦的標準路線。</p><div class="mb-4 d-flex flex-wrap align-items-center gap-2 small"><span class="badge bg-secondary">應現院</span> → <span class="badge bg-info text-dark">步行</span> → <span class="badge bg-secondary">裁判所前</span> → <span class="badge" style="background-color: var(--theme-purple);">立川巴士(立16-2)</span> → <span class="badge bg-secondary">立川消防署</span> → <span class="badge" style="background-color: var(--theme-purple);">立川巴士(立12-1)</span> → <span class="badge bg-secondary">大南一丁目</span> → <span class="badge bg-info text-dark">步行</span> → <span class="badge bg-success">Shinnyo Yana</span></div><div class="row"><div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>費用低廉，CP值高</li><li><i class="fas fa-check-circle text-success me-2"></i>無需長時間步行</li><li><i class="fas fa-check-circle text-success me-2"></i>可體驗在地巴士路線</li></ul></div><div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需要轉乘一次巴士</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需注意巴士班次時間</li></ul></div></div></div></div></div>
+                <div class="tab-pane fade" id="taxi-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5"><h3 class="fw-bold mb-3">B: 計程車</h3><p class="text-muted mb-4">最直接、最省時的選擇，特別適合趕時間、攜帶較多行李或多人同行的旅客。</p><div class="row"><div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>點對點直達，最為便捷</li><li><i class="fas fa-check-circle text-success me-2"></i>時間最短，不受班次限制</li><li><i class="fas fa-check-circle text-success me-2"></i>隱私性與舒適度最高</li></ul></div><div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>費用最高</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>尖峰時段可能遇上塞車</li></ul></div></div><div class="alert alert-secondary text-center mt-3"><p class="fw-bold fs-5 mb-1">給司機看：東京都武蔵村山市榎1-17-4</p><p class="text-muted mb-0">Shinnyo Yana（シンニョヤーナ）</p></div></div></div></div>
+                <div class="tab-pane fade" id="walk-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5"><h3 class="fw-bold mb-3">C: 全程步行</h3><p class="text-muted mb-4">最經濟的零成本方案，適合時間充裕、天氣良好且喜愛散步探索周邊環境的旅客。</p><div class="row"><div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>完全免費</li><li><i class="fas fa-check-circle text-success me-2"></i>時間完全彈性，不受交通時刻影響</li><li><i class="fas fa-check-circle text-success me-2"></i>可沿途感受在地街景</li></ul></div><div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>耗時最長 (約1小時)</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>對體力有一定要求</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>受天氣狀況影響大</li></ul></div></div></div></div></div>
+            </div>
+        </section>
+        
+        <section id="route-map" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">📍 路線地圖總覽</h2>
+            <div class="card shadow-sm">
+                <div class="card-body p-2">
+                    <a href="https://www.google.com/maps/dir/?api=1&origin=東京都立川市泉町935-32&destination=東京都武蔵村山市榎1-17-4" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃">
+                        <div class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d12956.115186050736!2d139.39478876135908!3d35.72551030933457!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x6018e10fc32a66ef%3A0x4d029182e14db71b!2zOTM1LTMyIEl6dW1pY2jFjSwgVGFjaGlrYXdhLCBUb2t5byAxOTAtMDAxNeaXpeacrA!3m2!1d35.7173771!2d139.41545829999998!4m5!1s0x6018e153baa928bd%3A0x326c47f4821eba21!2sShinnyo%20Yana!3m2!1d35.7389888!2d139.3942878!5e0!3m2!1szh-TW!2stw!4v1755656910376!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="summary">
+            <h2 class="text-center fw-bold mb-4">✨ 總結與專家建議</h2>
+            <div class="row g-4"><div class="col-lg-6"><div class="alert alert-theme-primary h-100"><h5 class="alert-heading fw-bold">給大多數旅客的最佳建議</h5><p>選擇【巴士轉乘】。這是平衡時間、費用與體力消耗的最佳方案。雖然需要轉乘，但總體花費時間合理，且費用非常經濟實惠，是本次旅途的CP值首選。</p></div></div><div class="col-lg-6"><div class="alert alert-theme-secondary h-100"><h5 class="alert-heading fw-bold">給追求效率或便利的旅客</h5><p>選擇【計程車】。如果您希望最快到達、不想研究巴士路線，或是同行有長輩與小孩，計程車的點對點服務無疑是最舒適便利的選擇。</p></div></div></div>
+        </section>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">應現院→Shinnyo Yana 參訪指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>東京交通指南：從羽田機場到立川『親苑』</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--theme-purple);
+            border-color: var(--theme-purple);
+            color: white;
+        }
+        .nav-tabs .nav-link {
+            color: var(--bs-link-hover-color);
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        /* START: 新增導覽列文字樣式 */
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        /* END: 新增導覽列文字樣式 */
+
+        /* START: 新增地圖樣式 */
+        .map-container-wrapper {
+            margin-top: 1.5rem;
+        }
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            cursor: pointer;
+            border-radius: 0.5rem;
+            border: 1px solid #dee2e6;
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none; /* 讓點擊事件穿透 */
+        }
+        /* END: 新增地圖樣式 */
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: 改為 Bootstrap Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>羽田立川交通指南</a>
+            
+            <div class="exchange-rate-display text-white-50 me-2 d-flex align-items-center small d-lg-none">
+                <div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>
+            </div>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <div class="exchange-rate-display text-white-50 me-3 d-none d-lg-flex align-items-center small">
+                        <div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>
+                    </div>
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">從羽田機場到立川『親苑』</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">一份為您量身打造的互動式交通攻略，讓您的旅程從踏出機場那刻起就充滿自信，輕鬆直達目的地。</p>
+        </section>
+
+        <section id="preparation" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✈️ 順利啟程的關鍵第一步</h2>
+            <div class="row g-4">
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">1. 辦理入境</h5><p class="card-text text-muted">依循「到着」(Arrival) 指引完成護照查驗、提領行李與海關檢查。羽田機場動線清晰，過程順暢有序。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 準備IC交通卡</h5><p class="card-text text-muted">建議在入境大廳購買 Welcome Suica 或 PASMO PASSPORT。兩者功能相同，可大幅節省購票時間。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 尋找售票處</h5><p class="card-text text-muted">依據您的選擇，尋找位於2樓入境大廳的<span class="fw-bold" style="color:var(--theme-purple)">利木津巴士櫃檯</span>，或前往B1的<span class="fw-bold text-danger">京急線鐵路售票處</span>。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="route-selection" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">🚆 選擇您的最佳路線</h2>
+            <p class="text-center text-muted mb-4">所有方案皆有其優勢。點擊下方頁籤，探索最適合您的交通方式。</p>
+            
+            <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#bus-panel" type="button">利木津巴士</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#train-panel" type="button">電車</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#taxi-panel" type="button">計程車</button></li>
+            </ul>
+
+            <div class="tab-content" id="routeTabContent">
+                <div class="tab-pane fade show active" id="bus-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">A: 利木津巴士</h3>
+                    <p class="text-muted mb-4">攜帶大型行李旅客的首選。一車直達，無需搬運行李轉乘，提供最輕鬆無壓力的旅程體驗。</p>
+                    <div class="mb-4 d-flex flex-wrap align-items-center gap-2"><span class="badge bg-secondary fs-6">羽田機場</span> → <span class="badge fs-6" style="background-color: var(--theme-purple);">利木津巴士</span> → <span class="badge bg-secondary fs-6">立川站</span></div>
+                    <div class="map-container-wrapper">
+                        <a href="https://www.google.com/maps/dir/%E7%BE%BD%E7%94%B0%E6%A9%9F%E5%A0%B4/%E7%AB%8B%E5%B7%9D%E9%A7%85/@35.6235496,139.540195,11z/data=!4m14!4m13!1m5!1m1!1s0x6018640ba2a82a75:0xf060e3674b3b18d3!2m2!1d139.7798386!2d35.5493932!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!3e0?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d415647.9238385618!2d139.54019500282033!3d35.62351645795498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x6018640ba2a82a75%3A0xf060e3674b3b18d3!2z576p55Sw5qmp5aC0!3m2!1d35.5493932!2d139.7798386!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!5e0!3m2!1szh-TW!2stw!4v1755740432131!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>一車直達，無需轉乘</li><li><i class="fas fa-check-circle text-success me-2"></i>專人協助搬運行李</li><li><i class="fas fa-check-circle text-success me-2"></i>座位保證，乘坐舒適</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>費用高於電車</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>可能受交通狀況影響</li></ul></div>
+                    </div>
+                </div></div></div>
+                <div class="tab-pane fade" id="train-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">B: 電車 (經由川崎)</h3>
+                    <p class="text-muted mb-4">最經濟實惠的選擇，透過在「川崎」轉乘，可避開東京市中心的複雜大站。</p>
+                    <div class="mb-4 d-flex flex-wrap align-items-center gap-2"><span class="badge bg-secondary fs-6">羽田機場</span> → <span class="badge bg-danger fs-6">京急線</span> → <span class="badge bg-secondary fs-6">京急川崎</span> <span class="fw-bold text-muted small">(步行)</span> <span class="badge bg-secondary fs-6">JR川崎</span> → <span class="badge bg-success fs-6">JR南武線</span> → <span class="badge bg-secondary fs-6">立川站</span></div>
+                    <div class="map-container-wrapper">
+                        <a href="https://www.google.com/maps/dir/%E7%BE%BD%E7%94%B0%E6%A9%9F%E5%A0%B4%E7%AC%AC1%E3%83%BB%E7%AC%AC2%E8%88%AA%E5%BB%88%E9%A7%85(%E4%BA%AC%E6%80%A5)/%E7%AB%8B%E5%B7%9D%E9%A7%85/@35.6235165,139.540195,11z/data=!4m15!4m14!1m5!1m1!1s0x6018615b573a7001:0x2c64e59038d50456!2m2!1d139.7798369!2d35.5492931!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!3e3!5i2?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d415647.9238385618!2d139.54019500282033!3d35.62351645795498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x6018615b573a7001%3A0x2c64e59038d50456!2z576p55Sw5qmp5aC056ysMeODleODq-ODs-ODrO-8leS6jOWupO-8lg!3m2!1d35.5492931!2d139.7798369!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!5e0!3m2!1szh-TW!2stw!4v1755740523087!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>費用最低，CP值高</li><li><i class="fas fa-check-circle text-success me-2"></i>時間準確</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需要轉乘並步行</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需自行搬運行李</li></ul></div>
+                    </div>
+                </div></div></div>
+                <div class="tab-pane fade" id="taxi-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">C: 計程車</h3>
+                    <p class="text-muted mb-4">最直接便利的點對點服務，但費用極其高昂，僅適用於深夜抵達或多人同行等特殊情況。</p>
+                     <div class="map-container-wrapper">
+                        <a href="https://www.google.com/maps/dir/%E7%BE%BD%E7%94%B0%E6%A9%9F%E5%A0%B4/%E7%AB%8B%E5%B7%9D%E9%A7%85/@35.6235496,139.540195,11z/data=!4m14!4m13!1m5!1m1!1s0x6018640ba2a82a75:0xf060e3674b3b18d3!2m2!1d139.7798386!2d35.5493932!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!3e0?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d415647.9238385618!2d139.54019500282033!3d35.62351645795498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x6018640ba2a82a75%3A0xf060e3674b3b18d3!2z576p55Sw5qmp5aC0!3m2!1d35.5493932!2d139.7798386!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!5e0!3m2!1szh-TW!2stw!4v1755740432131!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>點對點直達</li><li><i class="fas fa-check-circle text-success me-2"></i>隱私性與舒適度最高</li><li><i class="fas fa-check-circle text-success me-2"></i>24小時服務</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>費用極高 (¥20,000+)</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>可能比火車更慢</li></ul></div>
+                    </div>
+                </div></div></div>
+            </div>
+        </section>
+
+        <section id="final-leg" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">📍 最後一哩路：從立川站到『親苑』</h2>
+            <div class="row g-4"><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚶 步行 (5-7分鐘)</h5><p class="text-muted">如果行李不多，步行是最佳選擇。</p><ol class="list-group list-group-numbered"><li class="list-group-item">從JR立川站<span class="fw-bold">南口</span>出站，下至一樓廣場。</li><li class="list-group-item">向左前方步行，穿越巴士站區域。</li><li class="list-group-item">在第一個十字路口過馬路後左轉。</li><li class="list-group-item">沿著「諏訪通り」直行約200公尺。</li></ol></div></div></div><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚕 計程車 (約 ¥500)</h5><p class="text-muted">攜帶重行李或疲憊時的最佳方案。在南口一樓的計程車排班站乘車，並將以下地址出示給司機看：</p><div class="alert alert-secondary text-center mt-3"><p class="fw-bold fs-5 mb-1">東京都立川市柴崎町1-2-13</p><p class="text-muted mb-0">『親苑』（しんえん）</p></div></div></div></div></div>
+        </section>
+
+        <section id="summary">
+            <h2 class="text-center fw-bold mb-4">✨ 總結與專家建議</h2>
+            <div class="row g-4"><div class="col-lg-6"><div class="alert alert-theme-primary h-100"><h5 class="alert-heading fw-bold">給大多數旅客的最佳建議</h5><p>選擇【利木津巴士】。它「一車直達」的極致便利性，免去了在陌生車站轉乘與搬運行李的辛勞。雖然費用稍高，但換來的輕鬆與舒適，是開啟完美旅程的最佳投資。</p></div></div><div class="col-lg-6"><div class="alert alert-theme-secondary h-100"><h5 class="alert-heading fw-bold">給預算有限且行李輕便的旅客</h5><p>選擇【電車】路線。這是最經濟的選擇，且行車時間穩定。只要您不介意轉乘時的短程步行與自行看管行李，這條路線的CP值無可匹敵。</p></div></div></div>
+        </section>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
