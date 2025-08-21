@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行程規劃 - 台北→親苑參拜指南</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css?v=1.6">
+    <style>
+        :root {
+            --theme-denim: #04254E;
+            --theme-scampi: #5954A4;
+            --theme-vivid-purple: #8A54A2;
+            --theme-sky-blue: #8AD5EB;
+            --theme-red: #EE3239;
+            --theme-green: #5EAA5F;
+            --bs-primary: var(--theme-scampi);
+            --bs-primary-rgb: 89, 84, 164;
+            --bs-link-color: var(--theme-scampi);
+            --bs-link-hover-color: #474383;
+        }
+        .btn-primary {
+            --bs-btn-bg: var(--theme-scampi);
+            --bs-btn-border-color: var(--theme-scampi);
+            --bs-btn-hover-bg: #474383;
+            --bs-btn-hover-border-color: #474383;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        /* Style for Hero Section Text */
+        .hero-section .page-title,
+        .hero-section .page-subtitle {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+        .hero-section .page-title {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .hero-section .page-subtitle {
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            opacity: 0.75;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-denim);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-plane"></i> 台北→親苑參拜指南</a>
+            <div class="exchange-rate-display text-white-50 me-2 d-flex align-items-center small d-lg-none"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div></div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="planning.html">規劃</a></li>
+                    <li class="nav-item"><a class="nav-link" href="qa.html">Q&A</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="exchange-rate-display text-white-50 me-3 d-none d-lg-flex align-items-center small"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div></div>
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="hero-section" style="background-color: var(--theme-scampi);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+                    <h1 class="page-title">回歸親苑→感恩之旅</h1>
+                    <p class="page-subtitle">讓您的日本感恩之旅輕鬆無憂。</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-map-container"><div id="heroMap"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="ai-search-section">
+        <div class="container">
+            <div class="container-wrapper">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <form id="main-search-form" class="main-search-form">
+                            <div class="input-group input-group-lg">
+                                <input type="search" id="main-search-input" class="form-control" placeholder="例如：立川有推薦的拉麵店嗎？或 參拜的注意事項" aria-label="站內搜尋">
+                                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> 搜尋</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="planning" class="py-5 bg-light"><div class="container"><h2 class="section-title-custom">行程規劃步驟</h2><div id="planning-steps" class="row g-4"></div></div></section>
+    
+    <section id="transport-guides" class="py-5">
+        <div class="container">
+            <h2 class="section-title-custom">交通指南</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-5"><a href="01.html" class="info-card"><div class="info-card-icon" style="color: var(--theme-sky-blue);"><i class="fas fa-plane-departure"></i></div><h5 class="info-card-title">松山機場 → 羽田機場</h5><p class="info-card-subtitle">前往立川『親苑』の交通攻略</p></a></div>
+                <div class="col-md-6 col-lg-5"><a href="02.html" class="info-card"><div class="info-card-icon" style="color: var(--theme-vivid-purple);"><i class="fas fa-plane-arrival"></i></div><h5 class="info-card-title">桃園機場 → 成田機場</h5><p class="info-card-subtitle">前往立川『親苑』の交通攻略</p></a></div>
+                <div class="col-md-6 col-lg-5"><a href="03.html" class="info-card"><div class="info-card-icon" style="color: var(--theme-green);"><i class="fas fa-plane-departure fa-flip-horizontal"></i></div><h5 class="info-card-title">立川 → 羽田機場 → 松山機場</h5><p class="info-card-subtitle">從立川返回台北の交通攻略</p></a></div>
+                <div class="col-md-6 col-lg-5"><a href="04.html" class="info-card"><div class="info-card-icon" style="color: var(--theme-red);"><i class="fas fa-plane-arrival fa-flip-horizontal"></i></div><h5 class="info-card-title">立川 → 成田機場 → 桃園機場</h5><p class="info-card-subtitle">從立川返回台北の交通攻略</p></a></div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="attractions" class="py-5 bg-light"><div class="container"><h2 class="section-title-custom">推薦景點</h2><div id="attractionsContainer" class="row g-4"></div></div></section>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1" aria-labelledby="aiChatModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="aiChatModalLabel"><i class="fas fa-robot"></i> 站內搜尋助理</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div class="chat-messages" id="chatMessages"><div class="message bot-message"><div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div></div></div></div><div class="modal-footer"><div class="input-group"><textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea><button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button></div></div></div></div></div>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="infoModalTitle">詳細資訊</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body" id="infoModalBody"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button></div></div></div></div>
+    
+    <footer class="text-white py-4" style="background-color: var(--theme-denim);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="app.js?v=1.1"></script>
+</body>
+</html>

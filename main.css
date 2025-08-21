@@ -1,198 +1,195 @@
-:root {
-    --primary-color: #0d6efd;
-    --secondary-color: #6c757d;
-    --success-color: #198754;
-    --warning-color: #ffc107;
-    --info-color: #0dcaf0;
-    --dark-color: #212529;
+/* --- General Body and Typography --- */
+body {
+    font-family: 'Noto Sans TC', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
 }
 
-body.is-dragging {
-    user-select: none;
-}
-
-/* --- 頁首區塊 --- */
+/* --- Hero Section & Page Headers --- */
 .hero-section, .page-header-map, .page-header-qa {
-    padding: 4rem 0;
-    color: white;
+    padding: 5rem 0; /* Use padding for flexible height and consistent spacing */
+}
+.hero-section {
     position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+    color: white;
+    background-color: #5954A4;
 }
-
-.hero-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.page-header-map { background: linear-gradient(135deg, rgba(253,126,20,0.8) 0%, rgba(255,193,7,0.6) 100%); }
-.page-header-qa { background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%); }
-
-.hero-section .container,
-.page-header-map .container,
-.page-header-qa .container {
-    width: 100%;
+.page-header-map {
+    background-color: #F5A256; /* Changed from gradient to solid orange */
 }
-
-.hero-section .hero-content, 
-.page-header-map .col-lg-6,
-.page-header-qa .col-lg-6 {
-    text-align: center;
+.page-header-qa {
+    background: #EADFD4;
 }
-
-@media (min-width: 992px) {
-    .hero-section .hero-content,
-    .page-header-map .col-lg-6,
-    .page-header-qa .col-lg-6 {
-        text-align: left;
-    }
-}
-
-.hero-map-container {
-    height: 100%;
-    min-height: 350px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-#heroMap {
-    height: 100%;
-    width: 100%;
-    background-color: #333;
-}
-
-/* --- 卡片與區塊通用樣式 --- */
-#ai-search-section {
-    margin-top: -3rem;
+.hero-content {
     position: relative;
     z-index: 10;
-    background-color: transparent;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 0;
 }
-
-#ai-search-section .container-wrapper {
-    background-color: white;
-    border-radius: 15px;
-    padding: 2.5rem;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+.hero-map-container, .page-header-map .header-map-container, .page-header-qa .header-image-container {
+    width: 100%;
+    height: 250px; /* Strictly enforce a unified height for the visual element */
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
-
-.step-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease;
+#heroMap, #shinyuanMap {
+    width: 100%;
     height: 100%;
-    padding: 30px;
-    text-align: center;
 }
-.step-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); }
-.step-icon { margin-bottom: 20px; }
-.attraction-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); transition: transform 0.3s ease; height: 100%; cursor: pointer; }
-.attraction-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); }
-.attraction-image { height: 200px; background-size: cover; background-position: center; position: relative; }
+.page-header-qa .header-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.page-title {
+    font-size: 2.25rem; /* Reduced font size to prevent text overflow */
+    font-weight: bold;
+}
+.page-subtitle {
+    font-size: 1.15rem; /* Reduced font size for better proportion */
+    opacity: 0.9;
+}
+.page-header-qa .page-title, .page-header-qa .page-subtitle {
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+.page-header-qa .page-title { color: #5B7D4B; }
+.page-header-qa .page-subtitle { color: #5B7D4B; opacity: 0.85; }
 
-/* --- AI 聊天視窗 --- */
-#aiChatModal .modal-header { cursor: move; }
-#aiChatModal .modal-dialog.is-draggable { margin: 0; position: fixed; transform: none !important; }
-
-/* --- START: 關鍵修正 --- */
-#aiChatModal .modal-dialog { 
-    /* 桌面版樣式 */
-    resize: both; 
-    overflow: auto;
-    display: block; 
+/* --- Main Search Form Section --- */
+#ai-search-section {
+    background-color: #f8f9fa;
+    padding: 3rem 0;
+    margin-top: -50px;
     position: relative;
-    min-width: 350px; 
-    min-height: 400px; 
-    height: 95vh; /* 將預設高度調整到最大 */
-    max-height: 95vh;
-    margin: 1.75rem auto;
+    z-index: 20;
 }
-/* --- END: 關鍵修正 --- */
+.main-search-form .form-control { border-radius: 50rem 0 0 50rem; border-right: none; }
+.main-search-form .btn { border-radius: 0 50rem 50rem 0; }
+.main-search-form .form-control:focus { box-shadow: none; border-color: #8A54A2; }
 
-#aiChatModal .modal-content { height: 100%; display: flex; flex-direction: column; border-radius: 1rem; }
-#aiChatModal .modal-body { flex-grow: 1; display: flex; flex-direction: column; }
-#aiChatModal textarea#chatInput { resize: none; }
-.chat-messages { background: #f8f9fa; border-radius: 10px; padding: 20px; height: 100%; overflow-y: auto; flex-grow: 1; }
+/* --- Custom Section Title --- */
+.section-title-custom {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 2.5rem !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Card Styles --- */
+.step-card { /* 行程规划步骤卡片 */
+    background: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Added for equal height cards */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.step-card p {
+    flex-grow: 1; /* Make paragraph take up space */
+}
+.step-card .btn {
+    margin-top: auto; /* Push button to bottom */
+}
+.step-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.step-icon {
+    margin-bottom: 1.5rem;
+    height: 4rem; /* Fixed height for icon container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem; /* Explicitly set icon size */
+}
+
+.info-card { /* 交通、参拜指南等小卡片 */
+    display: block;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    padding: 1.5rem 1rem;
+    color: inherit;
+    text-decoration: none !important;
+    height: 100%;
+}
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-color: #d1d5db;
+}
+.info-card-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+.info-card-title { font-weight: 700; font-size: 1rem; color: #111827; }
+.info-card-subtitle { font-size: 0.85rem; color: #6b7280; }
+
+.attraction-card {
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    /* Added for equal height */
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+}
+.attraction-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.attraction-image { height: 200px; background-size: cover; background-position: center; }
+.attraction-card .p-4 {
+    flex-grow: 1;
+}
+
+
+/* --- Modal & Chat --- */
+.modal-header { cursor: move; }
+.modal-dialog.is-draggable { margin: 0; position: fixed; }
+body.is-dragging { user-select: none; }
+.chat-messages { height: 50vh; overflow-y: auto; padding: 10px; }
 .message { margin-bottom: 15px; display: flex; }
-.message-content { background: white; padding: 12px 16px; border-radius: 15px; max-width: 80%; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
-.bot-message { justify-content: flex-start; }
-.bot-message .message-content { background: var(--primary-color); color: white; }
+.message-content { padding: 10px 15px; border-radius: 18px; max-width: 80%; }
 .user-message { justify-content: flex-end; }
-.user-message .message-content { background: #e9ecef; color: var(--dark-color); }
+.user-message .message-content { background-color: var(--bs-primary, #0d6efd); color: white; border-bottom-right-radius: 4px; }
+.bot-message { justify-content: flex-start; }
+.bot-message .message-content { background-color: #e9ecef; color: #212529; border-bottom-left-radius: 4px; }
+#chatInput { resize: none; height: auto; }
+.source-type-badge { font-size: .7em; padding: .2em .5em; border-radius: .25rem; color: #fff; margin-bottom: 5px; display: inline-block; }
+.badge-local { background-color: #198754; }
+.badge-default { background-color: #6c757d; }
+.badge-error { background-color: #dc3545; }
+.source-container { border-top: 1px solid #ddd; margin-top: 10px; padding-top: 10px; font-size: 0.8rem; }
+.source-title { font-weight: bold; margin-bottom: 5px; }
+.source-container ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+.source-container li { background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; margin-bottom: 3px; }
 
+/* --- Miscellaneous --- */
+.remark-section { background-color: #f8f9fa; border-left: 3px solid #6c757d; padding: 10px; font-size: 0.9em; }
 
-/* --- 親苑頁與 Q&A 頁樣式 --- */
-.page-header-map .page-title, .page-header-qa .page-title { font-weight: 700; font-size: 3.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.2); }
-.page-header-map .page-subtitle, .page-header-qa .page-subtitle { font-size: 1.25rem; color: rgba(255, 255, 255, 0.9); }
-.header-map-container { height: 300px; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
-#shinyuanMap { width: 100%; height: 100%; }
-.section-title { margin-bottom: 2rem; font-weight: 600; color: var(--dark-color); }
-.header-image-container { height: 300px; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); display: flex; align-items: center; justify-content: center; background-color: rgba(0,0,0,0.1); }
-.header-image-container img { width: 100%; height: 100%; object-fit: cover; }
-
-/* --- PDF 下載卡片樣式 --- */
-.pdf-card-link { text-decoration: none; color: inherit; }
-.pdf-card { border: 1px solid #e9ecef; transition: all 0.3s ease; padding-top: 1.5rem; }
-.pdf-card:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); border-color: var(--primary-color); }
-.pdf-icon { color: var(--primary-color); margin-bottom: 1rem; }
-.pdf-card:hover .pdf-icon { color: var(--success-color); }
-
-/* --- 響應式設計 --- */
-@media (max-width: 992px) {
-    .hero-map-container, .header-image-container { margin-top: 40px; min-height: 300px; height: 300px; }
+/* --- Responsive Design --- */
+@media (max-width: 767.98px) {
+    #ai-search-section .input-group { display: flex; }
+    #ai-search-section .form-control { flex-grow: 1; min-width: 0; }
+    #ai-search-section .btn { flex-shrink: 0; padding: 0.5rem 1rem; font-size: 0.9rem; }
+    .page-title { font-size: 2rem; }
+    
+    /* Reset negative margin on mobile to prevent overlap */
+    #ai-search-section {
+        margin-top: 0;
+    }
 }
 
-@media (max-width: 767px) {
+/* --- AI Chat Modal Enhancements --- */
+@media (min-width: 992px) { /* Apply on large screens and up */
     #aiChatModal .modal-dialog {
-        width: 100%;
-        height: 100%;
-        max-width: 100%;
-        max-height: 100%;
-        margin: 0;
-        resize: none;
+        max-width: 70vw; /* Make the modal wider, up to 70% of the viewport width */
     }
 
-    #aiChatModal .modal-content {
-        height: 100%;
-        border-radius: 0;
+    #aiChatModal .chat-messages {
+        height: 65vh; /* Make the chat area taller, up to 65% of the viewport height */
     }
 }
-
-/* --- 智慧搜尋區塊 --- */
-.main-search-form .form-control { padding: 0.75rem 1.5rem; font-size: 1.1rem; border-radius: 50px 0 0 50px !important; border: 2px solid #dee2e6; transition: all 0.3s ease-in-out; }
-.main-search-form .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); }
-.main-search-form .btn { border-radius: 0 50px 50px 0 !important; padding: 0.75rem 1.5rem; }
-
-/* --- AI 聊天來源標籤 --- */
-.message-content { position: relative; word-break: break-word; }
-.source-type-badge { position: absolute; top: -8px; right: 10px; padding: 3px 8px; font-size: 10px; font-weight: bold; border-radius: 10px; color: white; opacity: 0.9; }
-.message-text { padding-top: 10px; }
-.badge-local { background-color: var(--primary-color); }
-.badge-web { background-color: var(--success-color); }
-.badge-news { background-color: var(--info-color); }
-.badge-default { background-color: var(--secondary-color); }
-.badge-error { background-color: var(--warning-color); color: black !important; }
-.source-container { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.3); }
-.source-title { font-size: 11px; font-weight: bold; margin-bottom: 5px; opacity: 0.9; color: white; }
-.source-container ul { list-style: none; padding-left: 0; margin-bottom: 0; display: flex; flex-wrap: wrap; gap: 5px; }
-.source-container li { font-size: 10px; background-color: rgba(255, 255, 255, 0.2); padding: 2px 8px; border-radius: 10px; }
-.bot-message .message-content a { color: #ffffff; font-weight: 500; text-decoration: underline; transition: opacity 0.2s ease; }
-.bot-message .message-content a:hover { color: #ffffff; opacity: 0.8; }
-.user-message .message-content a { color: var(--primary-color); text-decoration: underline; }
-
-/* --- 備註區塊樣式 --- */
-.remark-section {
-    background-color: #fffbe6;
-    border: 1px solid #ffe58f;
-    border-radius: 0.25rem;
-    padding: 0.75rem 1rem;
-    color: #664d03;
-}
-
-/* --- Q&A 頁面專屬樣式 --- */
-.accordion-item { margin-bottom: 1rem; border: 1px solid #dee2e6; border-radius: 0.5rem; }
-.accordion-button { font-weight: 600; }
-.accordion-button:not(.collapsed) { background-color: rgba(13, 110, 253, 0.1); color: var(--dark-color); }
-.accordion-body img { max-width: 100%; height: auto; border-radius: 0.5rem; margin-top: 1rem; }
