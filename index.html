@@ -15,7 +15,8 @@
             --bg-dark-blue: #0f1a2e;
             --text-light: #f8f9fa;
             /* --- 按鈕顏色 --- */
-            --btn-bg-search: #ee9b00; /* 搜尋: 琥珀色 */
+            --btn-bg-search: #ee9b00; /* 搜尋/其他: 琥珀色 */
+            --btn-bg-teal: #20c997;  /* 獨立搜尋鈕: 青綠色 */
             --btn-bg-prepare: #6c757d;   /* 準備: 灰色 */
             --btn-bg-transport: #0077B6; /* 交通: 深藍色 */
             --btn-bg-worship: #6A057F;   /* 參拜: 紫色 */
@@ -77,6 +78,7 @@
         }
         /* 按鈕顏色應用 */
         .btn-search { background-color: var(--btn-bg-search); }
+        .btn-teal { background-color: var(--btn-bg-teal); }
         .btn-prepare { background-color: var(--btn-bg-prepare); }
         .btn-transport { background-color: var(--btn-bg-transport); }
         .btn-worship { background-color: var(--btn-bg-worship); }
@@ -286,7 +288,7 @@
         <!-- 搜尋功能按鈕 -->
         <div class="row">
             <div class="col-12">
-                <a href="#" class="guide-button btn-search btn-horizontal" data-bs-toggle="modal" data-bs-target="#aiChatModal">
+                <a href="#" class="guide-button btn-teal btn-horizontal" data-bs-toggle="modal" data-bs-target="#aiChatModal">
                     <span class="icon"><i class="fas fa-search"></i></span>
                     <span>站內資訊搜尋</span>
                 </a>
