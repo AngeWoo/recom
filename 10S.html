@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>航班指南：從台北到東京</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--theme-purple);
+            border-color: var(--theme-purple);
+            color: white;
+        }
+        .nav-tabs .nav-link {
+            color: var(--bs-link-hover-color);
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-khaki);
+            border-radius: 50px;
+            color: var(--theme-khaki);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-khaki);
+            color: white;
+        }
+        .airline-logo {
+            max-height: 30px;
+            margin-right: 15px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>台北東京航班指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">台北到東京 航班選擇指南</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">為您整理兩大主要航線的航空公司資訊，助您輕鬆規劃前往東京的空中交通。</p>
+        </section>
+
+        <section id="route-selection" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">✈️ 選擇您的出發航線</h2>
+            <p class="text-center text-muted mb-4">兩條航線各有優勢，請依據您的需求點選下方頁籤查看詳情。</p>
+            
+            <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tsa-hnd-panel" type="button">台北松山 (TSA) → 東京羽田 (HND)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tpe-nrt-panel" type="button">台灣桃園 (TPE) → 東京成田 (NRT)</button></li>
+            </ul>
+
+            <div class="tab-content" id="routeTabContent">
+                <!-- Tab 1: TSA -> HND -->
+                <div class="tab-pane fade show active" id="tsa-hnd-panel">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="fw-bold mb-3">松山 → 羽田 (都會捷徑)</h3>
+                            <p class="text-muted mb-4">此航線連接兩市中心的機場，可大幅縮短落地後的交通時間。羽田機場距離立川也相對較近，是追求效率旅客的首選。</p>
+                            <div class="alert alert-light">注意：航班號碼與時間可能隨時變動，請務必以航空公司官網公告為準。</div>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Japan_Airlines_logo_2011.svg/320px-Japan_Airlines_logo_2011.svg.png" alt="JAL Logo" class="airline-logo"><strong>日本航空 (JAL)</strong><br><small class="text-muted">參考航班: JL96 / JL98</small></div>
+                                    <a href="https://www.jal.co.jp/tw/zhtw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/ANA_logo_2023.svg/300px-ANA_logo_2023.svg.png" alt="ANA Logo" class="airline-logo"><strong>全日空 (ANA)</strong><br><small class="text-muted">參考航班: NH852 / NH854</small></div>
+                                    <a href="https://www.ana.co.jp/zh/tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div><img src="https://upload.wikimedia.org/wikipedia/zh/thumb/b/b4/China_Airlines_logo.svg/320px-China_Airlines_logo.svg.png" alt="China Airlines Logo" class="airline-logo"><strong>中華航空 (CI)</strong><br><small class="text-muted">參考航班: CI220 / CI222</small></div>
+                                    <a href="https://www.china-airlines.com/tw/zh" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Eva_air_logo.svg/320px-Eva_air_logo.svg.png" alt="EVA Air Logo" class="airline-logo"><strong>長榮航空 (BR)</strong><br><small class="text-muted">參考航班: BR192 / BR190</small></div>
+                                    <a href="https://www.evaair.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab 2: TPE -> NRT -->
+                <div class="tab-pane fade" id="tpe-nrt-panel">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="fw-bold mb-3">桃園 → 成田 (多元選擇)</h3>
+                            <p class="text-muted mb-4">此航線為台灣往來東京最主要的航線，航班選擇最多，包含多家低成本航空(LCC)，提供最具彈性的時段與票價組合。</p>
+                             <div class="alert alert-light">注意：航班號碼與時間可能隨時變動，請務必以航空公司官網公告為準。</div>
+                            <h5 class="fw-bold mt-4">傳統航空公司</h5>
+                             <ul class="list-group mb-4">
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><strong>中華航空 (CI)</strong><br><small class="text-muted">參考航班: CI100 / CI104 / CI106 等</small></div><a href="https://www.china-airlines.com/tw/zh" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><strong>長榮航空 (BR)</strong><br><small class="text-muted">參考航班: BR198 / BR196 等</small></div><a href="https://www.evaair.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><strong>星宇航空 (JX)</strong><br><small class="text-muted">參考航班: JX800 / JX802 / JX804 等</small></div><a href="https://www.starlux-airlines.com/zh-TW" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                             </ul>
+                             <h5 class="fw-bold mt-4">低成本航空 (LCC)</h5>
+                             <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><strong>台灣虎航 (IT)</strong></div><a href="https://www.tigerairtw.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><strong>酷航 (Scoot)</strong></div><a href="https://www.flyscoot.com/zh/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><strong>樂桃航空 (Peach)</strong></div><a href="https://www.flypeach.com/tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><strong>捷星航空 (Jetstar)</strong></div><a href="https://www.jetstar.com/tw/zh/home" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                             </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="summary">
+            <h2 class="text-center fw-bold mb-4">✨ 總結與專家建議</h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="alert alert-theme-primary h-100">
+                        <h5 class="alert-heading fw-bold">追求「時間與效率」的最佳選擇</h5>
+                        <p>選擇【松山→羽田】航線。雖然航班選擇較少，但機場位於市中心，可大幅節省通關後往返市區與立川的交通時間。對分秒必爭的旅客來說，這是最理想的方案。</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="alert alert-theme-secondary h-100">
+                        <h5 class="alert-heading fw-bold">追求「彈性與預算」的最佳選擇</h5>
+                        <p>選擇【桃園→成田】航線。擁有壓倒性的航班數量與航空公司選擇，特別是低成本航空提供了更多元的票價。如果您的時間較為彈性，或希望找到最優惠的機票，這條航線將是您的不二之選。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
