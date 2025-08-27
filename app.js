@@ -319,6 +319,15 @@ function bindEventListeners() {
                 case 'passport':
                     showPassportInfo();
                     break;
+                case 'entry-application':
+                    showEntryApplicationInfo();
+                    break;
+                case 'other-items':
+                    showOtherItemsInfo();
+                    break;
+                case 'worship-tools':
+                    showWorshipToolsInfo();
+                    break;
             }
         }
     });
@@ -378,6 +387,136 @@ function showPassportInfo() {
              <a href="https://www.boca.gov.tw/cp-110-531-eda75-1.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                 <i class="fas fa-link me-2"></i> 前往外交部領事事務局網站
              </a>
+        </div>
+    `;
+    showInfoModal(title, content, true);
+}
+
+function showEntryApplicationInfo() {
+    const title = "日本入境申請須知 (Visit Japan Web)";
+    const content = `
+        <div class="text-center mb-4">
+            <i class="fas fa-qrcode fa-4x" style="color: var(--bs-primary, #6c757d);"></i>
+        </div>
+        <div class="alert alert-primary" role="alert">
+            <h4 class="alert-heading"><i class="fas fa-rocket me-2"></i>強烈建議！預先上網填寫以加速通關</h4>
+            <p>為節省您在機場的寶貴時間，日本政府推出「Visit Japan Web」服務，讓您可以在出發前線上完成<strong>入境審查</strong>與<strong>海關申報</strong>。完成後會產生QR Code，通關時出示即可。</p>
+        </div>
+        <h5>事前準備項目：</h5>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><i class="fas fa-passport fa-fw me-2"></i>護照</li>
+            <li class="list-group-item"><i class="fas fa-plane-departure fa-fw me-2"></i>航班資訊</li>
+            <li class="list-group-item"><i class="fas fa-hotel fa-fw me-2"></i>在日本的聯絡地址（飯店地址）</li>
+        </ul>
+        <h5>主要填寫步驟：</h5>
+        <ol class="list-group list-group-numbered">
+            <li class="list-group-item">前往 Visit Japan Web 官方網站建立帳號。</li>
+            <li class="list-group-item">登錄使用者資料（本人及同行家人）。</li>
+            <li class="list-group-item">新增並登錄您的入境/回國預定。</li>
+            <li class="list-group-item">完成「<strong>外國人入國記錄</strong>」（入境審查）的填寫。</li>
+            <li class="list-group-item">完成「<strong>攜帶品・別送品申告</strong>」（海關申報）的填寫。</li>
+            <li class="list-group-item">取得入境審查與海關申報的 <strong>QR Code</strong> 並妥善截圖保存。</li>
+        </ol>
+        <div class="d-grid mt-4">
+             <a href="https://www.vjw.digital.go.jp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                <i class="fas fa-link me-2"></i> 前往 Visit Japan Web 官方網站
+             </a>
+        </div>
+    `;
+    showInfoModal(title, content, true);
+}
+
+function showOtherItemsInfo() {
+    const title = "其他準備項目";
+    const content = `
+        <div class="text-center mb-4">
+            <i class="fas fa-suitcase-rolling fa-4x" style="color: var(--bs-primary, #6c757d);"></i>
+        </div>
+        
+        <div class="accordion" id="otherItemsAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong>1. 赴日旅遊保險</strong>
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#otherItemsAccordion">
+                    <div class="accordion-body">
+                        <p>雖然日本的醫療品質高，但費用也相當可觀。強烈建議投保包含「海外突發疾病」與「旅遊不便險」的旅遊平安險，以應對可能的意外或行程延誤。</p>
+                        <ul class="list-group list-group-flush">
+                           <li class="list-group-item"><strong>海外突發疾病：</strong>保障您在日本需要就醫時的醫療開銷。</li>
+                           <li class="list-group-item"><strong>旅遊不便險：</strong>保障班機延誤、行李遺失等突發狀況造成的損失。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <strong>2. 兌換日幣</strong>
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#otherItemsAccordion">
+                    <div class="accordion-body">
+                        <p>雖然日本的信用卡支付相當普及，但許多小店家、餐廳或交通票券仍可能需要使用現金。建議在台灣的銀行預先兌換所需日幣。</p>
+                        <ul class="list-group list-group-flush">
+                           <li class="list-group-item"><strong>線上結匯：</strong>可於台灣銀行或兆豐銀行網站線上申請，再到指定分行領取，匯率通常較佳。</li>
+                           <li class="list-group-item"><strong>臨櫃兌換：</strong>直接攜帶台幣與身分證至有外匯服務的銀行兌換。</li>
+                           <li class="list-group-item"><strong>備用方案：</strong>攜帶有跨國提款功能的提款卡，可在日本的便利商店ATM直接提領日幣（會產生手續費）。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <strong>3. 手機網路申請</strong>
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#otherItemsAccordion">
+                    <div class="accordion-body">
+                        <p>在日本保持網路暢通對於查詢地圖、交通與聯絡非常重要。主要有以下幾種方式：</p>
+                        <ul class="list-group list-group-flush">
+                           <li class="list-group-item"><strong>SIM卡：</strong>在台灣先購買日本上網SIM卡，抵達後更換即可使用，適合個人使用。</li>
+                           <li class="list-group-item"><strong>eSIM：</strong>若您的手機支援eSIM，可線上購買方案，掃描QR Code即可啟用，無需更換實體卡，最為方便。</li>
+                           <li class="list-group-item"><strong>Wi-Fi分享器：</strong>適合多人或多裝置共享網路，可於台灣機場租借領取。</li>
+                           <li class="list-group-item"><strong>電信漫遊：</strong>直接向您的電信公司申請國際漫遊，費用較高但最為直接。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    showInfoModal(title, content, true);
+}
+
+function showWorshipToolsInfo() {
+    const title = "修行用具準備清單";
+    const content = `
+        <div class="text-center mb-4">
+            <i class="fas fa-praying-hands fa-4x" style="color: var(--bs-primary, #6c757d);"></i>
+        </div>
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading"><i class="fas fa-info-circle me-2"></i>行前確認</h4>
+            <p>為確保您的參拜過程莊嚴順利，請確認是否已備妥以下修行用具。部分用具可依個人習慣選用。</p>
+        </div>
+        <h5>必備項目：</h5>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><i class="fas fa-book-open fa-fw me-2"></i>經書</li>
+            <li class="list-group-item"><i class="fas fa-tshirt fa-fw me-2"></i>袈裟</li>
+            <li class="list-group-item"><i class="fas fa-braille fa-fw me-2"></i>念珠</li>
+        </ul>
+        <h5>選用項目：</h5>
+        <ul class="list-group mb-3">
+            <li class="list-group-item"><i class="fas fa-user-tie fa-fw me-2"></i>法衣 (依個人習慣選用)</li>
+        </ul>
+        <h5>注意事項：</h5>
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="fas fa-ban fa-2x me-3"></i>
+            <div>
+                <strong>錫杖 (不可攜帶)</strong><br>
+                為配合航空安全規定及日本當地法規，請勿攜帶錫杖登機或托運。
+            </div>
         </div>
     `;
     showInfoModal(title, content, true);
