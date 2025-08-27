@@ -120,7 +120,6 @@ function parseCsv(csvText) {
     const headers = lines[0].split(',').map(h => h.trim());
     const data = [];
     
-    // Regex to split a CSV row, correctly handling quoted fields.
     const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
 
     for (let i = 1; i < lines.length; i++) {
@@ -130,14 +129,12 @@ function parseCsv(csvText) {
         headers.forEach((header, index) => {
             if (header && values[index] !== undefined) {
                 let value = values[index].trim();
-                // Remove surrounding quotes if they exist
                 if (value.startsWith('"') && value.endsWith('"')) {
                     value = value.substring(1, value.length - 1);
                 }
-                // Replace double double-quotes with a single double-quote (CSV standard for escaping)
                 obj[header] = value.replace(/""/g, '"');
             } else if (header) {
-                obj[header] = ''; // Ensure all headers have a key
+                obj[header] = '';
             }
         });
         data.push(obj);
@@ -772,10 +769,8 @@ function sendSearchMessage() {
             if (results.length > 0) {
                 const message = "根據您提供的資訊，我找到了以下相關內容：\n\n" + results.slice(0, 5).map((item, index) => {
                     const summary = item.full_summary || item.summary;
-                    let summaryText = "";
-                    if (summary) {
-                        summaryText = summary.startsWith("http") ? `: <a href="${summary}" target="_blank" rel="noopener noreferrer">${summary}</a>` : ": " + summary;
-                    }
+                    // FIX: Apply linkify to the summary text before displaying
+                    const summaryText = summary ? `: ${linkify(summary)}` : "";
                     return `${index + 1}. **${item.title} (${item.type})**${summaryText}`;
                 }).join("\n\n");
                 addChatMessage(message, "bot", { source_type: "本地資料庫", sources: results.slice(0, 3).map(r => r.title) });
@@ -790,7 +785,9 @@ function linkify(text) {
     if (!text) return "";
     // Avoid linkifying if it already contains an anchor tag
     if (text.includes("<a href")) return text;
-    return text.replace(/(https?:\/\/[a-zA-Z0-9.\/~_#@?&=%-]+)/g, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+    // Regex to find URLs and replace them with anchor tags
+    const urlRegex = /(https?:\/\/[^\s,]+)/g;
+    return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
 }
 
 function addChatMessage(text, type, options = {}) {
@@ -802,6 +799,7 @@ function addChatMessage(text, type, options = {}) {
     if (options.id) messageWrapper.id = options.id;
 
     let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // We linkify the text here for the bot's response
     if (type === 'bot') {
         htmlText = linkify(htmlText);
     }
