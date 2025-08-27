@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行前準備綜合指南</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .section-heading {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--theme-purple);
+            padding-bottom: 0.5rem;
+        }
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-khaki);
+            border-radius: 50px;
+            color: var(--theme-khaki);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-khaki);
+            color: white;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>行前準備綜合指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">行前準備綜合指南</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">整合護照、入境、保險等關鍵事項，確保您的旅程萬無一失。</p>
+        </section>
+
+        <!-- Section 1: Japan Calendar -->
+        <section id="calendar-section" class="mb-5">
+            <h2 class="section-heading">1. 確認日本行事曆</h2>
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <p class="card-text">出發前確認日本的國定假日與教苑的特別活動日期至關重要。這可以幫助您避開人潮高峰，或確保能參加到特定的法會活動。建議參閱官方行事曆或洽詢事務局以獲得最準確的資訊。</p>
+                    <a href="https://drive.google.com/drive/folders/1Q2vxBZ4QqhrSS0xYgvLuiiB0n5eJx_gS?usp=sharing" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                        <i class="fas fa-calendar-alt me-2"></i>查看日本行事曆
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Passport -->
+        <section id="passport-section" class="mb-5">
+            <h2 class="section-heading">2. 護照效期檢查</h2>
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>重要提醒：六個月效期規則</h4>
+                        <p>入境日本時，您的護照有效期<strong>必須從您預計的「入境日本日期」算起，超過六個月以上</strong>。這是許多國家的標準入境要求，以確保您在旅途中護照不會失效。</p>
+                        <hr>
+                        <p class="mb-0">請立即檢查您護照上的有效期限！如果所剩時間不足，建議您儘早前往外交部領事事務局辦理換發新護照，以免耽誤行程。</p>
+                    </div>
+                    <h5>如何檢查：</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>1. 拿出護照：</strong>翻到有您照片和個人資料的那一頁。</li>
+                        <li class="list-group-item"><strong>2. 確認日期：</strong>找到「有效期限」或 "Date of Expiry" 欄位。</li>
+                        <li class="list-group-item"><strong>3. 計算方式：</strong>例如，如果您預計 <strong>2025年10月15日</strong> 入境日本，您的護照有效期限至少應晚於 <strong>2026年4月15日</strong> 才算安全。</li>
+                    </ul>
+                    <div class="d-grid mt-4">
+                         <a href="https://www.boca.gov.tw/cp-110-531-eda75-1.html" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary">
+                            <i class="fas fa-link me-2"></i> 前往外交部領事事務局網站
+                         </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Visit Japan Web -->
+        <section id="vjw-section" class="mb-5">
+            <h2 class="section-heading">3. 線上入境申請 (Visit Japan Web)</h2>
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="alert alert-primary" role="alert">
+                        <h4 class="alert-heading"><i class="fas fa-rocket me-2"></i>強烈建議！預先上網填寫以加速通關</h4>
+                        <p>為節省您在機場的寶貴時間，日本政府推出「Visit Japan Web」服務，讓您可以在出發前線上完成<strong>入境審查</strong>與<strong>海關申報</strong>。完成後會產生QR Code，通關時出示即可。</p>
+                    </div>
+                    <h5>事前準備項目：</h5>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item"><i class="fas fa-passport fa-fw me-2"></i>護照</li>
+                        <li class="list-group-item"><i class="fas fa-plane-departure fa-fw me-2"></i>航班資訊</li>
+                        <li class="list-group-item"><i class="fas fa-hotel fa-fw me-2"></i>在日本的聯絡地址（飯店地址）</li>
+                    </ul>
+                    <h5>主要填寫步驟：</h5>
+                    <ol class="list-group list-group-numbered">
+                        <li class="list-group-item">前往 Visit Japan Web 官方網站建立帳號。</li>
+                        <li class="list-group-item">登錄使用者資料（本人及同行家人）。</li>
+                        <li class="list-group-item">新增並登錄您的入境/回國預定。</li>
+                        <li class="list-group-item">完成「<strong>外國人入國記錄</strong>」（入境審查）的填寫。</li>
+                        <li class="list-group-item">完成「<strong>攜帶品・別送品申告</strong>」（海關申報）的填寫。</li>
+                        <li class="list-group-item">取得入境審查與海關申報的 <strong>QR Code</strong> 並妥善截圖保存。</li>
+                    </ol>
+                    <div class="d-grid mt-4">
+                         <a href="https://www.vjw.digital.go.jp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                            <i class="fas fa-link me-2"></i> 前往 Visit Japan Web 官方網站
+                         </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Worship Tools -->
+        <section id="tools-section" class="mb-5">
+            <h2 class="section-heading">4. 修行用具準備</h2>
+             <div class="card shadow-sm">
+                <div class="card-body p-4">
+                     <div class="alert alert-info" role="alert">
+                        <h4 class="alert-heading"><i class="fas fa-info-circle me-2"></i>行前確認</h4>
+                        <p>為確保您的參拜過程莊嚴順利，請確認是否已備妥以下修行用具。部分用具可依個人習慣選用。</p>
+                    </div>
+                    <h5>必備項目：</h5>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item"><i class="fas fa-book-open fa-fw me-2"></i>經書</li>
+                        <li class="list-group-item"><i class="fas fa-tshirt fa-fw me-2"></i>袈裟</li>
+                        <li class="list-group-item"><i class="fas fa-braille fa-fw me-2"></i>念珠</li>
+                    </ul>
+                    <h5>選用項目：</h5>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item"><i class="fas fa-user-tie fa-fw me-2"></i>法衣 (依個人習慣選用)</li>
+                    </ul>
+                    <h5>注意事項：</h5>
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="fas fa-ban fa-2x me-3"></i>
+                        <div>
+                            <strong>錫杖 (不可攜帶)</strong><br>
+                            為配合航空安全規定及日本當地法規，請勿攜帶錫杖登機或托運。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Other Items -->
+        <section id="other-items-section" class="mb-5">
+            <h2 class="section-heading">5. 其他重要項目</h2>
+             <div class="accordion" id="otherItemsAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <strong>赴日旅遊保險</strong>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#otherItemsAccordion">
+                        <div class="accordion-body">
+                            <p>雖然日本的醫療品質高，但費用也相當可觀。強烈建議投保包含「海外突發疾病」與「旅遊不便險」的旅遊平安險，以應對可能的意外或行程延誤。</p>
+                            <ul class="list-group list-group-flush">
+                               <li class="list-group-item"><strong>海外突發疾病：</strong>保障您在日本需要就醫時的醫療開銷。</li>
+                               <li class="list-group-item"><strong>旅遊不便險：</strong>保障班機延誤、行李遺失等突發狀況造成的損失。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <strong>兌換日幣</strong>
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#otherItemsAccordion">
+                        <div class="accordion-body">
+                            <p>雖然日本的信用卡支付相當普及，但許多小店家、餐廳或交通票券仍可能需要使用現金。建議在台灣的銀行預先兌換所需日幣。</p>
+                            <ul class="list-group list-group-flush">
+                               <li class="list-group-item"><strong>線上結匯：</strong>可於台灣銀行或兆豐銀行網站線上申請，再到指定分行領取，匯率通常較佳。</li>
+                               <li class="list-group-item"><strong>臨櫃兌換：</strong>直接攜帶台幣與身分證至有外匯服務的銀行兌換。</li>
+                               <li class="list-group-item"><strong>備用方案：</strong>攜帶有跨國提款功能的提款卡，可在日本的便利商店ATM直接提領日幣（會產生手續費）。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            <strong>手機網路申請</strong>
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#otherItemsAccordion">
+                        <div class="accordion-body">
+                            <p>在日本保持網路暢通對於查詢地圖、交通與聯絡非常重要。主要有以下幾種方式：</p>
+                            <ul class="list-group list-group-flush">
+                               <li class="list-group-item"><strong>SIM卡：</strong>在台灣先購買日本上網SIM卡，抵達後更換即可使用，適合個人使用。</li>
+                               <li class="list-group-item"><strong>eSIM：</strong>若您的手機支援eSIM，可線上購買方案，掃描QR Code即可啟用，無需更換實體卡，最為方便。</li>
+                               <li class="list-group-item"><strong>Wi-Fi分享器：</strong>適合多人或多裝置共享網路，可於台灣機場租借領取。</li>
+                               <li class="list-group-item"><strong>電信漫遊：</strong>直接向您的電信公司申請國際漫遊，費用較高但最為直接。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
