@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台北→親苑參拜指南</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css?v=1.6">
+    <style>
+        :root {
+            --theme-orange: #E66C2C;
+            --bs-primary: var(--theme-orange);
+            --bs-primary-rgb: 230, 108, 44;
+            --bs-link-color: var(--theme-orange);
+            --bs-link-hover-color: #c0561c;
+        }
+        .btn-primary {
+            --bs-btn-bg: var(--theme-orange);
+            --bs-btn-border-color: var(--theme-orange);
+            --bs-btn-hover-bg: #c0561c;
+            --bs-btn-hover-border-color: #b3501a;
+            --bs-btn-active-bg: #b3501a;
+            --bs-btn-active-border-color: #a64b18;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Change header text color to white */
+        .page-header-map .page-title,
+        .page-header-map .page-subtitle {
+            color: #FFFFFF;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        /* --- New Solid Icon Colors --- */
+        #icon-worship-donation { color: #E67E22; }
+        #icon-worship-enter { color: #27AE60; }
+        #icon-worship-ceremony { color: #8E44AD; }
+        #icon-worship-complete { color: #3498DB; }
+
+        #shuttle-info .info-card-icon {
+            color: #5954a4;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-plane"></i> 台北→親苑參拜指南</a>
+            <div class="exchange-rate-display text-white-50 me-2 d-flex align-items-center small d-lg-none"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div></div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="planning.html">規劃</a></li>
+                    <li class="nav-item"><a class="nav-link" href="qa.html">Q&A</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://flowtest.jean.com.tw/test47/">簡易</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="exchange-rate-display text-white-50 me-3 d-none d-lg-flex align-items-center small"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div></div>
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <header class="page-header-map">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+                    <h1 class="page-title">回歸親苑 → 參拜指南</h1>
+                    <p class="page-subtitle">感受雙親兩童子繼主的溫暖</p>
+                </div>
+                <div class="col-lg-6"><div class="header-map-container"><div id="shinyuanMap"></div></div></div>
+            </div>
+        </div>
+    </header>
+    
+    <section id="ai-search-section" class="py-5">
+        <div class="container">
+            <div class="container-wrapper">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 text-center">
+                        <form id="main-search-form" class="main-search-form">
+                            <div class="input-group input-group-lg">
+                                <input type="search" id="main-search-input" class="form-control" placeholder="例如：參拜的詳細禮儀" aria-label="站內搜尋">
+                                <button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> 搜尋</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container pt-0 pb-5">
+        <section id="introduction" class="mb-5">
+            <div class="row align-items-center">
+                <div class="col-lg-7"><h2 class="section-title-custom">關於親苑</h2><p class="lead text-muted">真如苑以《大般涅槃經》為依據，奉久遠常住釋迦牟尼佛如來為本尊，結合傳統佛教的法會和修行方式，配合密教中強調「教法」與「實踐」並重的精神，透過真如苑獨有的「接心修行」，從日常生活中紓解克服苦痛，讓眾生心中的佛性能顯現光芒，以達到常樂我淨的境界為為修行目標，並於家庭、工作中身體力行大乘利他的精神。</p></div>
+                <div class="col-lg-5"><img src="images/shinyuan-intro.jpg" class="img-fluid rounded shadow" alt="親苑代表性照片"></div>
+            </div>
+        </section>
+        
+        <section id="sequence" class="my-5"><div class="container"><h2 class="section-title-custom">參拜順序</h2><div id="worship-steps-container" class="row g-4 justify-content-center"><div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></div></div></section>
+        
+        <section id="guides" class="mb-5">
+            <h2 class="section-title-custom">參拜指南</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-3">
+                    <a href="回歸親苑.pdf" target="_blank" class="info-card h-100">
+                        <div class="info-card-icon"><i class="fa-solid fa-book-open-reader" style="color: #8E44AD;"></i></div>
+                        <h5 class="info-card-title">回歸親苑</h5>
+                        <p class="info-card-subtitle">了解親苑的核心精神與參拜意義。</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="親苑參拜地圖.pdf" target="_blank" class="info-card h-100">
+                        <div class="info-card-icon"><i class="fa-solid fa-map" style="color: #27AE60;"></i></div>
+                        <h5 class="info-card-title">親苑參拜地圖</h5>
+                        <p class="info-card-subtitle">總本部整體區域的詳細案內圖。</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="應現院參拜地圖.pdf" target="_blank" class="info-card h-100">
+                        <div class="info-card-icon"><i class="fa-solid fa-vihara" style="color: #E67E22;"></i></div>
+                        <h5 class="info-card-title">應現院參拜地圖</h5>
+                        <p class="info-card-subtitle">應現院內部的詳細參拜路線圖。</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="接心道場參拜地圖.pdf" target="_blank" class="info-card h-100">
+                        <div class="info-card-icon"><i class="fa-solid fa-hand-holding-heart" style="color: #3498DB;"></i></div>
+                        <h5 class="info-card-title">接心道場參拜地圖</h5>
+                        <p class="info-card-subtitle">接心道場內部的詳細案內圖。</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <section id="shuttle-info" class="mb-5">
+            <h2 class="section-title-custom">接駁資訊</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-4"><a href="05.html" class="info-card h-100"><div class="info-card-icon"><i id="icon-shuttle-bus" class="fa-solid fa-bus-simple"></i></div><h5 class="info-card-title">親苑 ⇄ 應現院</h5><p class="info-card-subtitle">苑區內的免費接駁巴士，方便信眾往返兩地。</p></a></div>
+                <div class="col-md-6 col-lg-4"><a href="06.html" class="info-card h-100"><div class="info-card-icon"><i id="icon-shuttle-bus" class="fa-solid fa-bus-simple"></i></div><h5 class="info-card-title">應現院 ⇄ Shinnyo Yana</h5><p class="info-card-subtitle">連接應現院與最新設施的便捷接駁服務。</p></a></div>
+            </div>
+        </section>
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1" aria-labelledby="aiChatModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="aiChatModalLabel"><i class="fas fa-robot"></i> 站內搜尋助理</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div class="chat-messages" id="chatMessages"><div class="message bot-message"><div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div></div></div></div><div class="modal-footer"><div class="input-group"><textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea><button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button></div></div></div></div></div>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="infoModalTitle">詳細資訊</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body" id="infoModalBody"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button></div></div></div></div>
+    
+    <footer class="bg-dark text-white py-4"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="app.js?v=1.1"></script>
+</body>
+</html>

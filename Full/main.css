@@ -1,0 +1,195 @@
+/* --- General Body and Typography --- */
+body {
+    font-family: 'Noto Sans TC', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* --- Hero Section & Page Headers --- */
+.hero-section, .page-header-map, .page-header-qa {
+    padding: 5rem 0; /* Use padding for flexible height and consistent spacing */
+}
+.hero-section {
+    position: relative;
+    color: white;
+    background-color: #5954A4;
+}
+.page-header-map {
+    background-color: #F5A256; /* Changed from gradient to solid orange */
+}
+.page-header-qa {
+    background: #EADFD4;
+}
+.hero-content {
+    position: relative;
+    z-index: 10;
+}
+.hero-map-container, .page-header-map .header-map-container, .page-header-qa .header-image-container {
+    width: 100%;
+    height: 250px; /* Strictly enforce a unified height for the visual element */
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+#heroMap, #shinyuanMap {
+    width: 100%;
+    height: 100%;
+}
+.page-header-qa .header-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.page-title {
+    font-size: 2.25rem; /* Reduced font size to prevent text overflow */
+    font-weight: bold;
+}
+.page-subtitle {
+    font-size: 1.15rem; /* Reduced font size for better proportion */
+    opacity: 0.9;
+}
+.page-header-qa .page-title, .page-header-qa .page-subtitle {
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+.page-header-qa .page-title { color: #5B7D4B; }
+.page-header-qa .page-subtitle { color: #5B7D4B; opacity: 0.85; }
+
+/* --- Main Search Form Section --- */
+#ai-search-section {
+    background-color: #f8f9fa;
+    padding: 3rem 0;
+    margin-top: -50px;
+    position: relative;
+    z-index: 20;
+}
+.main-search-form .form-control { border-radius: 50rem 0 0 50rem; border-right: none; }
+.main-search-form .btn { border-radius: 0 50rem 50rem 0; }
+.main-search-form .form-control:focus { box-shadow: none; border-color: #8A54A2; }
+
+/* --- Custom Section Title --- */
+.section-title-custom {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 2.5rem !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Card Styles --- */
+.step-card { /* 行程规划步骤卡片 */
+    background: white;
+    border-radius: 0.75rem;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Added for equal height cards */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.step-card p {
+    flex-grow: 1; /* Make paragraph take up space */
+}
+.step-card .btn {
+    margin-top: auto; /* Push button to bottom */
+}
+.step-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.step-icon {
+    margin-bottom: 1.5rem;
+    height: 4rem; /* Fixed height for icon container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem; /* Explicitly set icon size */
+}
+
+.info-card { /* 交通、参拜指南等小卡片 */
+    display: block;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    padding: 1.5rem 1rem;
+    color: inherit;
+    text-decoration: none !important;
+    height: 100%;
+}
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-color: #d1d5db;
+}
+.info-card-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+.info-card-title { font-weight: 700; font-size: 1rem; color: #111827; }
+.info-card-subtitle { font-size: 0.85rem; color: #6b7280; }
+
+.attraction-card {
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    /* Added for equal height */
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+}
+.attraction-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.attraction-image { height: 200px; background-size: cover; background-position: center; }
+.attraction-card .p-4 {
+    flex-grow: 1;
+}
+
+
+/* --- Modal & Chat --- */
+.modal-header { cursor: move; }
+.modal-dialog.is-draggable { margin: 0; position: fixed; }
+body.is-dragging { user-select: none; }
+.chat-messages { height: 50vh; overflow-y: auto; padding: 10px; }
+.message { margin-bottom: 15px; display: flex; }
+.message-content { padding: 10px 15px; border-radius: 18px; max-width: 80%; }
+.user-message { justify-content: flex-end; }
+.user-message .message-content { background-color: var(--bs-primary, #0d6efd); color: white; border-bottom-right-radius: 4px; }
+.bot-message { justify-content: flex-start; }
+.bot-message .message-content { background-color: #e9ecef; color: #212529; border-bottom-left-radius: 4px; }
+#chatInput { resize: none; height: auto; }
+.source-type-badge { font-size: .7em; padding: .2em .5em; border-radius: .25rem; color: #fff; margin-bottom: 5px; display: inline-block; }
+.badge-local { background-color: #198754; }
+.badge-default { background-color: #6c757d; }
+.badge-error { background-color: #dc3545; }
+.source-container { border-top: 1px solid #ddd; margin-top: 10px; padding-top: 10px; font-size: 0.8rem; }
+.source-title { font-weight: bold; margin-bottom: 5px; }
+.source-container ul { list-style: none; padding-left: 0; margin-bottom: 0; }
+.source-container li { background-color: #f8f9fa; padding: 3px 8px; border-radius: 4px; margin-bottom: 3px; }
+
+/* --- Miscellaneous --- */
+.remark-section { background-color: #f8f9fa; border-left: 3px solid #6c757d; padding: 10px; font-size: 0.9em; }
+
+/* --- Responsive Design --- */
+@media (max-width: 767.98px) {
+    #ai-search-section .input-group { display: flex; }
+    #ai-search-section .form-control { flex-grow: 1; min-width: 0; }
+    #ai-search-section .btn { flex-shrink: 0; padding: 0.5rem 1rem; font-size: 0.9rem; }
+    .page-title { font-size: 2rem; }
+    
+    /* Reset negative margin on mobile to prevent overlap */
+    #ai-search-section {
+        margin-top: 0;
+    }
+}
+
+/* --- AI Chat Modal Enhancements --- */
+@media (min-width: 992px) { /* Apply on large screens and up */
+    #aiChatModal .modal-dialog {
+        max-width: 70vw; /* Make the modal wider, up to 70% of the viewport width */
+    }
+
+    #aiChatModal .chat-messages {
+        height: 65vh; /* Make the chat area taller, up to 65% of the viewport height */
+    }
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交通指南：從立川站到『應現院』</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--theme-purple);
+            border-color: var(--theme-purple);
+            color: white;
+        }
+        .nav-tabs .nav-link {
+            color: var(--bs-link-hover-color);
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        /* START: 新增地圖樣式 */
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            cursor: pointer;
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none; /* 讓點擊事件穿透 */
+        }
+        /* END: 新增地圖樣式 */
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>立川應現院交通指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">從立川站到『應現院』</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">提供您兩種主要的交通方案，無論您追求速度效率或是搭乘便利，都能找到最適合的路線，輕鬆抵達目的地。</p>
+        </section>
+
+        <section id="route-selection" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">🚆 選擇您的最佳路線</h2>
+            <p class="text-center text-muted mb-4">點擊下方頁籤，探索最適合您的交通方式。</p>
+            
+            <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#monorail-panel" type="button">單軌電車</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#bus-panel" type="button">接駁巴士</button></li>
+            </ul>
+
+            <div class="tab-content" id="routeTabContent">
+                <div class="tab-pane fade show active" id="monorail-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5"><h3 class="fw-bold mb-3">方案1: 單軌電車</h3><p class="text-muted mb-4">最快速且時間準確的選擇，從立川南站搭乘多摩單軌電車，僅需數分鐘即可抵達最近的車站。</p><div class="mb-4 d-flex flex-wrap align-items-center gap-2"><span class="badge bg-secondary fs-6">立川站南口</span> → <span class="badge fs-6" style="background-color: var(--theme-purple);">單軌電車</span> → <span class="badge bg-secondary fs-6">立飛站</span> → <span class="badge bg-success fs-6">步行</span> → <span class="badge bg-secondary fs-6">應現院</span></div><div class="row"><div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>時間精準，不受路況影響</li><li><i class="fas fa-check-circle text-success me-2"></i>班次密集，等候時間短</li></ul></div><div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>出站後需要步行一段距離</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需要自行搬運行李</li></ul></div></div></div></div></div>
+                <div class="tab-pane fade" id="bus-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5"><h3 class="fw-bold mb-3">方案2: 接駁巴士</h3><p class="text-muted mb-4">從立川站北口附近的公車站搭乘，對於下榻北口飯店或不便步行的旅客是個便利的選項。</p><div class="mb-4 d-flex flex-wrap align-items-center gap-2"><span class="badge bg-secondary fs-6">立川站北口</span> → <span class="badge bg-success fs-6">步行</span> → <span class="badge bg-secondary fs-6">曙町公車站</span> → <span class="badge fs-6" style="background-color: var(--theme-purple);">接駁巴士</span> → <span class="badge bg-secondary fs-6">應現院</span></div><div class="row"><div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>可能更接近目的地，減少步行</li><li><i class="fas fa-check-circle text-success me-2"></i>對攜帶大件行李者較友善</li></ul></div><div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>可能受交通狀況影響行車時間</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>巴士班次可能不如電車頻繁</li></ul></div></div></div></div></div>
+            </div>
+        </section>
+
+        <section id="detailed-guides" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">📍 路線詳細圖文指南</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <img src="images/17.jpg" class="card-img-top" alt="方案1：單軌電車路線圖與車站實景">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold">方案1：單軌電車</h5>
+                            <p class="card-text text-muted">從JR立川站南口出站後，前往多摩單軌電車「立川南」站，搭乘往北上月台方向的列車，在第三站「立飛」站下車。車程約6分鐘，車資為日幣210元，下車後再步行至應現院。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <img src="images/20.jpg" class="card-img-top" alt="方案2：接駁巴士站地圖與實景">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold">方案2：接駁巴士</h5>
+                            <p class="card-text text-muted">從JR立川站北口出站，步行至「曙町公車站」（近立川東橫INN飯店），在此搭乘前往應現院的接駁巴士。此方案對於從北口出發或住宿於附近的旅客來說，更為便捷。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="special-plan" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">🚌 特別方案：從應現院到『聖地親苑』</h2>
+             <div class="card shadow-lg">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="card-body p-4 p-md-5">
+                            <h4 class="card-title fw-bold">利用【親苑接駁巴士】</h4>
+                            <p class="card-text text-muted">若您的行程包含前往「聖地親苑」，可利用兩地之間運行的免費接駁巴士。請在指定的「親苑接駁巴士站」搭乘，即可輕鬆往返，無需額外費用。詳細路線與時刻表請洽詢現場服務人員。</p>
+                            <span class="badge bg-primary fs-6">費用：免費</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="images/18.jpg" class="img-fluid rounded-end" alt="親苑免費接駁巴士與路線圖" style="object-fit: cover; height: 100%;">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- START: 新增地圖區塊 -->
+        <section id="route-map" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">📍 路線地圖總覽</h2>
+            <div class="card shadow-sm">
+                <div class="card-body p-2">
+                    <a href="https://www.google.com/maps/dir/35.6962542,139.4050013/%E6%97%A5%E6%9C%AC%E6%9D%B1%E4%BA%AC%E9%80%BD%E7%AB%8B%E5%B7%9D%E5%B8%82+%E6%B3%89%E7%94%BA935-32+%E7%9C%9F%E5%A6%82%E8%8B%91+%E5%BF%9C%E7%8F%BE%E9%99%A2/@35.708413,139.4031453,15z/data=!3m1!4b1!4m9!4m8!1m0!1m5!1m1!1s0x6018e10fc213e88b:0x735a80ff57c8c2b1!2m2!1d139.4154583!2d35.7173771!3e3?authuser=0&entry=ttu&g_ep=EgoyMDI1MDgxNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃">
+                        <div class="map-container">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m26!1m12!1m3!1d12958.895336878782!2d139.403145260475!3d35.70841301125214!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m11!3e3!4m3!3m2!1d35.6962542!2d139.40500129999998!4m5!1s0x6018e10fc213e88b%3A0x735a80ff57c8c2b1!2z5pel5pys5p2x5Lqs6YO956uL5bed5biCIOazieeUujkzNS0zMiDnnJ_lpoLoi5Eg5b-c54--6Zmi!3m2!1d35.7173771!2d139.41545829999998!5e0!3m2!1szh-TW!2stw!4v1755660456484!5m2!1szh-TW!2stw" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- END: 新增地圖區塊 -->
+
+        <section id="summary">
+            <h2 class="text-center fw-bold mb-4">✨ 總結與專家建議</h2>
+            <div class="row g-4"><div class="col-lg-6"><div class="alert alert-theme-primary h-100"><h5 class="alert-heading fw-bold">追求效率與時間確定性</h5><p>建議選擇【單軌電車】。其不受路面交通影響的特性，能確保您在預計時間內抵達，是行程緊湊旅客的最佳選擇。</p></div></div><div class="col-lg-6"><div class="alert alert-theme-secondary h-100"><h5 class="alert-heading fw-bold">考量便利與行李負擔</h5><p>若您攜帶較多行李，或從立川站北口出發，【接駁巴士】會是更輕鬆的方案，可減少步行與搬運的辛勞。</p></div></div></div>
+        </section>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">立川→應現院參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

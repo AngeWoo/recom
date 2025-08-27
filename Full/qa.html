@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常見問答 (Q&A) - 台北→親苑參拜指南</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css?v=1.6">
+    <style>
+        :root {
+            --theme-green: #5B7D4B;
+            --theme-beige: #EADFD4;
+            --bs-primary: var(--theme-green);
+            --bs-primary-rgb: 91, 125, 75;
+            --bs-link-color: var(--theme-green);
+            --bs-link-hover-color: #4a663c;
+        }
+        .btn-primary {
+            --bs-btn-bg: var(--theme-green);
+            --bs-btn-border-color: var(--theme-green);
+            --bs-btn-hover-bg: #4a663c;
+            --bs-btn-hover-border-color: #4a663c;
+        }
+        .list-group-item.active {
+            background-color: var(--theme-green);
+            border-color: var(--theme-green);
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-green);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-plane"></i> 台北→親苑參拜指南</a>
+            <div class="exchange-rate-display text-white-50 me-2 d-flex align-items-center small d-lg-none"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div></div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="planning.html">規劃</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="qa.html">Q&A</a></li>
+                </ul>
+                <div class="d-flex align-items-center">
+                    <div class="exchange-rate-display text-white-50 me-3 d-none d-lg-flex align-items-center small"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div></div>
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <header class="page-header-qa">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+                    <h1 class="page-title">常見問答 (Q&A)</h1>
+                    <p class="page-subtitle">為您解答關於行程、參拜與在地的各種疑問</p>
+                </div>
+                <div class="col-lg-6">
+                    <div class="header-image-container">
+                        <img src="images/Q&A.jpg" class="img-fluid" alt="Q&A示意圖">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="sticky-top" style="top: 80px;">
+                    <h4 class="mb-3">問題分類</h4>
+                    <div class="list-group" id="qa-category-filter"><div class="text-center p-3"><div class="spinner-border spinner-border-sm" role="status"></div></div></div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="accordion" id="qa-accordion-container"><div class="text-center p-5"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="aiChatModal" tabindex="-1" aria-labelledby="aiChatModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="aiChatModalLabel"><i class="fas fa-robot"></i> 站內搜尋助理</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div class="chat-messages" id="chatMessages"><div class="message bot-message"><div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div></div></div></div><div class="modal-footer"><div class="input-group"><textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea><button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button></div></div></div></div></div>
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true"><div class="modal-dialog modal-lg modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="infoModalTitle">詳細資訊</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body" id="infoModalBody"></div><div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button></div></div></div></div>
+    
+    <footer class="text-white py-4" style="background-color: var(--theme-green);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js?v=1.1"></script>
+</body>
+</html>
