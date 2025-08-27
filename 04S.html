@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交通指南：從立川到台灣桃園</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 定義新的水果沙拉主題 */
+            --theme-green: #5EAA5F;
+            --theme-red: #EE3239;
+            --theme-yellow: #FECE00;
+            --theme-grape: #9D6AB9;
+
+            --bs-primary: var(--theme-red);
+            --bs-primary-rgb: 238, 50, 57;
+
+            --bs-link-color: var(--theme-red);
+            --bs-link-hover-color: #c8232b; /* Darker red */
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: var(--theme-red);
+            border-color: var(--theme-red);
+            color: white;
+        }
+        .nav-tabs .nav-link {
+            color: #c8232b; /* Darker red */
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .form-check-input:checked {
+            background-color: var(--theme-red);
+            border-color: var(--theme-red);
+        }
+        /* START: 新增地圖樣式 */
+        .map-container-wrapper {
+            margin-top: 1.5rem;
+        }
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            cursor: pointer;
+            border-radius: 0.5rem;
+            border: 1px solid #dee2e6;
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none; /* 讓點擊事件穿透 */
+        }
+        /* END: 新增地圖樣式 */
+        
+        /* START: 新增回首頁按鈕樣式 */
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-green);
+            border-radius: 50px;
+            color: var(--theme-green);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-green);
+            color: white;
+        }
+        /* END: 新增回首頁按鈕樣式 */
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-green);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>立川成田桃園交通指南</a>
+            <div class="exchange-rate-display text-white-50 me-2 d-flex align-items-center small d-lg-none">
+                <div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>
+            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <div class="exchange-rate-display text-white-50 me-3 d-none d-lg-flex align-items-center small">
+                        <div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>
+                    </div>
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">東京立川成田到台灣桃園機場</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">互動式交通與出境指南</p>
+        </section>
+
+        <section id="route-selection" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">第一部分：選擇前往成田機場的最佳路線</h2>
+            <p class="text-center text-muted mb-4">從立川出發已無直達車，所有方案皆需轉乘。請點選頁籤查看各方案詳情。</p>
+            
+            <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nex-panel" type="button">N'EX (舒適)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#skyliner-panel" type="button">Skyliner (效率)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#local-panel" type="button">在來線 (經濟)</button></li>
+            </ul>
+
+            <div class="tab-content" id="routeTabContent">
+                <div class="tab-pane fade show active" id="nex-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">方案A: N'EX 舒適之選</h3>
+                    <p class="text-muted mb-4">追求極致舒適、攜帶大型行李、偏好JR系統的旅客首選。</p>
+                    <h5 class="fw-bold">路線步驟</h5>
+                    <ol class="list-group list-group-numbered mb-4">
+                        <li class="list-group-item"><strong>立川 → 新宿:</strong> 搭乘 <span class="badge text-dark" style="background-color: var(--theme-yellow);">JR中央線</span> (約 25-40 分鐘)</li>
+                        <li class="list-group-item"><strong>新宿站換乘:</strong> 跟隨「Narita Express (N'EX)」指標前往第 5、6 月台 (建議預留 15-20 分鐘)</li>
+                        <li class="list-group-item"><strong>新宿 → 成田機場:</strong> 搭乘 <span class="badge" style="background-color: var(--theme-red);">JR成田特快 N'EX</span> (約 80 分鐘)</li>
+                    </ol>
+                    <div class="map-container-wrapper">
+                        <a href="https://www.google.com/maps/dir/%E7%AB%8B%E5%B7%9D%E9%A7%85/%E6%96%B0%E5%AE%BF%E9%A7%85/%E6%88%90%E7%94%B0%E5%9C%8B%E9%9A%9B%E7%A9%BA%E6%B8%AF/@35.7533602,139.734891,10z/data=!4m22!4m21!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!1m5!1m1!1s0x60188cd0d6b1ba1f:0x1c32a1f1ecacfdd5!2m2!1d139.700414!2d35.689729!1m5!1m1!1s0x6022f17075c3b883:0x3342336338e55e51!2m2!1d140.39285!2d35.771987!3e3?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d829473.2680662156!2d139.73489100564062!3d35.75336015794695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!4m5!1s0x6022f17075c3b883%3A0x3342336338e55e51!2z5oiQ55Sw5ZyS6Zqb56uL5riv!3m2!1d35.771987!2d140.39285!5e0!3m2!1szh-TW!2stw!4v1755737333555!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted small"><li><i class="fas fa-check-circle text-success me-2"></i>僅需轉乘一次</li><li><i class="fas fa-check-circle text-success me-2"></i>座位寬敞，設有大型行李專用放置區</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted small"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>新宿站換乘複雜</li></ul></div>
+                    </div>
+                </div></div></div>
+                <div class="tab-pane fade" id="skyliner-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">方案B: Skyliner 效率之選</h3>
+                    <p class="text-muted mb-4">追求最快抵達機場的速度、重視轉乘效率的旅客首選。</p>
+                    <h5 class="fw-bold">路線步驟</h5>
+                    <ol class="list-group list-group-numbered mb-4">
+                        <li class="list-group-item"><strong>立川 → 新宿:</strong> 搭乘 <span class="badge text-dark" style="background-color: var(--theme-yellow);">JR中央線</span> (約 25-40 分鐘)</li>
+                        <li class="list-group-item"><strong>新宿 → 日暮里:</strong> 站內轉乘 <span class="badge" style="background-color: var(--theme-green);">JR山手線</span> (約 21 分鐘)</li>
+                        <li class="list-group-item"><strong>日暮里站換乘:</strong> 跟隨指標輕鬆換乘京成線 (約 5 分鐘)</li>
+                        <li class="list-group-item"><strong>日暮里 → 成田機場:</strong> 搭乘 <span class="badge" style="background-color: var(--theme-grape);">京成Skyliner</span> (最快 36 分鐘)</li>
+                    </ol>
+                    <div class="map-container-wrapper">
+                        <a href="https://www.google.com/maps/dir/%E7%AB%8B%E5%B7%9D%E9%A7%85/%E6%97%A5%E6%9A%AE%E9%87%8C%E9%A7%85/%E6%88%90%E7%94%B0%E5%9C%8B%E9%9A%9B%E7%A9%BA%E6%B8%AF/@35.7583627,139.734891,10z/data=!4m22!4m21!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!1m5!1m1!1s0x60188dd5108375e5:0x983353521e1d0063!2m2!1d139.771561!2d35.727827!1m5!1m1!1s0x6022f17075c3b883:0x3342336338e55e51!2m2!1d140.39285!2d35.771987!3e3?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d829321.6831685768!2d139.73489100564062!3d35.75836265787602!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!4m5!1s0x6022f17075c3b883%3A0x3342336338e55e51!2z5oiQ55Sw5ZyS6Zqb56uL5riv!3m2!1d35.771987!2d140.39285!5e0!3m2!1szh-TW!2stw!4v1755737333555!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted small"><li><i class="fas fa-check-circle text-success me-2"></i>總時間最短</li><li><i class="fas fa-check-circle text-success me-2"></i>日暮里站轉乘極度簡單</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted small"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需轉乘兩次</li></ul></div>
+                    </div>
+                </div></div></div>
+                <div class="tab-pane fade" id="local-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">方案C: 在來線 經濟之選</h3>
+                    <p class="text-muted mb-4">預算有限、行李輕便且對東京鐵路系統非常熟悉的旅客。</p>
+                    <h5 class="fw-bold">路線步驟</h5>
+                    <ol class="list-group list-group-numbered mb-4">
+                        <li class="list-group-item"><strong>立川 → 東京:</strong> 搭乘 <span class="badge text-dark" style="background-color: var(--theme-yellow);">JR中央線</span> 直達東京站</li>
+                        <li class="list-group-item"><strong>東京站換乘:</strong> 從中央線月台移動至總武線月台 (距離非常長)</li>
+                        <li class="list-group-item"><strong>東京 → 成田機場:</strong> 搭乘 <span class="badge bg-info">JR總武線快速</span></li>
+                    </ol>
+                    <div class="map-container-wrapper">
+                        <a href="https://www.google.com/maps/dir/%E7%AB%8B%E5%B7%9D%E9%A7%85/%E6%9D%B1%E4%BA%AC%E9%A7%85/%E6%88%90%E7%94%B0%E5%9C%8B%E9%9A%9B%E7%A9%BA%E6%B8%AF/@35.7037748,139.734891,10z/data=!4m22!4m21!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!1m5!1m1!1s0x60188bfbd89f700b:0x277c49ba34ed38!2m2!1d139.7673068!2d35.6812362!1m5!1m1!1s0x6022f17075c3b883:0x3342336338e55e51!2m2!1d140.39285!2d35.771987!3e3?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d830501.2067242964!2d139.73489100564062!3d35.7037747999127!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!4m5!1s0x6022f17075c3b883%3A0x3342336338e55e51!2z5oiQ55Sw5ZyS6Zqb56uL5riv!3m2!1d35.771987!2d140.39285!5e0!3m2!1szh-TW!2stw!4v1755737333555!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted small"><li><i class="fas fa-check-circle text-success me-2"></i>費用最低</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted small"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>總時間最長</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>東京站轉乘距離極長</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>無對號座及專用行李區</li></ul></div>
+                    </div>
+                </div></div></div>
+            </div>
+        </section>
+
+        <section id="airport-guide" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">第二部分：機場出入境流程總覽</h2>
+            <div class="row g-4">
+                <div class="col-lg-6"><div class="card h-100"><div class="card-header fw-bold text-center">🛫 成田機場出境流程</div><ul class="list-group list-group-flush"><li class="list-group-item">1. 確認航廈 (T1/T2/T3)</li><li class="list-group-item">2. 航空公司報到，領取登機證</li><li class="list-group-item">3. 行李託運</li><li class="list-group-item">4. 安全檢查</li><li class="list-group-item">5. 出國審查 (護照查驗)</li><li class="list-group-item">6. 前往登機門</li></ul></div></div>
+                <div class="col-lg-6"><div class="card h-100"><div class="card-header fw-bold text-center">🛬 桃園機場入境流程</div><ul class="list-group list-group-flush"><li class="list-group-item">1. 檢疫</li><li class="list-group-item">2. 證照查驗 (本國人通道)</li><li class="list-group-item">3. 提領行李</li><li class="list-group-item">4. 海關檢查 (綠線/紅線通道)</li><li class="list-group-item">5. 抵達大廳</li></ul></div></div>
+            </div>
+        </section>
+        
+        <section id="checklist" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">第三部分：最終行前檢查清單</h2>
+            <div class="card max-w-lg mx-auto">
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" id="check1"><label class="form-check-label" for="check1">機票與火車票是否已預訂或購買？</label></div></li>
+                        <li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" id="check2"><label class="form-check-label" for="check2">台灣線上入境卡是否已填寫完成？</label></div></li>
+                        <li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" id="check3"><label class="form-check-label" for="check3">護照與相關旅行證件是否備妥？</label></div></li>
+                        <li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" id="check4"><label class="form-check-label" for="check4">是否已再次確認航廈與行李限額？</label></div></li>
+                        <li class="list-group-item"><div class="form-check"><input class="form-check-input" type="checkbox" id="check5"><label class="form-check-label" for="check5">是否已預留充足的轉乘與機場手續時間？</label></div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+        
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-green);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

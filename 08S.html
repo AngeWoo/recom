@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指南：研修所申請</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        /* START: 新增回首頁按鈕樣式 */
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-khaki);
+            border-radius: 50px;
+            color: var(--theme-khaki);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-khaki);
+            color: white;
+        }
+        /* END: 新增回首頁按鈕樣式 */
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>研修所申請指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">研修所申請指南</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">提供住宿與研修的完整申請流程，讓您能安心地規劃回歸親苑的行程。</p>
+        </section>
+
+        <section id="preparation" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">🏫 申請前須知</h2>
+            <div class="row g-4">
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">1. 設施簡介</h5><p class="card-text text-muted">研修所為提供海外信徒於總本部研修期間的住宿設施，旨在提供一個清淨、安穩的修行環境。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 住宿規定</h5><p class="card-text text-muted">入住者需遵守研修所的相關規定，包含作息時間、內務整理與公共區域使用等，共同維護環境。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 研修目的</h5><p class="card-text text-muted">本設施主要提供給以參與法會、精進、接心為主要目的之信徒申請，恕不接受觀光目的之住宿。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="application-process" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">📝 申請流程</h2>
+            <div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                <h3 class="fw-bold mb-3">逐步指南</h3>
+                <p class="text-muted mb-4">研修所床位有限，請務必及早規劃並提交申請。</p>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">下載最新的「研修所住宿申請表」。</li>
+                    <li class="list-group-item">詳實填寫表格內的所有欄位，並附上行程規劃等必要文件。</li>
+                    <li class="list-group-item">將填寫完整的申請表繳交至您所屬的台灣教區或佈教所。</li>
+                    <li class="list-group-item">由事務局協助送件至總本部審核，請耐心等候審核結果通知。</li>
+                    <li class="list-group-item">收到核准通知後，依指示完成相關費用的繳交。</li>
+                </ol>
+            </div></div>
+        </section>
+
+        <section id="downloads" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">📥 相關文件下載</h2>
+            <div class="row g-4">
+                <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4 text-center"><h5 class="card-title fw-bold">研修所住宿申請表</h5><p class="text-muted">點擊下載最新版本的PDF申請表格。</p><a href="真如苑研修所申請單.pdf" target="_blank" class="btn btn-primary"><i class="fas fa-file-pdf me-2"></i>下載申請表</a></div></div></div>
+                <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4 text-center"><h5 class="card-title fw-bold">研修所住宿規約</h5><p class="text-muted">請在申請前詳閱住宿相關規定。</p><a href="研修所規約.pdf" target="_blank" class="btn btn-outline-secondary"><i class="fas fa-book me-2"></i>閱讀規約</a></div></div></div>
+            </div>
+        </section>
+
+        <section id="summary" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✨ 提醒與建議</h2>
+            <div class="row g-4">
+                <div class="col-lg-6"><div class="alert alert-theme-primary h-100"><h5 class="alert-heading fw-bold">務必提早申請</h5><p>由於研修所接待能量有限，特別是在大型法會期間，床位非常搶手。強烈建議您在確定行程後，盡可能準時（兩個月）提交申請，以提高成功機率。</p></div></div>
+                <div class="col-lg-6"><div class="alert alert-theme-secondary h-100"><h5 class="alert-heading fw-bold">遵守真如禮儀</h5><p>柴崎研修所最長住宿時期10晚，研修所住宿申請，比兩個月更早來的預約是不受理的，9:00-15:00是打掃時間，避免影響請減少外出。</p></div></div>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">研修所申請指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

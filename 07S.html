@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指南：參座接心申請</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* START: 新增回首頁按鈕樣式 */
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-khaki);
+            border-radius: 50px;
+            color: var(--theme-khaki);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-khaki);
+            color: white;
+        }
+        /* END: 新增回首頁按鈕樣式 */
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>法會接心會座申請指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">法會接心會座申請指南</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">請詳閱申請流程與注意事項說明，幫助您順利完成申請。</p>
+        </section>
+
+        <section id="preparation" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✈️ 申請前的準備與資格確認</h2>
+            <div class="row g-4">
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">1. 確認法友資格</h5><p class="card-text text-muted">請確認您的法友身份符合申請資格，務必於七天前提出申請手續。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 完成前行準備</h5><p class="card-text text-muted">部分接心可能要求觀看接心錄影帶，請務必於申請前確認並完成。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 瞭解會座意義</h5><p class="card-text text-muted">深入理解參座接心的意義，確認會座卡是否有效，再進行申請。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="application-process" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">📝 申請流程</h2>
+            <div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                <h3 class="fw-bold mb-3">逐步指南</h3>
+                <p class="text-muted mb-4">請依照以下步驟操作，以確保您的申請能被順利受理。</p>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">登入信徒官網的「表單下載。</li>
+                    <li class="list-group-item">在系統內找到「法會接心會座預約申請書」或類似選項。</li>
+                    <li class="list-group-item">選擇您希望參加的「法會接心會座」場次與時間。</li>
+                    <li class="list-group-item">詳閱該場次的說明與注意事項，並填寫個人資料。</li>
+                    <li class="list-group-item">最終確認所有資訊無誤後，填單送交事務局申請。</li>
+                </ol>
+            </div></div>
+        </section>
+
+        <section id="final-leg" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✨ 重要提醒事項</h2>
+            <div class="row g-4">
+                <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">申請時注意事項</h5><p class="text-muted">申請是至七天前。請搭乘公共交通工具前來，辦理旅行手續一定要加入旅行保險，當天請依照受理順序安排，也可能無法在主要式場參加，需要翻譯請自備耳機(耳機插孔，Lighting纜線，Bluetooth型。</p></div></div></div>
+                <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">攜帶物品與注意事項</h5><p class="text-muted">請攜帶您的會座卡、念珠，並將手機關機或調至靜音模式。場內請保持肅靜，遵循老師局員的引導。請穿著整潔得體的服裝，建議以素色、舒適為主，避免過於暴露或花俏的衣物。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="summary" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">申請書下載</h2>
+            <div class="card shadow-sm">
+                <div class="card-body text-center p-4">
+                    <a href="應現院法會接心會座預約申請書.pdf" target="_blank" class="btn btn-primary btn-lg mb-3 d-block">
+                        <i class="fas fa-file-pdf me-2"></i> 應現院法會接心會座預約申請書
+                    </a>
+                    <a href="悠音精舍法會接心會座預約申請書.pdf" target="_blank" class="btn btn-secondary btn-lg d-block">
+                        <i class="fas fa-file-pdf me-2"></i> 悠音精舍法會接心會座預約申請書
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">參座接心申請指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
