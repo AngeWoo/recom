@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>航班指南：從台北到東京</title>
+    <title>航班指南：從台灣到東京</title>
     <!-- START: 框架與樣式替換 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -75,7 +75,7 @@
     <!-- Header: Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
         <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>台北東京航班指南</a>
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>台灣東京航班指南</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -92,17 +92,21 @@
     <main class="container py-5">
 
         <section class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-dark mb-3">台北到東京 航班選擇指南</h1>
-            <p class="lead text-muted mx-auto" style="max-width: 700px;">為您整理兩大主要航線的航空公司資訊，助您輕鬆規劃前往東京的空中交通。</p>
+            <h1 class="display-4 fw-bold text-dark mb-3">台灣到東京 航班選擇指南</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">為您整理主要航線的航空公司資訊，助您輕鬆規劃前往東京的空中交通。</p>
         </section>
 
         <section id="route-selection" class="mb-5">
             <h2 class="text-center fw-bold mb-2">✈️ 選擇您的出發航線</h2>
-            <p class="text-center text-muted mb-4">兩條航線各有優勢，請依據您的需求點選下方頁籤查看詳情。</p>
+            <p class="text-center text-muted mb-4">各航線各有優勢，請依據您的需求點選下方頁籤查看詳情。</p>
             
-            <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
+            <ul class="nav nav-tabs justify-content-center mb-4 nav-fill" id="routeTab" role="tablist">
                 <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tsa-hnd-panel" type="button">台北松山 (TSA) → 東京羽田 (HND)</button></li>
                 <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tpe-nrt-panel" type="button">台灣桃園 (TPE) → 東京成田 (NRT)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#khh-nrt-panel" type="button">台灣高雄 (KHH) → 東京成田 (NRT)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#khh-hnd-panel" type="button">台灣高雄 (KHH) → 東京羽田 (HND)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#rmq-nrt-panel" type="button">台灣台中 (RMQ) → 東京成田 (NRT)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#rmq-hnd-panel" type="button">台灣台中 (RMQ) → 東京羽田 (HND)</button></li>
             </ul>
 
             <div class="tab-content" id="routeTabContent">
@@ -127,7 +131,7 @@
                                     <a href="https://www.china-airlines.com/tw/zh" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div><img src="https://logo.clearbit.com/evaair.com" alt="EVA Air Logo" class="airline-logo"><strong>長榮航空 (BR)</strong><br><small class="text-muted">參考航班: BR192 / BR190</small></div>
+                                    <div><img src="https://logo.clearbit.com/evaair.com" alt="EVA Air Logo" class="airline-logo"><strong>長榮航空 (BR)</strong><br><small class="text-muted">參考航班: BR190 / BR192</small></div>
                                     <a href="https://www.evaair.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a>
                                 </li>
                             </ul>
@@ -143,17 +147,87 @@
                              <div class="alert alert-light">注意：航班號碼與時間可能隨時變動，請務必以航空公司官網公告為準。</div>
                             <h5 class="fw-bold mt-4">傳統航空公司</h5>
                              <ul class="list-group mb-4">
-                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/china-airlines.com" alt="China Airlines Logo" class="airline-logo"><strong>中華航空 (CI)</strong><br><small class="text-muted">參考航班: CI100 / CI104 / CI106 等</small></div><a href="https://www.china-airlines.com/tw/zh" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/evaair.com" alt="EVA Air Logo" class="airline-logo"><strong>長榮航空 (BR)</strong><br><small class="text-muted">參考航班: BR198 / BR196 等</small></div><a href="https://www.evaair.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/starlux-airlines.com" alt="Starlux Logo" class="airline-logo"><strong>星宇航空 (JX)</strong><br><small class="text-muted">參考航班: JX800 / JX802 / JX804 等</small></div><a href="https://www.starlux-airlines.com/zh-TW" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/china-airlines.com" alt="China Airlines Logo" class="airline-logo"><strong>中華航空 (CI)</strong><br><small class="text-muted">參考航班: CI100, CI104, CI106, CI108, CI192</small></div><a href="https://www.china-airlines.com/tw/zh" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/evaair.com" alt="EVA Air Logo" class="airline-logo"><strong>長榮航空 (BR)</strong><br><small class="text-muted">參考航班: BR184, BR196, BR198</small></div><a href="https://www.evaair.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/jal.com" alt="JAL Logo" class="airline-logo"><strong>日本航空 (JAL)</strong><br><small class="text-muted">參考航班: JL802, JL804</small></div><a href="https://www.jal.co.jp/tw/zhtw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/ana.co.jp" alt="ANA Logo" class="airline-logo"><strong>全日空 (ANA)</strong><br><small class="text-muted">參考航班: NH824</small></div><a href="https://www.ana.co.jp/zh/tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/starlux-airlines.com" alt="Starlux Logo" class="airline-logo"><strong>星宇航空 (JX)</strong><br><small class="text-muted">參考航班: JX800, JX802, JX804</small></div><a href="https://www.starlux-airlines.com/zh-TW" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
                              </ul>
                              <h5 class="fw-bold mt-4">低成本航空 (LCC)</h5>
                              <ul class="list-group">
-                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/tigerairtw.com" alt="Tigerair Taiwan Logo" class="airline-logo"><strong>台灣虎航 (IT)</strong></div><a href="https://www.tigerairtw.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/flyscoot.com" alt="Scoot Logo" class="airline-logo"><strong>酷航 (Scoot)</strong></div><a href="https://www.flyscoot.com/zh/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/flypeach.com" alt="Peach Logo" class="airline-logo"><strong>樂桃航空 (Peach)</strong></div><a href="https://www.flypeach.com/tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/jetstar.com" alt="Jetstar Logo" class="airline-logo"><strong>捷星航空 (Jetstar)</strong></div><a href="https://www.jetstar.com/tw/zh/home" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/tigerairtw.com" alt="Tigerair Taiwan Logo" class="airline-logo"><strong>台灣虎航 (IT)</strong><br><small class="text-muted">參考航班: IT200</small></div><a href="https://www.tigerairtw.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/jetstar.com" alt="Jetstar Logo" class="airline-logo"><strong>捷星日本 (Jetstar)</strong><br><small class="text-muted">參考航班: GK12, GK14</small></div><a href="https://www.jetstar.com/tw/zh/home" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/flypeach.com" alt="Peach Logo" class="airline-logo"><strong>樂桃航空 (Peach)</strong><br><small class="text-muted">參考航班: MM620, MM626</small></div><a href="https://www.flypeach.com/tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/flyscoot.com" alt="Scoot Logo" class="airline-logo"><strong>酷航 (Scoot)</strong><br><small class="text-muted">參考航班: TR876 (另有經台北續飛之第五航權航班)</small></div><a href="https://www.flyscoot.com/zh/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
                              </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab 3: KHH -> NRT -->
+                <div class="tab-pane fade" id="khh-nrt-panel">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="fw-bold mb-3">高雄 → 成田 (南台灣首選)</h3>
+                            <p class="text-muted mb-4">此航線為南台灣旅客前往東京最主要的選擇，包含多家傳統航空與低成本航空，提供穩定的每日航班服務。</p>
+                            <div class="alert alert-light">注意：航班號碼與時間可能隨時變動，請務必以航空公司官網公告為準。</div>
+                            <h5 class="fw-bold mt-4">傳統航空公司</h5>
+                            <ul class="list-group mb-4">
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/china-airlines.com" alt="China Airlines Logo" class="airline-logo"><strong>中華航空 (CI)</strong><br><small class="text-muted">參考航班: CI102, CI126</small></div><a href="https://www.china-airlines.com/tw/zh" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/evaair.com" alt="EVA Air Logo" class="airline-logo"><strong>長榮航空 (BR)</strong><br><small class="text-muted">參考航班: BR108</small></div><a href="https://www.evaair.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/united.com" alt="United Airlines Logo" class="airline-logo"><strong>聯合航空 (UA)</strong><br><small class="text-muted">參考航班: UA838</small></div><a href="https://www.united.com/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                            </ul>
+                            <h5 class="fw-bold mt-4">低成本航空 (LCC)</h5>
+                            <ul class="list-group">
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/tigerairtw.com" alt="Tigerair Taiwan Logo" class="airline-logo"><strong>台灣虎航 (IT)</strong><br><small class="text-muted">參考航班: IT280</small></div><a href="https://www.tigerairtw.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/airasia.com" alt="Thai AirAsia Logo" class="airline-logo"><strong>泰國亞洲航空 (FD)</strong><br><small class="text-muted">參考航班: FD234</small></div><a href="https://www.airasia.com/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab 4: KHH -> HND -->
+                <div class="tab-pane fade" id="khh-hnd-panel">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="fw-bold mb-3">高雄 → 羽田 (稀少航班)</h3>
+                            <p class="text-muted mb-4">此航線的定期航班較少，多為季節性或包機形式。雖然能節省市區交通時間，但出發前務必向航空公司確認最新的航班狀態。</p>
+                            <div class="alert alert-warning"><strong>重要提醒：</strong>本航線航班非常態性營運，計畫行程時請務必至航空公司官網查詢最新時刻表與營運狀況。</div>
+                            <h5 class="fw-bold mt-4">可能營運的航空公司</h5>
+                            <ul class="list-group">
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/china-airlines.com" alt="China Airlines Logo" class="airline-logo"><strong>中華航空 (CI)</strong><br><small class="text-muted">可能以季節性航班或包機形式營運。</small></div><a href="https://www.china-airlines.com/tw/zh" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">前往官網</a></li>
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/tigerairtw.com" alt="Tigerair Taiwan Logo" class="airline-logo"><strong>台灣虎航 (IT)</strong><br><small class="text-muted">可能以季節性航班或包機形式營運。</small></div><a href="https://www.tigerairtw.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab 5: RMQ -> NRT -->
+                <div class="tab-pane fade" id="rmq-nrt-panel">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="fw-bold mb-3">台中 → 成田 (中部樞紐)</h3>
+                            <p class="text-muted mb-4">若能接受「飛抵成田機場(NRT)」再轉乘至東京市區，台灣虎航(Tigerair Taiwan)有提供台中出發的直飛航線。對於中部地區的旅客而言，這是最具成本效益的選擇。</p>
+                            <div class="alert alert-light">注意：航班號碼與時間可能隨時變動，請務必以航空公司官網公告為準。</div>
+                            <h5 class="fw-bold mt-4">低成本航空 (LCC)</h5>
+                            <ul class="list-group">
+                               <li class="list-group-item d-flex justify-content-between align-items-center"><div><img src="https://logo.clearbit.com/tigerairtw.com" alt="Tigerair Taiwan Logo" class="airline-logo"><strong>台灣虎航 (IT)</strong><br><small class="text-muted">參考航班: IT790/IT791</small></div><a href="https://www.tigerairtw.com/zh-tw/" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary btn-sm">前往官網</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab 6: RMQ -> HND -->
+                <div class="tab-pane fade" id="rmq-hnd-panel">
+                    <div class="card shadow-lg">
+                        <div class="card-body p-4 p-md-5">
+                            <h3 class="fw-bold mb-3">台中 → 羽田 (需轉機)</h3>
+                            <p class="text-muted mb-4">從台中出發至羽田機場(HND)目前沒有常態性的定期直飛航班。搜尋此航線時，訂票系統多會建議以下兩種方案：</p>
+                            <div class="alert alert-danger">
+                                <h5 class="alert-heading">替代方案解析</h5>
+                                <ol>
+                                    <li><strong>陸路移動：</strong>自行搭乘高鐵或客運至桃園(TPE)或松山(TSA)機場，再轉搭直飛羽田的航班。</li>
+                                    <li><strong>境外轉機：</strong>先從台中搭機至香港(HKG)或首爾(ICN)等樞紐機場，再轉機飛往羽田。</li>
+                                </ol>
+                                <hr>
+                                <p class="mb-0"><strong>結論：</strong>若希望節省時間與精力，從台中出發的旅客，仍建議優先考慮飛往【成田機場】的直飛航班，或是經由陸路至桃園/松山機場搭機。</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -166,13 +240,13 @@
                 <div class="col-lg-6">
                     <div class="alert alert-theme-primary h-100">
                         <h5 class="alert-heading fw-bold">追求「時間與效率」的最佳選擇</h5>
-                        <p>選擇【松山→羽田】航線。雖然航班選擇較少，但機場位於市中心，可大幅節省通關後往返市區與立川的交通時間。對分秒必爭的旅客來說，這是最理想的方案。</p>
+                        <p>選擇飛往【東京羽田 (HND)】的航線。雖然航班選擇較少，但機場位於市中心，可大幅節省通關後往返市區與立川的交通時間。對分秒必爭的旅客來說，這是最理想的方案。</p>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="alert alert-theme-secondary h-100">
                         <h5 class="alert-heading fw-bold">追求「彈性與預算」的最佳選擇</h5>
-                        <p>選擇【桃園→成田】航線。擁有壓倒性的航班數量與航空公司選擇，特別是低成本航空提供了更多元的票價。如果您的時間較為彈性，或希望找到最優惠的機票，這條航線將是您的不二之選。</p>
+                        <p>選擇飛往【東京成田 (NRT)】的航線。擁有壓倒性的航班數量與航空公司選擇，特別是低成本航空提供了更多元的票價。如果您的時間較為彈性，或希望找到最優惠的機票，這條航線將是您的不二之選。</p>
                     </div>
                 </div>
             </div>
@@ -210,7 +284,7 @@
         </div>
     </div>
 
-    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台灣→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
