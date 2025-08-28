@@ -72,7 +72,7 @@ async function initializeApp() {
     makeModalDraggable(document.getElementById('aiChatModal'));
     bindEventListeners();
     handleNavActiveState();
-    displayExchangeRate();
+    displayExchangeRate(); // 呼叫統一的匯率函式
 
     const loadingIndicator = document.createElement('div');
     loadingIndicator.id = 'loading-indicator';
@@ -106,26 +106,16 @@ async function initializeApp() {
     loadingIndicator.style.display = 'none';
 }
 
-/**
- * Parses a CSV string into an array of objects. Handles quoted fields containing commas.
- * @param {string} csvText The CSV string to parse.
- * @returns {Array<Object>} An array of objects representing the CSV data.
- */
 function parseCsv(csvText) {
     if (!csvText || typeof csvText !== 'string') return [];
-    
     const lines = csvText.trim().split(/\r?\n/);
     if (lines.length < 2) return [];
-
     const headers = lines[0].split(',').map(h => h.trim());
     const data = [];
-    
     const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
-
     for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(regex);
         const obj = {};
-        
         headers.forEach((header, index) => {
             if (header && values[index] !== undefined) {
                 let value = values[index].trim();
@@ -142,682 +132,191 @@ function parseCsv(csvText) {
     return data;
 }
 
-
-/**
- * Fetches all data from the Google Sheets CSV URLs.
- * @param {boolean} force - If true, appends a timestamp to bypass cache.
- */
 async function loadAllDataFromCsv(force = false) {
     console.log(`正透過 CSV 從 Google Sheets 載入資料... (強制更新: ${force})`);
-    
     const dataPromises = Object.entries(CSV_URLS).map(async ([key, url]) => {
         try {
             const fetchUrl = force ? `${url}&_=${new Date().getTime()}` : url;
-            
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT);
-            
             const response = await fetch(fetchUrl, { signal: controller.signal });
             clearTimeout(timeoutId);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status} for ${key}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status} for ${key}`);
             const csvText = await response.text();
-            const jsonData = parseCsv(csvText);
-            return { key, data: jsonData };
+            return { key, data: parseCsv(csvText) };
         } catch (error) {
             console.error(`讀取 ${key} CSV 失敗:`, error);
             return { key, data: [] };
         }
     });
-
     const results = await Promise.all(dataPromises);
-
     results.forEach(({ key, data }) => {
-        switch (key) {
-            case 'qa':
-                allQaData = data;
-                break;
-            case 'worshipSteps':
-                worshipStepsData = data;
-                break;
-            default:
-                if (currentData.hasOwnProperty(key)) {
-                    currentData[key] = data;
-                }
-                break;
-        }
+        if (key === 'qa') allQaData = data;
+        else if (key === 'worshipSteps') worshipStepsData = data;
+        else if (currentData.hasOwnProperty(key)) currentData[key] = data;
     });
-    
     console.log("✅ CSV 資料成功載入並解析:", { ...currentData, allQaData, worshipStepsData });
 }
 
-/**
- * Loads all data from the local backup object.
- */
 function loadAllDataFromBackup() {
     console.log('正在從本地端載入備份資料...');
-    currentData.attractions = LOCAL_BACKUP_DATA.attractions;
-    currentData.transportation = LOCAL_BACKUP_DATA.transportation;
-    currentData.hotels = LOCAL_BACKUP_DATA.hotels;
-    currentData.restaurants = LOCAL_BACKUP_DATA.restaurants;
-    currentData.docContent = LOCAL_BACKUP_DATA.docContent;
+    Object.assign(currentData, LOCAL_BACKUP_DATA);
     worshipStepsData = LOCAL_BACKUP_DATA.worshipSteps;
     allQaData = LOCAL_BACKUP_DATA.qa;
     console.log("✅ 本地備份資料已成功載入！");
-}
-
-/**
- * Event handler for the force refresh button.
- * @param {Event} event
- */
-async function handleForceRefresh(event) {
-    event.preventDefault(); 
-    const button = event.currentTarget;
-    const originalContent = button.innerHTML;
-
-    button.disabled = true;
-    button.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>更新中...`;
-
-    try {
-        await loadAllDataFromCsv(true); 
-        dataSourceStatus = 'api'; 
-        buildSearchCorpus(); 
-        updateFooterDataSourceStatus(); 
-        alert('資料已成功更新為最新版本！'); 
-    } catch (error) {
-        console.error('強制更新失敗:', error);
-        alert('更新失敗，請檢查您的網路連線後再試。'); 
-    } finally {
-        button.disabled = false;
-        button.innerHTML = originalContent;
-    }
 }
 
 function showGlobalErrorBanner(message) {
     const banner = document.createElement('div');
     banner.className = 'global-error-banner';
     banner.textContent = message;
-    
-    banner.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background-color: #dc3545;
-        color: white;
-        text-align: center;
-        padding: 10px;
-        z-index: 9999;
-        font-size: 0.9rem;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    `;
-
+    banner.style.cssText = `position: fixed; top: 0; left: 0; width: 100%; background-color: #dc3545; color: white; text-align: center; padding: 10px; z-index: 9999; font-size: 0.9rem; box-shadow: 0 2px 5px rgba(0,0,0,0.2);`;
     document.body.prepend(banner);
 }
 
 function updateFooterDataSourceStatus() {
-    let placeholder = document.getElementById('data-source-placeholder');
-    let appendTarget = placeholder || document.querySelector('footer .container');
-
-    if (!appendTarget) {
-        console.warn('找不到適合的頁腳元素來顯示資料狀態。');
-        return;
-    }
-    
-    const oldStatus = document.querySelector('.data-source-status');
+    const appendTarget = document.getElementById('data-source-placeholder') || document.querySelector('footer .container');
+    if (!appendTarget) return;
+    let oldStatus = appendTarget.querySelector('.data-source-status');
     if (oldStatus) oldStatus.remove();
-
     const statusDiv = document.createElement('div');
     statusDiv.className = 'data-source-status';
-    
-    let statusText = '', statusColor = '', titleText = '';
-
-    if (dataSourceStatus === 'api') {
-        statusText = '🟢 資料來源：線上即時';
-        statusColor = '#d1e7dd';
-        titleText = '目前顯示的資料是從 Google Sheet 即時更新的最新版本。';
-    } else if (dataSourceStatus === 'backup') {
-        statusText = '🟠 資料來源：離線備份';
-        statusColor = '#fff3cd';
-        titleText = '無法連接即時資料庫，目前顯示的是內建的備份資料，可能不是最新版本。';
-    } else {
-        return; 
-    }
-
-    statusDiv.textContent = statusText;
-    statusDiv.title = titleText;
-    statusDiv.style.cssText = `
-        margin-top: 1rem;
-        padding: 0.25rem 0.5rem;
-        font-size: 0.75rem;
-        border-radius: 0.25rem;
-        background-color: ${statusColor};
-        color: #333;
-        display: inline-block;
-        text-align: center;
-    `;
-    
+    const isAPI = dataSourceStatus === 'api';
+    statusDiv.textContent = isAPI ? '🟢 資料來源：線上即時' : '🟠 資料來源：離線備份';
+    statusDiv.title = isAPI ? '目前顯示的是從 Google Sheet 即時更新的最新版本。' : '無法連接即時資料庫，目前顯示的是內建的備份資料，可能不是最新版本。';
+    statusDiv.style.cssText = `margin-top: 1rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 0.25rem; background-color: ${isAPI ? '#d1e7dd' : '#fff3cd'}; color: #333; display: inline-block; text-align: center;`;
     appendTarget.appendChild(statusDiv);
 }
 
 function bindEventListeners() {
-    document.body.addEventListener('click', function(event) {
+    document.body.addEventListener('click', (event) => {
         const actionTarget = event.target.closest('[data-action]');
         if (actionTarget) {
             event.preventDefault();
             const action = actionTarget.dataset.action;
-            console.log(`Action triggered: ${action}`);
-            switch (action) {
-                case 'transportation':
-                    showTransportation();
-                    break;
-                case 'hotels':
-                    showHotels();
-                    break;
-                case 'passport':
-                    showPassportInfo();
-                    break;
-                case 'entry-application':
-                    showEntryApplicationInfo();
-                    break;
-                case 'other-items':
-                    showOtherItemsInfo();
-                    break;
-                case 'worship-tools':
-                    showWorshipToolsInfo();
-                    break;
-            }
+            const actions = { transportation: showTransportation, hotels: showHotels };
+            if (actions[action]) actions[action]();
         }
     });
-
-    document.getElementById("main-search-form")?.addEventListener("submit", handleMainSearch);
     document.querySelectorAll("#btn-ai-chat").forEach(e => e.addEventListener("click", openAIChat));
-    document.getElementById("qa-category-filter")?.addEventListener("click", e => {
-        if (e.target.matches("button")) {
-            document.querySelectorAll("#qa-category-filter button").forEach(btn => btn.classList.remove("active"));
-            e.target.classList.add("active");
-            renderQAItems(e.target.dataset.category);
-        }
-    });
     document.getElementById("btn-send-ai-message")?.addEventListener("click", sendSearchMessage);
     document.getElementById("chatInput")?.addEventListener("keypress", handleChatKeyPress);
 }
 
+function showTransportation() { showInfoModal("交通資訊", currentData.transportation); }
+function showHotels() { showInfoModal("住宿推薦", currentData.hotels); }
 
-// --- Functions for planning steps and other modals ---
-function onPlanningStepClick(type) {
-    const actions = {
-        transportation: showTransportation,
-        hotels: showHotels,
-    };
-    if (actions[type]) {
-        actions[type]();
-    }
-}
-
-function showTransportation() {
-    showInfoModal("交通資訊", currentData.transportation);
-}
-
-function showHotels() {
-    showInfoModal("住宿推薦", currentData.hotels);
-}
-
-function showPassportInfo() {
-    const title = "護照效期注意事項";
-    const content = `
-        <div class="text-center mb-4">
-            <i class="fas fa-passport fa-4x" style="color: var(--bs-primary, #6c757d);"></i>
-        </div>
-        <div class="alert alert-warning" role="alert">
-            <h4 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>重要提醒：六個月效期規則</h4>
-            <p>入境日本時，您的護照有效期**必須從您預計的「入境日本日期」算起，超過六個月以上**。這是許多國家的標準入境要求，以確保您在旅途中護照不會失效。</p>
-            <hr>
-            <p class="mb-0">請立即檢查您護照上的有效期限！如果所剩時間不足，建議您儘早前往外交部領事事務局辦理換發新護照，以免耽誤行程。</p>
-        </div>
-        <h5>如何檢查：</h5>
-        <ul class="list-group">
-            <li class="list-group-item"><strong>1. 拿出護照：</strong>翻到有您照片和個人資料的那一頁。</li>
-            <li class="list-group-item"><strong>2. 確認日期：</strong>找到「有效期限」或 "Date of Expiry" 欄位。</li>
-            <li class="list-group-item"><strong>3. 計算方式：</strong>例如，如果您預計 <strong>2025年10月15日</strong> 入境日本，您的護照有效期限至少應晚於 <strong>2026年4月15日</strong> 才算安全。</li>
-        </ul>
-        <div class="d-grid mt-4">
-             <a href="https://www.boca.gov.tw/cp-110-531-eda75-1.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                <i class="fas fa-link me-2"></i> 前往外交部領事事務局網站
-             </a>
-        </div>
-    `;
-    showInfoModal(title, content, true);
-}
-
-function showEntryApplicationInfo() {
-    const title = "日本入境申請須知 (Visit Japan Web)";
-    const content = `
-        <div class="text-center mb-4">
-            <i class="fas fa-qrcode fa-4x" style="color: var(--bs-primary, #6c757d);"></i>
-        </div>
-        <div class="alert alert-primary" role="alert">
-            <h4 class="alert-heading"><i class="fas fa-rocket me-2"></i>強烈建議！預先上網填寫以加速通關</h4>
-            <p>為節省您在機場的寶貴時間，日本政府推出「Visit Japan Web」服務，讓您可以在出發前線上完成<strong>入境審查</strong>與<strong>海關申報</strong>。完成後會產生QR Code，通關時出示即可。</p>
-        </div>
-        <h5>事前準備項目：</h5>
-        <ul class="list-group mb-3">
-            <li class="list-group-item"><i class="fas fa-passport fa-fw me-2"></i>護照</li>
-            <li class="list-group-item"><i class="fas fa-plane-departure fa-fw me-2"></i>航班資訊</li>
-            <li class="list-group-item"><i class="fas fa-hotel fa-fw me-2"></i>在日本的聯絡地址（飯店地址）</li>
-        </ul>
-        <h5>主要填寫步驟：</h5>
-        <ol class="list-group list-group-numbered">
-            <li class="list-group-item">前往 Visit Japan Web 官方網站建立帳號。</li>
-            <li class="list-group-item">登錄使用者資料（本人及同行家人）。</li>
-            <li class="list-group-item">新增並登錄您的入境/回國預定。</li>
-            <li class="list-group-item">完成「<strong>外國人入國記錄</strong>」（入境審查）的填寫。</li>
-            <li class="list-group-item">完成「<strong>攜帶品・別送品申告</strong>」（海關申報）的填寫。</li>
-            <li class="list-group-item">取得入境審查與海關申報的 <strong>QR Code</strong> 並妥善截圖保存。</li>
-        </ol>
-        <div class="d-grid mt-4">
-             <a href="https://www.vjw.digital.go.jp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                <i class="fas fa-link me-2"></i> 前往 Visit Japan Web 官方網站
-             </a>
-        </div>
-    `;
-    showInfoModal(title, content, true);
-}
-
-function showOtherItemsInfo() {
-    const title = "其他準備項目";
-    const content = `
-        <div class="text-center mb-4">
-            <i class="fas fa-suitcase-rolling fa-4x" style="color: var(--bs-primary, #6c757d);"></i>
-        </div>
-        
-        <div class="accordion" id="otherItemsAccordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        <strong>1. 赴日旅遊保險</strong>
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#otherItemsAccordion">
-                    <div class="accordion-body">
-                        <p>雖然日本的醫療品質高，但費用也相當可觀。強烈建議投保包含「海外突發疾病」與「旅遊不便險」的旅遊平安險，以應對可能的意外或行程延誤。</p>
-                        <ul class="list-group list-group-flush">
-                           <li class="list-group-item"><strong>海外突發疾病：</strong>保障您在日本需要就醫時的醫療開銷。</li>
-                           <li class="list-group-item"><strong>旅遊不便險：</strong>保障班機延誤、行李遺失等突發狀況造成的損失。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingTwo">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        <strong>2. 兌換日幣</strong>
-                    </button>
-                </h2>
-                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#otherItemsAccordion">
-                    <div class="accordion-body">
-                        <p>雖然日本的信用卡支付相當普及，但許多小店家、餐廳或交通票券仍可能需要使用現金。建議在台灣的銀行預先兌換所需日幣。</p>
-                        <ul class="list-group list-group-flush">
-                           <li class="list-group-item"><strong>線上結匯：</strong>可於台灣銀行或兆豐銀行網站線上申請，再到指定分行領取，匯率通常較佳。</li>
-                           <li class="list-group-item"><strong>臨櫃兌換：</strong>直接攜帶台幣與身分證至有外匯服務的銀行兌換。</li>
-                           <li class="list-group-item"><strong>備用方案：</strong>攜帶有跨國提款功能的提款卡，可在日本的便利商店ATM直接提領日幣（會產生手續費）。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingThree">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        <strong>3. 手機網路申請</strong>
-                    </button>
-                </h2>
-                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#otherItemsAccordion">
-                    <div class="accordion-body">
-                        <p>在日本保持網路暢通對於查詢地圖、交通與聯絡非常重要。主要有以下幾種方式：</p>
-                        <ul class="list-group list-group-flush">
-                           <li class="list-group-item"><strong>SIM卡：</strong>在台灣先購買日本上網SIM卡，抵達後更換即可使用，適合個人使用。</li>
-                           <li class="list-group-item"><strong>eSIM：</strong>若您的手機支援eSIM，可線上購買方案，掃描QR Code即可啟用，無需更換實體卡，最為方便。</li>
-                           <li class="list-group-item"><strong>Wi-Fi分享器：</strong>適合多人或多裝置共享網路，可於台灣機場租借領取。</li>
-                           <li class="list-group-item"><strong>電信漫遊：</strong>直接向您的電信公司申請國際漫遊，費用較高但最為直接。</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    showInfoModal(title, content, true);
-}
-
-function showWorshipToolsInfo() {
-    const title = "修行用具準備清單";
-    const content = `
-        <div class="text-center mb-4">
-            <i class="fas fa-praying-hands fa-4x" style="color: var(--bs-primary, #6c757d);"></i>
-        </div>
-        <div class="alert alert-info" role="alert">
-            <h4 class="alert-heading"><i class="fas fa-info-circle me-2"></i>行前確認</h4>
-            <p>為確保您的參拜過程莊嚴順利，請確認是否已備妥以下修行用具。部分用具可依個人習慣選用。</p>
-        </div>
-        <h5>必備項目：</h5>
-        <ul class="list-group mb-3">
-            <li class="list-group-item"><i class="fas fa-book-open fa-fw me-2"></i>經書</li>
-            <li class="list-group-item"><i class="fas fa-tshirt fa-fw me-2"></i>袈裟</li>
-            <li class="list-group-item"><i class="fas fa-braille fa-fw me-2"></i>念珠</li>
-        </ul>
-        <h5>選用項目：</h5>
-        <ul class="list-group mb-3">
-            <li class="list-group-item"><i class="fas fa-user-tie fa-fw me-2"></i>法衣 (依個人習慣選用)</li>
-        </ul>
-        <h5>注意事項：</h5>
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-            <i class="fas fa-ban fa-2x me-3"></i>
-            <div>
-                <strong>錫杖 (不可攜帶)</strong><br>
-                為配合航空安全規定及日本當地法規，請勿攜帶錫杖登機或托運。
-            </div>
-        </div>
-    `;
-    showInfoModal(title, content, true);
-}
-
-
-function showInfoModal(title, data, isHtmlContent = false) {
+function showInfoModal(title, data) {
     const modalElement = document.getElementById("infoModal");
     if (!modalElement) return;
-
-    const modalTitle = document.getElementById("infoModalTitle");
+    document.getElementById("infoModalTitle").textContent = title;
     const modalBody = document.getElementById("infoModalBody");
-    
-    modalTitle.textContent = title;
-
-    if (isHtmlContent) {
-        modalBody.innerHTML = data;
-    } else if (data && data.length > 0) {
+    if (data && data.length > 0) {
         modalBody.innerHTML = data.map(item => {
-            let content = "";
-            let cardTitle = item.name_zh || item.name_jp || item.name || "詳細資訊";
+            let content = "", cardTitle = item.name_zh || item.name_jp || item.name || "詳細資訊";
             if (item.transport_type) {
                 cardTitle = `${item.from_location} → ${item.to_location}`;
                 content += `<p><strong>交通工具：</strong>${item.transport_type}</p><p><strong>時間：</strong>${item.duration}分鐘 | <strong>費用：</strong>¥${item.cost}</p>`;
             }
-            if (item.price_per_night) {
-                content += `<p><strong>地址：</strong>${item.address || "N/A"}</p><p><strong>房價：</strong>¥${item.price_per_night}/晚</p>`;
-            }
-            if (item.opening_hours) {
-                content += `<p><strong>地址：</strong>${item.address || "N/A"}</p><p><strong>營業時間：</strong>${item.opening_hours}</p><p><strong>價位：</strong>${item.price_range || "N/A"}</p>`;
-            }
-            if (item.rating) {
-                content += `<p><strong>評分：</strong>${item.rating}/5</p>`;
-            }
-
-            let bookingLink = "";
-            if (item.booking_url) {
-                bookingLink = `<div class="mt-3"><a href="${item.booking_url}" class="btn btn-primary" target="_blank" rel="noopener noreferrer"><i class="fas fa-calendar-check me-2"></i> 前往訂房</a></div>`;
-            }
-
-            let mapLink = "";
-            if (item.coordinates && item.opening_hours) {
-                mapLink = `<div class="mt-3"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.name_zh || item.name_jp)}" class="btn btn-outline-success" target="_blank" rel="noopener noreferrer"><i class="fas fa-map-marker-alt me-2"></i> 在地圖上查看</a></div>`;
-            }
-            
-            const remarks = linkify(item.備註 || "");
-            let remarksHtml = item.備註 ? `<div class="remark-section mt-3"><small><strong>備註：</strong> ${remarks}</small></div>` : "";
-
-            return `<div class="card mb-3"><div class="card-body"><h5>${cardTitle}</h5><hr>${content}<p class="mt-2">${(item.description || "") + (item.tips ? `<br><span class="text-muted small">${item.tips}</span>` : "")}</p>${mapLink}${bookingLink}${remarksHtml}</div></div>`;
+            if (item.price_per_night) content += `<p><strong>房價：</strong>¥${item.price_per_night}/晚</p>`;
+            const bookingLink = item.booking_url ? `<div class="mt-3"><a href="${item.booking_url}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">前往訂房</a></div>` : "";
+            return `<div class="card mb-3"><div class="card-body"><h5>${cardTitle}</h5><hr>${content}<p class="mt-2">${item.description || ""}</p>${bookingLink}</div></div>`;
         }).join("");
     } else {
-        modalBody.innerHTML = '<div class="alert alert-warning">此類別的資料目前無法載入，請稍後再試。</div>';
+        modalBody.innerHTML = '<div class="alert alert-warning">此類別的資料目前無法載入。</div>';
     }
-    
-    const modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    new bootstrap.Modal(modalElement).show();
 }
-// --- End of functions for planning steps ---
 
 async function displayExchangeRate() {
-    const displays = document.querySelectorAll(".exchange-rate-display");
+    const displays = document.querySelectorAll(".exchange-rate-display, #twd-to-jpy-rate");
     if (displays.length === 0) return;
 
-    const primaryUrl = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/twd.json';
-    const fallbackUrl = 'https://api.frankfurter.app/latest?from=TWD&to=JPY';
-    const timeout = 5000;
-
-    const fetchWithTimeout = (url) => Promise.race([
-        fetch(url),
-        new Promise((_, reject) => setTimeout(() => reject(new Error("請求超時 (Timeout)")), timeout))
-    ]);
+    const url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/twd.json';
     
-    const updateDisplays = (html) => {
-        displays.forEach(el => {
-            el.innerHTML = html;
-            el.classList.remove("placeholder");
-        });
-    };
-
     try {
-        console.log(`🚀 [1/2] 嘗試從主要 API 獲取匯率: ${primaryUrl}`);
-        const response = await fetchWithTimeout(primaryUrl);
-        if (!response.ok) throw new Error(`主要 API 請求失敗，狀態: ${response.status}`);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('API request failed');
         const data = await response.json();
         const rate = data?.twd?.jpy;
-        if (typeof rate !== 'number') throw new Error("主要 API 回應格式不符");
-        const rateFormatted = rate.toFixed(2);
-        const html = `<i class="fas fa-sync-alt fa-fw me-1" title="即時匯率"></i> 1 TWD ≈ ${rateFormatted} JPY`;
-        updateDisplays(html);
-        console.log(`✅ 成功從主要 API 獲取匯率: 1 TWD = ${rate} JPY`);
-    } catch (err) {
-        console.warn(`⚠️ 主要 API 失敗: ${err.message}`);
-        try {
-            console.log(`🚀 [2/2] 嘗試從備援 API 獲取匯率: ${fallbackUrl}`);
-            const response = await fetchWithTimeout(fallbackUrl);
-            if (!response.ok) throw new Error(`備援 API 請求失敗，狀態: ${response.status}`);
-            const data = await response.json();
-            const rate = data?.rates?.JPY;
-            if (typeof rate !== 'number') throw new Error("備援 API 回應格式不符");
-            const rateFormatted = rate.toFixed(2);
-            const html = `<i class="fas fa-sync-alt fa-fw me-1" title="即時匯率 (來源: 備援)"></i> 1 TWD ≈ ${rateFormatted} JPY`;
-            updateDisplays(html);
-            console.log(`✅ 成功從備援 API 獲取匯率: 1 TWD = ${rate} JPY`);
-        } catch (fallbackErr) {
-            console.error(`❌ 主要與備援 API 皆失敗: ${fallbackErr.message}`);
-            const errorHtml = `<i class="fas fa-exclamation-triangle fa-fw me-1" title="錯誤"></i> 匯率載入失敗`;
-            displays.forEach(el => {
-                el.innerHTML = errorHtml;
-                el.classList.remove("placeholder");
-                el.style.color = "#ffc107";
-            });
-        }
+        if (typeof rate !== 'number') throw new Error('Invalid data format');
+
+        displays.forEach(el => {
+            if (el.id === 'twd-to-jpy-rate') {
+                el.innerHTML = `(匯率 1 : ${rate.toFixed(2)} JPY)`;
+            } else {
+                el.innerHTML = `<i class="fas fa-sync-alt fa-fw me-1" title="即時匯率"></i> 1 TWD ≈ ${rate.toFixed(2)} JPY`;
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching TWD->JPY rate:", error);
+        displays.forEach(el => {
+             if (el.id === 'twd-to-jpy-rate') {
+                el.innerHTML = `(匯率載入失敗)`;
+            } else {
+                el.innerHTML = `<i class="fas fa-exclamation-triangle me-1"></i> 匯率載入失敗`;
+            }
+        });
     }
 }
 
 function initializePage(pageType) {
-    const pageInitializers = {
-        homeOrShinyuan: () => {
-            if (document.getElementById('shinyuanMap')) {
-                console.log("初始化首頁 (親苑)...");
-                renderWorshipSteps();
-            }
-        },
-        qa: () => {
-            console.log("初始化Q&A頁...");
-            const container = document.getElementById("qa-accordion-container");
-            if (container) container.innerHTML = "";
+    if (pageType === 'homeOrShinyuan' && document.getElementById('shinyuanMap')) {
+        renderWorshipSteps();
+    } else if (pageType === 'qa') {
+        const container = document.getElementById("qa-accordion-container");
+        if (container) {
+            container.innerHTML = "";
             renderQACategories();
             renderQAItems('all');
         }
-    };
-    pageInitializers[pageType]?.();
-}
-
-function getImageUrl(path) {
-    if (!path || typeof path !== 'string') return "";
-    if (path.startsWith("http")) {
-        return path;
     }
-    // Remove any leading slash to treat it as a relative path from the HTML file.
-    return path.startsWith('/') ? path.substring(1) : path;
 }
-
 
 function makeModalDraggable(modalEl) {
     if (!modalEl) return;
     const dialog = modalEl.querySelector('.modal-dialog');
     const header = modalEl.querySelector('.modal-header');
     if (!dialog || !header) return;
-
-    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    let isDragging = false;
-
+    let isDragging = false, pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     header.onmousedown = (e) => {
-        e = e || window.event;
-        if (e.target.closest("button")) return; // Don't drag if clicking a button
+        if (e.target.closest("button")) return;
         e.preventDefault();
         pos3 = e.clientX;
         pos4 = e.clientY;
         isDragging = true;
         dialog.classList.add('is-draggable');
-        dialog.style.transform = 'none'; // Required to use top/left
-        dialog.style.top = dialog.offsetTop + "px";
-        dialog.style.left = dialog.offsetLeft + "px";
-        document.body.classList.add('is-dragging');
-        document.onmouseup = closeDragElement;
-        document.onmousemove = elementDrag;
+        dialog.style.transform = 'none';
+        dialog.style.top = `${dialog.offsetTop}px`;
+        dialog.style.left = `${dialog.offsetLeft}px`;
+        document.onmouseup = () => {
+            isDragging = false;
+            document.onmouseup = document.onmousemove = null;
+        };
+        document.onmousemove = (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            dialog.style.top = `${dialog.offsetTop - pos2}px`;
+            dialog.style.left = `${dialog.offsetLeft - pos1}px`;
+        };
     };
-
-    function elementDrag(e) {
-        if (!isDragging) return;
-        e = e || window.event;
-        e.preventDefault();
-        pos1 = pos3 - e.clientX;
-        pos2 = pos4 - e.clientY;
-        pos3 = e.clientX;
-        pos4 = e.clientY;
-        dialog.style.top = (dialog.offsetTop - pos2) + "px";
-        dialog.style.left = (dialog.offsetLeft - pos1) + "px";
-    }
-
-    function closeDragElement() {
-        isDragging = false;
-        document.body.classList.remove('is-dragging');
-        document.onmouseup = null;
-        document.onmousemove = null;
-    }
-}
-
-function renderWorshipSteps() {
-    const container = document.getElementById("worship-steps-container");
-    if (!container) return;
-    
-    container.innerHTML = " ";
-    if (!worshipStepsData || worshipStepsData.length === 0) {
-        container.innerHTML = '<p class="text-muted text-center col-12">目前沒有參拜步驟資料。</p>';
-        return;
-    }
-    
-    const icons = [
-        { id: 'icon-worship-donation', class: 'fa-solid fa-hand-holding-dollar' },
-        { id: 'icon-worship-enter', class: 'fa-solid fa-torii-gate' },
-        { id: 'icon-worship-ceremony', class: 'fa-solid fa-person-praying' },
-        { id: 'icon-worship-complete', class: 'fa-solid fa-gift' }
-    ];
-
-    container.innerHTML = worshipStepsData.map((step, index) => {
-        const icon = icons[index] || icons[0];
-        return `
-        <div class="col-md-6 col-lg-3">
-            <a href="#" class="info-card h-100" data-step-id="${step.step_id || index}">
-                <div class="info-card-icon">
-                    <i id="${icon.id}" class="${icon.class}"></i>
-                </div>
-                <h5 class="info-card-title">${step.title}</h5>
-                <p class="info-card-subtitle">${step.short_description}</p>
-            </a>
-        </div>`;
-    }).join('');
 }
 
 function handleNavActiveState() {
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
     document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
         const linkPage = link.getAttribute("href").split("/").pop() || "index.html";
-        link.classList.remove("active");
-        if (currentPage === linkPage) {
-            link.classList.add("active");
-        }
+        link.classList.toggle("active", currentPage === linkPage);
     });
-}
-
-function renderQACategories() {
-    const container = document.getElementById("qa-category-filter");
-    if (!container) return;
-    if (!allQaData || allQaData.length === 0) {
-        container.innerHTML = '<p class="text-muted p-2">無分類資料</p>';
-        return;
-    }
-    const categories = ['all', ...new Set(allQaData.map(item => item.category).filter(Boolean))];
-    container.innerHTML = categories.map(cat =>
-        `<button type="button" class="list-group-item list-group-item-action ${cat === 'all' ? 'active' : ''}" data-category="${cat}">
-            ${cat === 'all' ? '全部問題' : cat}
-        </button>`
-    ).join('');
-}
-
-function renderQAItems(category) {
-    const container = document.getElementById("qa-accordion-container");
-    if (!container) return;
-    const items = category === 'all' ? allQaData : allQaData.filter(item => item.category === category);
-    
-    if (!items || items.length === 0) {
-        container.innerHTML = '<p class="text-muted text-center p-5">此分類下沒有問題。</p>';
-        return;
-    }
-    
-    container.innerHTML = items.map((item, index) => {
-        const collapseId = `qa-${category.replace(/\s+/g, '-')}-${index}`;
-        const answer = linkify(item.answer || "").replace(/\n/g, "<br>");
-        const imageUrl = getImageUrl(item.image_url);
-        const imageHtml = imageUrl ? `<img src="${imageUrl}" class="img-fluid mt-3" alt="問題附圖">` : "";
-        const remarks = linkify(item.備註 || "");
-        const remarksHtml = item.備註 ? `<div class="remark-section mt-3"><small><strong>備註：</strong> ${remarks}</small></div>` : "";
-
-        return `<div class="accordion-item">
-            <h2 class="accordion-header" id="heading-${collapseId}">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${collapseId}">
-                    ${item.question || "無標題問題"}
-                </button>
-            </h2>
-            <div id="collapse-${collapseId}" class="accordion-collapse collapse" data-bs-parent="#qa-accordion-container">
-                <div class="accordion-body">${answer}${imageHtml}${remarksHtml}</div>
-            </div>
-        </div>`;
-    }).join('');
-}
-
-function handleMainSearch(e) {
-    e.preventDefault();
-    const input = document.getElementById("main-search-input");
-    const query = input.value.trim();
-    if (query) {
-        openAIChat();
-        document.getElementById("chatInput").value = query;
-        sendSearchMessage();
-        input.value = "";
-    }
 }
 
 function openAIChat() {
     const modalEl = document.getElementById("aiChatModal");
-    if (modalEl) {
-        const modal = new bootstrap.Modal(modalEl);
-        modal.show();
-    }
-}
-
-function truncateText(text, length = 80) {
-    if (!text) return "";
-    return text.length > length ? text.substring(0, length) + "..." : text;
+    if (modalEl) new bootstrap.Modal(modalEl).show();
 }
 
 function buildSearchCorpus() {
@@ -835,24 +334,18 @@ function buildSearchCorpus() {
         [categories.worshipSteps]: { title: "title", summary: "long_description" },
         [categories.docContent]: { title: "type", summary: "content" }
     };
-
     const processData = (data, category, schema) => {
         (data || []).forEach(item => {
             if (!item || Object.values(item).every(v => !v)) return;
             let title = item[schema.title] || (category === categories.transportation ? `${item.from_location}到${item.to_location}` : "無標題");
-            const cleanTitle = title.includes("/") ? title.split("/")[0].trim() : title;
-            const summary = item[schema.summary] || "";
-            const fullText = Object.values(item).join(" ").toLowerCase();
             searchCorpus.push({
                 type: category,
-                title: cleanTitle,
-                content: fullText,
-                summary: truncateText(summary, 100),
-                full_summary: summary
+                title: title.split("/")[0].trim(),
+                content: Object.values(item).join(" ").toLowerCase(),
+                summary: item[schema.summary] || ""
             });
         });
     };
-
     processData(currentData.attractions, categories.attractions, schemas[categories.attractions]);
     processData(currentData.transportation, categories.transportation, schemas[categories.transportation]);
     processData(currentData.hotels, categories.hotels, schemas[categories.hotels]);
@@ -860,30 +353,23 @@ function buildSearchCorpus() {
     processData(allQaData, categories.qa, schemas[categories.qa]);
     processData(worshipStepsData, categories.worshipSteps, schemas[categories.worshipSteps]);
     processData(currentData.docContent, categories.docContent, schemas[categories.docContent]);
-    
     console.log(`全文檢索資料庫建立完成，共 ${searchCorpus.length} 筆資料。`);
 }
 
 function localFullTextSearch(query) {
     if (!query) return [];
     const lowerCaseQuery = query.toLowerCase();
-    
     return searchCorpus.map(item => {
         let score = 0;
         const title = (item.title || "").toLowerCase();
         const content = (item.content || "").toLowerCase();
-        
-        if (title === lowerCaseQuery) score += 100;
-        else if (title.includes(lowerCaseQuery)) score += 50;
-        
+        if (title.includes(lowerCaseQuery)) score += 50;
         if (content.includes(lowerCaseQuery)) score += 20;
-        
         query.split(/\s+/).filter(Boolean).forEach(term => {
             if (content.includes(term)) score += 1;
             if (title.includes(term)) score += 5;
         });
-        
-        return { ...item, score: score };
+        return { ...item, score };
     }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
 }
 
@@ -897,78 +383,49 @@ function handleChatKeyPress(event) {
 function sendSearchMessage() {
     const input = document.getElementById("chatInput");
     const query = input.value.trim();
-    if (query) {
-        addChatMessage(query, "user");
-        input.value = "";
-        addChatMessage("搜尋中...", "bot", { id: "typing-indicator" });
-
-        setTimeout(() => {
-            document.getElementById("typing-indicator")?.remove();
-            const results = localFullTextSearch(query);
-            if (results.length > 0) {
-                const message = "根據您提供的資訊，我找到了以下相關內容：\n\n" + results.slice(0, 5).map((item, index) => {
-                    const summary = item.full_summary || item.summary;
-                    // FIX: Apply linkify to the summary text before displaying
-                    const summaryText = summary ? `: ${linkify(summary)}` : "";
-                    return `${index + 1}. **${item.title} (${item.type})**${summaryText}`;
-                }).join("\n\n");
-                addChatMessage(message, "bot", { source_type: "本地資料庫", sources: results.slice(0, 3).map(r => r.title) });
-            } else {
-                addChatMessage("抱歉，無法找到相關答案。請嘗試更換關鍵字，或瀏覽網站上的 Q&A 頁面。", "bot", { source_type: "無結果" });
-            }
-        }, 500);
-    }
+    if (!query) return;
+    addChatMessage(query, "user");
+    input.value = "";
+    addChatMessage("搜尋中...", "bot", { id: "typing-indicator" });
+    setTimeout(() => {
+        document.getElementById("typing-indicator")?.remove();
+        const results = localFullTextSearch(query);
+        const message = results.length > 0 ?
+            "根據您提供的資訊，我找到了以下相關內容：\n\n" + results.slice(0, 5).map((item, index) =>
+                `${index + 1}. **${item.title} (${item.type})**: ${item.summary}`
+            ).join("\n\n") :
+            "抱歉，無法找到相關答案。請嘗試更換關鍵字。";
+        addChatMessage(message, "bot", {
+            source_type: results.length > 0 ? "本地資料庫" : "無結果",
+            sources: results.slice(0, 3).map(r => r.title)
+        });
+    }, 500);
 }
 
 function linkify(text) {
     if (!text) return "";
-    // Avoid linkifying if it already contains an anchor tag
     if (text.includes("<a href")) return text;
-    // Regex to find URLs and replace them with anchor tags
     const urlRegex = /(https?:\/\/[^\s,]+)/g;
-    return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+    return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
 }
 
 function addChatMessage(text, type, options = {}) {
     const container = document.getElementById("chatMessages");
     if (!container) return;
-
     const messageWrapper = document.createElement("div");
     messageWrapper.className = `message ${type}-message`;
     if (options.id) messageWrapper.id = options.id;
-
     let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-    // We linkify the text here for the bot's response
-    if (type === 'bot') {
-        htmlText = linkify(htmlText);
-    }
+    if (type === 'bot') htmlText = linkify(htmlText);
     htmlText = htmlText.replace(/\n/g, "<br>");
-    
-    let sourceTypeBadge = "";
-    if (type === 'bot' && options.source_type) {
-        const badgeClasses = { "本地資料庫": "badge-local", "無結果": "badge-default" };
-        sourceTypeBadge = `<span class="source-type-badge ${badgeClasses[options.source_type] || 'badge-error'}">${options.source_type}</span>`;
-    }
-
+    const sourceTypeBadge = options.source_type ? `<span class="source-type-badge ${options.source_type === '本地資料庫' ? 'badge-local' : 'badge-default'}">${options.source_type}</span>` : "";
     let sourcesHtml = "";
-    if (type === 'bot' && options.sources && options.sources.length > 0) {
-        const sourceItems = options.sources.map(s => `<li>${truncateText(s, 20)}</li>`).join('');
-        sourcesHtml = `<div class="source-container"><p class="source-title">參考資料來源：</p><ul>${sourceItems}</ul></div>`;
+    if (options.sources && options.sources.length > 0) {
+        sourcesHtml = `<div class="source-container"><p class="source-title">參考資料來源：</p><ul>${options.sources.map(s => `<li>${s.substring(0, 20)}...</li>`).join('')}</ul></div>`;
     }
-
     const messageContent = document.createElement("div");
     messageContent.className = "message-content";
-    
-    const messageTextDiv = document.createElement("div");
-    messageTextDiv.className = "message-text";
-    messageTextDiv.innerHTML = htmlText;
-
-    messageContent.innerHTML = sourceTypeBadge;
-    messageContent.appendChild(messageTextDiv);
-    if (sourcesHtml) {
-        messageContent.innerHTML += sourcesHtml;
-    }
-
+    messageContent.innerHTML = `${sourceTypeBadge}<div class="message-text">${htmlText}</div>${sourcesHtml}`;
     messageWrapper.appendChild(messageContent);
     container.appendChild(messageWrapper);
     container.scrollTop = container.scrollHeight;
