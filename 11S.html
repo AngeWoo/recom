@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指南：團參申請</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* START: 新增回首頁按鈕樣式 */
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-khaki);
+            border-radius: 50px;
+            color: var(--theme-khaki);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-khaki);
+            color: white;
+        }
+        /* END: 新增回首頁按鈕樣式 */
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>團參申請指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">團體參拜申請指南</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">請詳閱團體參拜的申請流程與注意事項，以利行程順利進行。</p>
+        </section>
+
+        <section id="preparation" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✈️ 申請前的準備與資格確認</h2>
+            <div class="row g-4">
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">1. 確認適用對象</h5><p class="card-text text-muted">本申請適用於10人以上（含）一同至總本部或應現院參拜的團體。9人以下團體請循一般申請管道。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 注意提交期限</h5><p class="card-text text-muted">10-40人的團體請於一個月前提交申請；41人以上的團體請於兩個月前提交申請。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 投保旅遊保險</h5><p class="card-text text-muted">所有參加團參的成員都「必須」投保海外旅行平安險，以確保旅途中的保障。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="application-process" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">📝 申請流程</h2>
+            <div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                <h3 class="fw-bold mb-3">逐步指南</h3>
+                <p class="text-muted mb-4">請依照以下步驟操作，以確保您的團參申請能被順利受理。</p>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">向所屬事務局索取「團參計劃書」與「團參名單」的電子檔案。</li>
+                    <li class="list-group-item">詳實填寫團體的所有資訊，包含預計行程、參拜地點與所有成員名單。</li>
+                    <li class="list-group-item">將填寫完整的計劃書與名單，透過電子郵件方式提交給事務局。</li>
+                    <li class="list-group-item">事務局將協助後續內容確認與聯絡事宜，請靜候通知。</li>
+                    <li class="list-group-item">請為團體準備統一的識別名牌或識別帶，並於報到時分發。</li>
+                </ol>
+            </div></div>
+        </section>
+
+        <section id="final-leg" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✨ 重要提醒事項</h2>
+            <div class="row g-4">
+                <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">個人修行與住宿</h5><p class="text-muted">若團員希望參加接心、會座等個人修行，仍須另外提交個人申請。團體住宿（如飯店或研修所）也需由團體自行安排與申請。</p></div></div></div>
+                <div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">翻譯與特殊法會</h5><p class="text-muted">如需法會中文翻譯，請務必自備智慧型手機及「有線耳機」，以便連接ZOOM程式。在山梨縣的特別法會或大祭等活動期間，可能會有參加名額限制，請務必向事務局確認。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="summary" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">申請書下載</h2>
+            <div class="card shadow-sm">
+                <div class="card-body text-center p-4">
+                    <a href="團參申請單.pdf" target="_blank" class="btn btn-primary btn-lg mb-3 d-block">
+                        <i class="fas fa-file-pdf me-2"></i> 團參申請單
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">團參申請指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
