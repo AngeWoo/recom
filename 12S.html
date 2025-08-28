@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>住宿指南：親苑周邊推薦飯店</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-khaki);
+            border-radius: 50px;
+            color: var(--theme-khaki);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-khaki);
+            color: white;
+        }
+        .hotel-card {
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .hotel-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+        }
+        .hotel-card .card-header {
+            background-color: var(--theme-purple);
+            color: white;
+            font-weight: 700;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .hotel-card .list-group-item {
+            border-left: 0;
+            border-right: 0;
+        }
+        .hotel-card .card-body-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .hotel-card .list-group {
+            flex-grow: 1;
+        }
+        .hotel-card .list-group-item strong {
+            color: #533764;
+        }
+        .transport-guide {
+            background-color: #f0e9e1; /* --theme-secondary background */
+            border-top: 1px solid #e5dacc;
+            padding: 1rem 1.25rem;
+            font-weight: 500;
+            color: #6a5840;
+        }
+        .transport-guide i {
+            color: var(--theme-khaki);
+        }
+        sup {
+            font-size: 0.7em;
+            vertical-align: super;
+            margin-left: 2px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>親苑鄰近住宿指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">親苑周邊住宿推薦🏨</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">為您整理鄰近真如苑親苑（東京都立川市柴崎町1-2-13）的推薦飯店，方便您安排行程。所有交通資訊均為步行預估，實際時間可能因路況與個人速度而異。</p>
+        </section>
+
+        <section id="hotel-list">
+            <div class="row row-cols-1 row-cols-lg-2 g-4">
+                
+                <!-- SORANO HOTEL -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">空之飯店 (SORANO HOTEL) （4星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★頂樓設有無邊際泳池和Spa；全館禁菸；提供寵物友善客房（可攜帶中小型犬）<br>★距JR立川站步行約8分鐘；鄰近GREEN SPRINGS購物中心</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>約￥54,000～￥60,000/晚。提早預訂最低約￥34,000起/2人。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0014 東京都立川市緑町3-1 W1</li>
+                            </ul>
+                            <div class="transport-guide">
+                                <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>16 分鐘</strong> (約 1.3 公里)。<br><small>從飯店經JR立川站北口，穿過車站連通道至南口，再往東南方向步行即可抵達。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="https://soranohotel.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+
+                <!-- Hotel Nikko Tachikawa Tokyo -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">東京立川日航飯店 (Hotel Nikko Tachikawa Tokyo) （3.5～4星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★步行7分鐘可達JR立川站；房內提供Simmons席夢思床，免費Wi-Fi<br>★附設餐廳、投幣式洗衣機、會議/宴會廳等商務設施</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>平日雙人房約￥10,000起；旺季約￥18,000～￥20,000。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0022 東京都立川市錦町1-12-1</li>
+                            </ul>
+                            <div class="transport-guide">
+                                 <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>8 分鐘</strong> (約 650 公尺)。<br><small>飯店位於親苑西南側，沿著前方道路向東直行即可抵達。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="https://hotelnikko-tachikawatokyo.jp" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+                
+                <!-- Hotel Emisia Tokyo Tachikawa -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">東京立川艾米西雅飯店 (Hotel Emisia Tokyo Tachikawa) （3.5星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★原「立川Grand飯店」，2020年擴建改裝<br>★JR立川站北口步行約2分鐘；頂樓設有景觀餐廳；館內1樓附設便利商店</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>平日雙人房約￥8,000～￥12,000起；旺季約￥18,000。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0012 東京都立川市曙町2-14-16</li>
+                            </ul>
+                            <div class="transport-guide">
+                                <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>11 分鐘</strong> (約 900 公尺)。<br><small>從飯店穿過JR立川站至南口，沿鐵路線向東南方向步行即可到達。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="https://www.hotel-emisia.com/tokyotachikawa/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+
+                <!-- Palace Hotel Tachikawa -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">帕勒斯立川飯店 (Palace Hotel Tachikawa) （3.5～4星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★距JR立川站北口步行約5分鐘；館內有多家餐廳和酒吧<br>★客房裝潢典雅寬敞（約24㎡以上），部分可眺望國營昭和紀念公園景緻</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>平日雙人房約￥12,000起；旺季約￥20,000。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0012 東京都立川市曙町2-40-15</li>
+                            </ul>
+                            <div class="transport-guide">
+                                <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>15 分鐘</strong> (約 1.2 公里)。<br><small>路線與艾米西雅飯店相似，需從北口穿過車站至南側。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="http://www.palace-t.co.jp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+
+                <!-- Tachikawa Washington Hotel -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">立川華盛頓酒店 (Tachikawa Washington Hotel) （3星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★JR立川站南口步行約2分鐘，交通極便利<br>★注重女性旅客安全，設有完善門禁及女性客房樓層；全館免費Wi-Fi</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>單人房約￥7,000起；雙人房約￥14,000起。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0023 東京都立川市柴崎町3-7-16</li>
+                            </ul>
+                            <div class="transport-guide">
+                                 <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>6 分鐘</strong> (約 500 公尺)。<br><small>出飯店後向東南方向沿著鐵路旁的道路前進，很快即可抵達。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="https://tachikawa.washington-hotels.jp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+
+                <!-- JR-East Hotel Mets Tachikawa -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">JR東日本酒店 Mets 立川 (JR-East Hotel Mets Tachikawa) （3星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★**車站上蓋飯店**：位於JR立川站南口旁（步行1分鐘），可不出站直接抵達<br>★客房約16㎡起，設備齊全；設有投幣洗衣機</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>雙人房平日約￥10,400起；含早方案約￥12,400起。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0023 東京都立川市柴崎町3-1-1</li>
+                            </ul>
+                            <div class="transport-guide">
+                                 <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>4 分鐘</strong> (約 300 公尺)。<br><small>飯店位在親苑的西北側，是距離最近的飯店之一，出站後即達。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="https://www.hotelmets.jp/tachikawa/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+
+                <!-- Hotel MYSTAYS Tachikawa -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">Hotel MYSTAYS 立川 (ホテルマイステイズ立川) （3星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★JR立川站南口步行約7分鐘；鄰近立川南商店街，生活機能佳<br>★館內附設餐廳、投幣洗衣機；部分房型備有小廚房，適合中長期住宿</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>平日雙人房約￥6,000～￥8,000起；旺季約￥12,000。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0022 東京都立川市錦町1-8-14</li>
+                            </ul>
+                            <div class="transport-guide">
+                                <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>7 分鐘</strong> (約 600 公尺)。<br><small>從飯店出發向東直行，穿過一個街區即可抵達。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="https://www.mystays.com/hotel-mystays-tachikawa-tokyo/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+                
+                 <!-- Tachikawa Urban Hotel Main & Annex -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">立川城市飯店 本館 & 別館 (Tachikawa Urban Hotel) （3星）</div>
+                         <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★[本館] 設男女分開大浴場；[別館] 客房附簡易廚房和陽台<br>★兩館皆距JR立川站南口步行約3-4分鐘，位置極佳</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>雙人房素泊約￥5,500～￥10,000起。</li>
+                                <li class="list-group-item"><strong>地址：</strong>本館: 錦町1-2-16 / 別館: 錦町1-2-12</li>
+                            </ul>
+                            <div class="transport-guide">
+                                 <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>2-3 分鐘</strong> (約 200 公尺)。<br><small>兩館位置非常接近，出門往東走很快就到，幾乎就在隔壁。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3">
+                            <a href="http://www.urban-hotel.jp/ta-urban/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm me-2">本館官網</a>
+                            <a href="http://www.urban-hotel.jp/ta-annex/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">別館官網</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel Plaisir Tachikawa -->
+                <div class="col">
+                    <div class="card shadow-sm hotel-card">
+                        <div class="card-header">Hotel Plaisir 立川 (ホテルプレジール立川) （3星）</div>
+                        <div class="card-body-wrapper">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>特色：</strong>★2023年新開幕，JR立川站北口步行約7分鐘<br>★雙人房配備特大雙人床（King bed），房內附免費影片點播（VOD）及大螢幕平板</li>
+                                <li class="list-group-item"><strong>參考價位：</strong>單人房約￥5,800起；雙人房促銷價約￥9,000起。</li>
+                                <li class="list-group-item"><strong>地址：</strong>〒190-0011 東京都立川市高松町3-15-1</li>
+                            </ul>
+                            <div class="transport-guide">
+                                <i class="fas fa-walking me-2"></i><strong>前往親苑：</strong>步行約 <strong>17 分鐘</strong> (約 1.4 公里)。<br><small>飯店位於立川站北側較遠處，需穿過車站再往南走一段路。</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end bg-white border-top-0 pt-3"><a href="https://gf-plaisir.jp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">官方網站</a></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="alert alert-light mt-4" role="alert">
+                <small><sup>1</sup> 參考價位可能因季節、預訂時間、房型及方案而有大幅變動，請以官方網站或訂房平台顯示的即時價格為準。</small>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台灣→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
