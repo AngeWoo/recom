@@ -238,16 +238,19 @@ function showInfoModal(title, data) {
 async function displayExchangeRate() {
     const displays = document.querySelectorAll(".exchange-rate-display, #twd-to-jpy-rate");
     if (displays.length === 0) return;
+
     const url = 'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/twd.json';
+    
     try {
         const response = await fetch(url);
         if (!response.ok) throw new Error('API request failed');
         const data = await response.json();
         const rate = data?.twd?.jpy;
         if (typeof rate !== 'number') throw new Error('Invalid data format');
+
         displays.forEach(el => {
             if (el.id === 'twd-to-jpy-rate') {
-                el.innerHTML = `(匯率 1 : ${rate.toFixed(2)} JPY)`;
+                el.innerHTML = `(台幣匯率 1 : ${rate.toFixed(2)} JPY)`;
             } else {
                 el.innerHTML = `<i class="fas fa-sync-alt fa-fw me-1" title="即時匯率"></i> 1 TWD ≈ ${rate.toFixed(2)} JPY`;
             }
@@ -268,8 +271,12 @@ function initializePage(pageType) {
     if (pageType === 'homeOrShinyuan' && document.getElementById('shinyuanMap')) {
         renderWorshipSteps();
     } else if (pageType === 'qa') {
-        renderQACategories();
-        renderQAItems('all');
+        const container = document.getElementById("qa-accordion-container");
+        if (container) {
+            container.innerHTML = "";
+            renderQACategories();
+            renderQAItems('all');
+        }
     }
 }
 
@@ -308,9 +315,8 @@ function makeModalDraggable(modalEl) {
 
 function handleNavActiveState() {
     const currentPage = window.location.pathname.split("/").pop() || "index.html";
-    document.querySelectorAll(".navbar-nav .nav-link, .navbar-brand").forEach(link => {
-        const linkPage = (link.getAttribute("href") || "").split("/").pop() || "index.html";
-        if (linkPage === "ui.html" && currentPage === "") return; // 首頁特殊處理
+    document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
+        const linkPage = link.getAttribute("href").split("/").pop() || "index.html";
         link.classList.toggle("active", currentPage === linkPage);
     });
 }
@@ -340,11 +346,6 @@ function renderQAItems(category) {
     }
     container.innerHTML = items.map((item, index) => {
         const collapseId = `qa-${category.replace(/\s+/g, '-')}-${index}`;
-        const answer = linkify(item.answer || "").replace(/\n/g, "<br>");
-        const imageUrl = getImageUrl(item.image_url);
-        const imageHtml = imageUrl ? `<img src="${imageUrl}" class="img-fluid rounded mt-3" alt="問題附圖">` : "";
-        const remarks = linkify(item.備註 || "");
-        const remarksHtml = remarks ? `<div class="remark-section mt-3" style="background-color: #f8f9fa; border-left: 3px solid #6c757d; padding: 10px; font-size: 0.9em;"><small><strong>備註：</strong> ${remarks}</small></div>` : "";
         return `<div class="accordion-item">
             <h2 class="accordion-header" id="heading-${collapseId}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${collapseId}">
@@ -352,27 +353,10 @@ function renderQAItems(category) {
                 </button>
             </h2>
             <div id="collapse-${collapseId}" class="accordion-collapse collapse" data-bs-parent="#qa-accordion-container">
-                <div class="accordion-body">
-                    ${answer}
-                    ${imageHtml}
-                    ${remarksHtml}
-                </div>
+                <div class="accordion-body">${(item.answer || "").replace(/\n/g, "<br>")}</div>
             </div>
         </div>`;
     }).join('');
-}
-
-function getImageUrl(path) {
-    if (!path || typeof path !== 'string') return "";
-    if (path.startsWith("http")) return path;
-    return path.startsWith('/') ? path.substring(1) : path;
-}
-
-function linkify(text) {
-    if (!text) return "";
-    if (text.includes("<a href")) return text;
-    const urlRegex = /(https?:\/\/[^\s,]+)/g;
-    return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
 }
 
 function openAIChat() {
@@ -461,6 +445,13 @@ function sendSearchMessage() {
             sources: results.slice(0, 3).map(r => r.title)
         });
     }, 500);
+}
+
+function linkify(text) {
+    if (!text) return "";
+    if (text.includes("<a href")) return text;
+    const urlRegex = /(https?:\/\/[^\s,]+)/g;
+    return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
 }
 
 function addChatMessage(text, type, options = {}) {
