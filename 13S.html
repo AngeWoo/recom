@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指南：友心院（半藏門博物館）</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-khaki);
+            border-radius: 50px;
+            color: var(--theme-khaki);
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-khaki);
+            color: white;
+        }
+        .map-container-wrapper {
+            cursor: pointer;
+        }
+        .map-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            border-radius: 0.5rem;
+            border: 1px solid #dee2e6;
+        }
+        .map-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            pointer-events: none; /* 讓點擊事件穿透到外層 a 標籤 */
+        }
+        /* 交通頁籤樣式 */
+        .nav-tabs .nav-link.active {
+            background-color: var(--theme-purple);
+            border-color: var(--theme-purple);
+            color: white;
+        }
+        .nav-tabs .nav-link {
+            color: var(--bs-link-hover-color);
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>友心院指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">友心院（半藏門博物館）</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">位於東京都心，結合信仰、藝術與文化的寧靜之地。</p>
+        </section>
+
+        <section id="yushinin-info" class="mb-5">
+            <div class="card shadow-lg">
+                <img src="https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=bgqx62AJYQhgkJLXAMqV8A&cb_client=lu.gallery.gps&w=800&h=533&yaw=34.504765&pitch=0&thumbfov=100" class="card-img-top" alt="真如苑 友心院 外觀" style="max-height: 400px; object-fit: cover;">
+                <div class="card-body p-4 p-md-5">
+                    <h3 class="card-title fw-bold mb-4">詳細資訊</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex align-items-center ps-0">
+                            <i class="fas fa-map-marker-alt fa-fw me-3 text-primary fs-5"></i>
+                            <div><strong>所在地：</strong>〒102-0082 東京都千代田区一番町25-7</div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center ps-0">
+                            <i class="fas fa-phone fa-fw me-3 text-primary fs-5"></i>
+                            <div><strong>電話番号：</strong>+81-3-35568566</div>
+                        </li>
+                         <li class="list-group-item d-flex align-items-center ps-0">
+                            <i class="fas fa-subway fa-fw me-3 text-primary fs-5"></i>
+                            <div><strong>主要交通：</strong>東京Metro半藏門線「半藏門站」4號出口，步行約 1 分鐘</div>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center ps-0">
+                            <i class="fas fa-clock fa-fw me-3 text-primary fs-5"></i>
+                            <div><strong>開館時間：</strong>具體開放時間請務必參考官方網站最新公告</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer bg-white text-center p-3">
+                    <a href="https://www.hanzomonmuseum.jp/access/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                        <i class="fas fa-link me-2"></i>前往半藏門博物館官方網站
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="museum-intro" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">關於半藏門博物館</h2>
+            <div class="p-4 rounded shadow-sm" style="background-color: #f0e9e1;">
+                <p class="mb-0 text-dark">半藏門博物館（Hanzomon Museum）位於真如苑友心院內，是一座向大眾開放的文化設施。館內主要展示由真如苑開祖伊藤真乘及其妻友司畢生收藏的珍貴佛教藝術品。這些收藏跨越不同時代與地域，不僅展現了佛教藝術之美，更傳達了其背後深厚的宗教意涵與和平祈願。博物館旨在透過這些文化遺產的展示，促進文化交流與相互理解，為繁忙的都市提供一個沉澱心靈、接觸藝術的空間。</p>
+            </div>
+        </section>
+
+        <!-- START: 新增交通指南區塊 -->
+        <section id="transport-info" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">立川親苑 → 友心院 交通指南</h2>
+             <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#train-panel" type="button">電車 (推薦)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#taxi-panel" type="button">計程車</button></li>
+            </ul>
+
+            <div class="tab-content" id="routeTabContent">
+                <div class="tab-pane fade show active" id="train-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">電車 (經由四ツ谷站轉乘)</h3>
+                    <p class="text-muted mb-4">兼具效率與經濟性的最佳選擇，透過在「四ツ谷」站轉乘，可避開新宿等大型複雜車站，讓旅途更為輕鬆。</p>
+                    <h5 class="fw-bold">路線步驟</h5>
+                    <ol class="list-group list-group-numbered mb-4">
+                        <li class="list-group-item"><strong>立川 → 四ツ谷:</strong> 於 <span class="badge bg-secondary">JR立川站</span> 搭乘 <span class="badge bg-warning text-dark">JR中央線快速</span> (往東京方向)，約 30 分鐘。</li>
+                        <li class="list-group-item"><strong>四ツ谷 → 永田町:</strong> 於 <span class="badge bg-secondary">四ツ谷站</span> 站內轉乘 <span class="badge text-white" style="background-color: #00B48F;">東京Metro南北線</span>，搭乘 1 站 (約 2 分鐘)。</li>
+                        <li class="list-group-item"><strong>永田町 → 友心院:</strong> 從 <span class="badge bg-secondary">永田町站</span> 步行至 <span class="badge bg-secondary">半藏門站</span> (約 5 分鐘)，友心院即在出口附近。</li>
+                    </ol>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>費用合理，CP值高 (約 ¥673)</li><li><i class="fas fa-check-circle text-success me-2"></i>時間準確，不受路況影響</li><li><i class="fas fa-check-circle text-success me-2"></i>轉乘車站相對單純</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需要轉乘及短程步行</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>尖峰時段可能擁擠</li></ul></div>
+                    </div>
+                </div></div></div>
+                <div class="tab-pane fade" id="taxi-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">計程車</h3>
+                    <p class="text-muted mb-4">最直接便利的點對點服務，但費用極其高昂，僅適用於多人同行分攤或有特殊需求之情況。</p>
+                     <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>點對點直達，無需轉乘</li><li><i class="fas fa-check-circle text-success me-2"></i>隱私性與舒適度最高</li><li><i class="fas fa-check-circle text-success me-2"></i>適合攜帶大量行李</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>費用極高 (約 ¥15,000+)</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>易受交通狀況影響，耗時不固定</li></ul></div>
+                    </div>
+                </div></div></div>
+            </div>
+            <div class="row g-4 mt-4">
+                <div class="col-lg-12">
+                    <div class="alert alert-theme-primary h-100">
+                        <h5 class="alert-heading fw-bold">專家建議</h5>
+                        <p class="mb-0">對於絕大多數旅客，強烈推薦選擇【電車】路線。此方案在時間與金錢上取得了最佳平衡，且選擇在「四ツ谷」站轉乘，能有效降低在東京複雜鐵路系統中迷路的風險。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END: 新增交通指南區塊 -->
+
+        <section id="map-location">
+            <h2 class="text-center fw-bold mb-4">地理位置</h2>
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <div class="text-center mb-3">
+                         <div class="alert alert-light text-center small mt-3 py-2">
+                            <i class="fas fa-info-circle me-1"></i>
+                            地圖中的紅色箭頭標示的地點即為「友心院」，而「半藏門博物館」便設立於友心院的建築之內。
+                        </div>
+                    </div>
+                    <a href="https://www.google.com/maps/place/%E7%9C%9F%E5%A6%82%E8%8B%91+%E5%8F%8B%E5%BF%83%E9%99%A2/@35.6883268,139.7423019,17z" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟">
+                        <img src="images/13.jpg" class="img-fluid rounded shadow-sm" alt="友心院周邊地圖">
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">友心院參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
