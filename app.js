@@ -73,6 +73,7 @@ async function initializeApp() {
     bindEventListeners();
     handleNavActiveState();
     displayExchangeRate(); // 呼叫統一的匯率函式
+    setupBackToTopHorse(); // 啟用回到頂部白馬功能
 
     const loadingIndicator = document.getElementById('loading-indicator');
     if(loadingIndicator) loadingIndicator.style.display = 'flex';
@@ -174,7 +175,15 @@ function showGlobalErrorBanner(message) {
     document.body.prepend(banner);
 }
 
+// START: 修改後的 updateFooterDataSourceStatus 函式
+/**
+ * 更新頁尾的資料來源狀態。現在此功能已被禁用。
+ */
 function updateFooterDataSourceStatus() {
+    // 此功能已根據使用者要求移除，故將函式內容清空。
+    return;
+    
+    /* 原始碼保留，方便未來恢復
     const appendTarget = document.getElementById('data-source-placeholder') || document.querySelector('footer .container');
     if (!appendTarget) return;
     let oldStatus = appendTarget.querySelector('.data-source-status');
@@ -186,7 +195,9 @@ function updateFooterDataSourceStatus() {
     statusDiv.title = isAPI ? '目前顯示的是從 Google Sheet 即時更新的最新版本。' : '無法連接即時資料庫，目前顯示的是內建的備份資料，可能不是最新版本。';
     statusDiv.style.cssText = `margin-top: 1rem; padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 0.25rem; background-color: ${isAPI ? '#d1e7dd' : '#fff3cd'}; color: #333; display: inline-block; text-align: center;`;
     appendTarget.appendChild(statusDiv);
+    */
 }
+// END: 修改後的 updateFooterDataSourceStatus 函式
 
 function bindEventListeners() {
     document.body.addEventListener('click', (event) => {
@@ -484,3 +495,27 @@ function addChatMessage(text, type, options = {}) {
     container.appendChild(messageWrapper);
     container.scrollTop = container.scrollHeight;
 }
+
+// --- START: 修改後的回到頂部小白馬功能 ---
+function setupBackToTopHorse() {
+  const backToTopButton = document.getElementById('back-to-top-horse');
+
+  // 如果頁面上沒有這個按鈕，就直接返回
+  if (!backToTopButton) {
+    return; 
+  }
+
+  // 讓按鈕立即顯示
+  // 我們不再需要滾動監聽器來切換 .visible class
+  backToTopButton.classList.add('visible');
+
+  // 點擊後平滑滾動到頂部
+  backToTopButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+}
+// --- END: 修改後的回到頂部小白馬功能 ---

@@ -36,8 +36,6 @@
             font-weight: bold !important;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
         }
-
-        /* START: 新增回首頁按鈕樣式 */
         .back-to-home-btn-container {
             margin-top: 3rem;
             text-align: center;
@@ -57,8 +55,55 @@
             background-color: var(--theme-khaki);
             color: white;
         }
-        /* END: 新增回首頁按鈕樣式 */
     </style>
+    <!-- START: 懸浮雙白馬按鈕樣式 -->
+    <style>
+        #floating-horses-container {
+          position: fixed;
+          bottom: 25px;
+          right: 25px;
+          z-index: 1050;
+          display: flex;
+          flex-direction: column;
+          gap: 10px; /* 兩隻馬之間的間距 */
+          align-items: center;
+        }
+        .floating-horse {
+          display: block;
+          width: 80px;
+          height: auto;
+          cursor: pointer;
+          transition: opacity 0.3s ease, transform 0.2s ease;
+          opacity: 0.9;
+        }
+        .floating-horse:hover {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+        .floating-horse img {
+          width: 100%;
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+          transition: transform 0.3s ease;
+        }
+        /* 調整馬匹角度 */
+        #horse-to-top img {
+          transform: rotate(-15deg);
+        }
+        #horse-to-top:hover img {
+          transform: rotate(-20deg) scale(1.05);
+        }
+        #horse-to-bottom img {
+          transform: rotate(15deg) scaleX(-1); /* 水平翻轉 */
+        }
+        #horse-to-bottom:hover img {
+          transform: rotate(20deg) scaleX(-1) scale(1.05);
+        }
+        @media (max-width: 768px){
+          #floating-horses-container { right: 15px; bottom: 15px; gap: 5px; }
+          .floating-horse { width: 65px; }
+        }
+    </style>
+    <!-- END: 懸浮雙白馬按鈕樣式 -->
 </head>
 <body class="antialiased">
 
@@ -95,7 +140,6 @@
             </div>
         </section>
 
-        <!-- START: 更新研修所資訊區塊 -->
         <section id="kenshujo-info" class="mb-5">
             <h2 class="text-center fw-bold mb-4">📍 研修所資訊與交通</h2>
             <div class="row g-4">
@@ -103,7 +147,6 @@
                 <div class="col-lg-6 d-flex align-items-stretch">
                     <div class="card shadow-lg h-100">
                         <div class="card-body p-4 p-md-5 d-flex flex-column">
-                            <!-- Top content block -->
                             <div>
                                 <h3 class="fw-bold mb-3">真如苑 柴崎研修所</h3>
                                 <ul class="list-group list-group-flush mb-4">
@@ -113,14 +156,11 @@
                                     </li>
                                 </ul>
                             </div>
-                            <!-- Middle content block -->
                             <div class="alert alert-theme-secondary mb-4">
                                 <h5 class="alert-heading fw-bold"><i class="fas fa-walking me-2"></i>前往親苑</h5>
                                 <p class="mb-0">路程極近，約 <strong>5-7 分鐘</strong> (約 500 公尺)。向北走過多摩單軌電車軌道下方，親苑即在右手邊。</p>
                             </div>
-                            <!-- Spacer -->
                             <div class="flex-grow-1"></div>
-                            <!-- Bottom button -->
                             <a href="https://www.google.com/maps/search/?api=1&query=東京都立川市柴崎町2-23-20" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                                 <i class="fas fa-map-marked-alt me-2"></i> 柴崎研修所地圖
                             </a>
@@ -131,7 +171,6 @@
                 <div class="col-lg-6 d-flex align-items-stretch">
                     <div class="card shadow-lg h-100">
                         <div class="card-body p-4 p-md-5 d-flex flex-column">
-                            <!-- Top content block -->
                             <div>
                                 <h3 class="fw-bold mb-3">真如苑 富士見研修所</h3>
                                  <ul class="list-group list-group-flush mb-4">
@@ -141,14 +180,11 @@
                                     </li>
                                 </ul>
                             </div>
-                            <!-- Middle content block -->
                             <div class="alert alert-theme-secondary mb-4">
                                 <h5 class="alert-heading fw-bold"><i class="fas fa-walking me-2"></i>前往親苑</h5>
                                 <p class="mb-0">距離較遠，約需 <strong>20-25 分鐘</strong> (約 1.9 公里)。向東朝 JR 立川站方向前進，穿過車站至南口即可抵達。</p>
                             </div>
-                            <!-- Spacer -->
                             <div class="flex-grow-1"></div>
-                            <!-- Bottom button -->
                             <a href="https://www.google.com/maps/search/?api=1&query=東京都立川市富士見町5丁目9-12" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                                 <i class="fas fa-map-marked-alt me-2"></i> 富士見研修所地圖
                             </a>
@@ -157,7 +193,6 @@
                 </div>
             </div>
         </section>
-        <!-- END: 更新研修所資訊區塊 -->
 
         <section id="application-process" class="mb-5">
             <h2 class="text-center fw-bold mb-2">📝 申請流程</h2>
@@ -222,14 +257,54 @@
         </div>
     </div>
 
-    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);">
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);">
         <div class="text-center" style="width: 100%; max-width: 1140px; padding-right: 0.75rem; padding-left: 0.75rem; margin-right: auto; margin-left: auto;">
             <h5 class="mb-1">研修所申請指南</h5>
-            <p class="mb-0 text-white-50 small">提供整合的行動資訊和搜尋服務</p>
+            <p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p>
         </div>
     </footer>
 
+    <!-- START: 懸浮雙白馬按鈕 HTML -->
+    <div id="floating-horses-container">
+        <a href="#" id="horse-to-top" class="floating-horse" title="回到頂部">
+            <img src="horse_alpha.png" alt="回到頂部">
+        </a>
+        <a href="#page-footer" id="horse-to-bottom" class="floating-horse" title="前往頁尾">
+            <img src="horse_alpha.png" alt="前往頁尾">
+        </a>
+    </div>
+    <!-- END: 懸浮雙白馬按鈕 HTML -->
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
+
+    <!-- START: 雙白馬功能性腳本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const topHorse = document.getElementById('horse-to-top');
+        const bottomHorse = document.getElementById('horse-to-bottom');
+        const pageFooter = document.getElementById('page-footer');
+
+        if (topHorse) {
+            topHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        if (bottomHorse && pageFooter) {
+            bottomHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                pageFooter.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
+    </script>
+    <!-- END: 雙白馬功能性腳本 -->
 </body>
 </html>

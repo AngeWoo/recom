@@ -3,45 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>交通指南：從立川到台北松山</title>
+    <title>東京交通指南：從立川『親苑』到羽田機場</title>
+    <!-- START: 框架與樣式替換 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 定義新的水果沙拉主題 */
-            --theme-green: #5EAA5F;
-            --theme-red: #EE3239;
-            --theme-yellow: #FECE00;
-            --theme-grape: #9D6AB9;
-
-            --bs-primary: var(--theme-red);
-            --bs-primary-rgb: 238, 50, 57;
-
-            --bs-link-color: var(--theme-red);
-            --bs-link-hover-color: #c8232b; /* Darker red */
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
         }
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #f8f9fa;
         }
         .nav-tabs .nav-link.active {
-            background-color: var(--theme-red);
-            border-color: var(--theme-red);
+            background-color: var(--theme-purple);
+            border-color: var(--theme-purple);
             color: white;
         }
         .nav-tabs .nav-link {
-            color: #c8232b; /* Darker red */
+            color: var(--bs-link-hover-color);
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
         }
         .navbar-brand, .navbar-nav .nav-link {
             font-weight: bold !important;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
         }
-        /* START: 新增地圖樣式 */
         .map-container-wrapper {
             margin-top: 1.5rem;
         }
@@ -65,9 +67,6 @@
             border: 0;
             pointer-events: none; /* 讓點擊事件穿透 */
         }
-        /* END: 新增地圖樣式 */
-        
-        /* START: 新增回首頁按鈕樣式 */
         .back-to-home-btn-container {
             margin-top: 3rem;
             text-align: center;
@@ -76,25 +75,73 @@
             display: inline-block;
             margin-bottom: 1rem;
             padding: 0.75rem 2rem;
-            border: 2px solid var(--theme-green);
+            border: 2px solid var(--theme-khaki);
             border-radius: 50px;
-            color: var(--theme-green);
+            color: var(--theme-khaki);
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.2s, color 0.2s;
         }
         .back-to-home-btn:hover {
-            background-color: var(--theme-green);
+            background-color: var(--theme-khaki);
             color: white;
         }
-        /* END: 新增回首頁按鈕樣式 */
     </style>
+    <!-- START: 懸浮雙白馬按鈕樣式 -->
+    <style>
+        #floating-horses-container {
+          position: fixed;
+          bottom: 25px;
+          right: 25px;
+          z-index: 1050;
+          display: flex;
+          flex-direction: column;
+          gap: 10px; /* 兩隻馬之間的間距 */
+          align-items: center;
+        }
+        .floating-horse {
+          display: block;
+          width: 80px;
+          height: auto;
+          cursor: pointer;
+          transition: opacity 0.3s ease, transform 0.2s ease;
+          opacity: 0.9;
+        }
+        .floating-horse:hover {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+        .floating-horse img {
+          width: 100%;
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+          transition: transform 0.3s ease;
+        }
+        /* 調整馬匹角度 */
+        #horse-to-top img {
+          transform: rotate(-15deg);
+        }
+        #horse-to-top:hover img {
+          transform: rotate(-20deg) scale(1.05);
+        }
+        #horse-to-bottom img {
+          transform: rotate(15deg) scaleX(-1); /* 水平翻轉 */
+        }
+        #horse-to-bottom:hover img {
+          transform: rotate(20deg) scaleX(-1) scale(1.05);
+        }
+        @media (max-width: 768px){
+          #floating-horses-container { right: 15px; bottom: 15px; gap: 5px; }
+          .floating-horse { width: 65px; }
+        }
+    </style>
+    <!-- END: 懸浮雙白馬按鈕樣式 -->
 </head>
 <body class="antialiased">
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-green);">
+    <!-- Header: Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
         <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>立川羽田松山交通指南</a>
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>立川→羽田機場交通指南</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -107,37 +154,173 @@
         </div>
     </nav>
 
+    <!-- Main Content -->
     <main class="container py-5">
 
         <section class="text-center mb-5">
-            <h1 class="display-4 fw-bold text-dark mb-3">東京立川羽田到台北松山機場</h1>
-            <p class="lead text-muted mx-auto" style="max-width: 700px;">一份專為您設計的互動式回程旅途規劃</p>
+            <h1 class="display-4 fw-bold text-dark mb-3">立川『親苑』到羽田機場</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">為您的回程精心規劃，選擇最適合的交通方式，輕鬆愜意地抵達機場，為旅程畫下完美句點。</p>
         </section>
 
+        <section id="first-leg" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">第一部分：從『親苑』到立川站</h2>
+            <div class="row g-4"><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚶 步行 (5-7分鐘)</h5><p class="text-muted">如果行李不多，步行前往車站是個不錯的選擇。</p><ol class="list-group list-group-numbered"><li class="list-group-item">從親苑出發，沿「諏訪通り」往立川站方向前進。</li><li class="list-group-item">在第一個大十字路口右轉，即可看到車站廣場。</li><li class="list-group-item">利木津巴士在<span class="fw-bold">北口</span>，JR電車在<span class="fw-bold">南口</span>或<span class="fw-bold">北口</span>皆可進站。</li></ol></div></div></div><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚕 計程車 (約 ¥500)</h5><p class="text-muted">攜帶重行李或時間緊湊時的最佳方案。可請親苑的服務人員協助預約計程車，或使用App叫車。</p><div class="alert alert-secondary text-center mt-3"><p class="fw-bold fs-5 mb-1">目的地：立川駅</p><p class="text-muted mb-0">（請司機載到<span class="fw-bold">北口</span>搭乘巴士，或<span class="fw-bold">南口</span>搭乘JR）</p></div></div></div></div></div>
+        </section>
+
+
         <section id="route-selection" class="mb-5">
-            <h2 class="text-center fw-bold mb-2">第一部分：從立川到羽田機場</h2>
-            <p class="text-center text-muted mb-4">根據您的行李多寡與預算考量，選擇最適合的回程交通方式。</p>
+            <h2 class="text-center fw-bold mb-2">第二部分：從立川站前往羽田機場</h2>
+            <p class="text-center text-muted mb-4">所有方案皆有其優勢。點擊下方頁籤，探索最適合您的交通方式。</p>
             
             <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
-                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#bus-panel" type="button">利木津巴士 (舒適首選)</button></li>
-                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#train-panel" type="button">電車 (經濟高效)</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#bus-panel" type="button">利木津巴士</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#train-panel" type="button">電車</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#taxi-panel" type="button">計程車</button></li>
             </ul>
 
             <div class="tab-content" id="routeTabContent">
-                <div class="tab-pane fade show active" id="bus-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5"><h3 class="fw-bold mb-3">方案A：機場利木津巴士</h3><p class="text-muted mb-4">攜帶大型行李或追求極致便利旅客的完美選擇。您只需將行李交給工作人員，即可一覺到機場，無需擔心轉車的煩惱。</p><div class="row"><div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>一站直達的無縫接駁</li><li><i class="fas fa-check-circle text-success me-2"></i>徹底解放雙手，無需搬運行李</li><li><i class="fas fa-check-circle text-success me-2"></i>安心與便利的最佳投資</li></ul></div><div class="col-md-6"><h5 class="fw-bold">詳細資訊</h5><ul class="list-group"><li class="list-group-item"><strong>乘車地點:</strong> JR 立川駅北口 13番乘車處</li><li class="list-group-item"><strong>票價:</strong> 約 2,000 日圓</li><li class="list-group-item"><strong>車程:</strong> 約 85-100 分鐘</li></ul></div></div></div></div></div>
-                <div class="tab-pane fade" id="train-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5"><h3 class="fw-bold mb-3">方案B：電車</h3><p class="text-muted mb-4">以其準時與經濟實惠著稱，適合輕裝簡行、熟悉都市交通的旅客。</p><div class="row g-4"><div class="col-lg-6"><div class="card bg-light h-100"><div class="card-body"><h5 class="card-title fw-bold">路線一：經川崎 (最簡單)</h5><p class="card-text small text-muted">總覽：約 90 分鐘 / 約 990 日圓 / 轉乘 1 次</p><hr><ol class="list-unstyled"><li>1. <strong>立川 → 川崎:</strong> <span class="badge text-dark" style="background-color: var(--theme-yellow);">JR南武線</span></li><li>2. <strong>川崎 → 羽田機場:</strong> 於<span class="fw-bold">京急川崎駅</span>轉乘 <span class="badge" style="background-color: var(--theme-red);">京急空港線</span></li></ol><p class="mt-3 small alert alert-success py-2"><strong>優點：</strong>僅轉乘一次，避開擁擠大站，推薦攜帶行李者。</p><div class="map-container-wrapper"><a href="https://www.google.com/maps/dir/%E7%AB%8B%E5%B7%9DTachikawa+Station,+2+Chome-1+Akebonocho,+Tachikawa,+Tokyo,+%E6%97%A5%E6%9C%AC/%E4%BA%AC%E6%80%A5%E5%B7%9D%E5%B4%8E%E9%A7%85/%E7%BE%BD%E7%94%B0%E6%A9%9F%E5%A0%B4%E7%AC%AC1%E3%83%BB%E7%AC%AC2%E8%88%AA%E5%BB%88%E9%A7%85%EF%BC%88%E4%BA%AC%E6%80%A5%EF%BC%89/@35.617833,139.540195,11z/data=!4m22!4m21!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!1m5!1m1!1s0x6018608a335a1f69:0x85ab53cd4f15a133!2m2!1d139.7020085!2d35.5323284!1m5!1m1!1s0x6018615b573a7001:0x2c64e59038d50456!2m2!1d139.7798369!2d35.5492931!3e3?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d415714.2889269785!2d139.54019500282033!3d35.61783295797828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bedVGFjaGlrYXdhIFN0YXRpb24sIDIgQ2hvbWUtMSBBa2Vib25vY2hvLCBUYWNoaWthd2EsIFRva3lvLCDml6XmnKw!3m2!1d35.698305!2d139.413794!4m5!1s0x6018615b573a7001%3A0x2c64e59038d50456!2z576p55Sw5qmp5aC056ysMeODleODq-ODs-ODrOimgeWupOWupA!3m2!1d35.5492931!2d139.7798369!5e0!3m2!1szh-TW!2stw!4v1755738831610!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a></div></div></div></div><div class="col-lg-6"><div class="card bg-light h-100"><div class="card-body"><h5 class="card-title fw-bold">路線二：經新宿 (最快)</h5><p class="card-text small text-muted">總覽：約 75-85 分鐘 / 約 990 日圓 / 轉乘 2 次</p><hr><ol class="list-unstyled"><li>1. <strong>立川 → 新宿:</strong> <span class="badge text-dark" style="background-color: var(--theme-yellow);">JR中央線</span></li><li>2. <strong>新宿 → 品川:</strong> 轉乘 <span class="badge" style="background-color: var(--theme-green);">JR山手線</span></li><li>3. <strong>品川 → 羽田機場:</strong> 轉乘 <span class="badge" style="background-color: var(--theme-red);">京急空港線</span></li></ol><p class="mt-3 small alert alert-warning py-2"><strong>提醒：</strong>速度最快，但新宿站人潮洶湧，結構複雜。</p><div class="map-container-wrapper"><a href="https://www.google.com/maps/dir/%E7%AB%8B%E5%B7%9D%E9%A7%85/%E6%96%B0%E5%AE%BF%E9%A7%85/%E7%BE%BD%E7%94%B0%E6%A9%9F%E5%A0%B4%E7%AC%AC1%E3%83%BB%E7%AC%AC2%E8%88%AA%E5%BB%88%E9%A7%85%EF%BC%88%E4%BA%AC%E6%80%A5%EF%BC%89/@35.6235165,139.540195,11z/data=!4m22!4m21!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!1m5!1m1!1s0x60188cd0d6b1ba1f:0x1c32a1f1ecacfdd5!2m2!1d139.700414!2d35.689729!1m5!1m1!1s0x6018615b573a7001:0x2c64e59038d50456!2m2!1d139.7798369!2d35.5492931!3e3?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃"><div class="map-container"><iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d415647.9238385618!2d139.54019500282033!3d35.62351645795498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!4m5!1s0x6018615b573a7001%3A0x2c64e59038d50456!2z576p55Sw5qmp5aC056ysMeODleODq-ODs-ODrOimgeWupOWupA!3m2!1d35.5492931!2d139.7798369!5e0!3m2!1szh-TW!2stw!4v1755738914652!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div></a></div></div></div></div></div></div></div></div>
+                <div class="tab-pane fade show active" id="bus-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">方案A：機場利木津巴士</h3>
+                    <p class="text-muted mb-4">最省心省力的選擇。從立川站北口上車後即可直達機場，免去搬運行李轉乘的煩惱。</p>
+                    
+                    <h5 class="fw-bold mt-4">立川站北口 → 羽田機場 時刻表</h5>
+                    <p class="text-muted small mb-2">以下為立川站北口的預計發車時間。時刻表可能變動，出發前請務必至官網確認。</p>
+                    <a href="https://www.tachikawabus.co.jp/highway/haneda/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm mb-3">
+                        <i class="fas fa-external-link-alt me-2"></i>前往巴士官網確認
+                    </a>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>出發 立川站北口</th>
+                                    <th>抵達 第1航廈 (T1)</th>
+                                    <th>抵達 第2航廈 (T2)</th>
+                                    <th>抵達 第3航廈 (T3)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>04:40</td><td>06:00</td><td>06:05</td><td>06:15</td></tr>
+                                <tr><td>05:10</td><td>06:30</td><td>06:35</td><td>06:45</td></tr>
+                                <tr><td>05:40</td><td>07:00</td><td>07:05</td><td>07:15</td></tr>
+                                <tr><td>06:10</td><td>07:30</td><td>07:35</td><td>07:45</td></tr>
+                                <tr><td>06:40</td><td>08:00</td><td>08:05</td><td>08:15</td></tr>
+                                <tr><td>07:10</td><td>08:30</td><td>08:35</td><td>08:45</td></tr>
+                                <tr><td>07:40</td><td>09:00</td><td>09:05</td><td>09:15</td></tr>
+                                <tr><td>08:20</td><td>09:40</td><td>09:45</td><td>09:55</td></tr>
+                                <tr><td>09:20</td><td>10:40</td><td>10:45</td><td>10:55</td></tr>
+                                <tr><td>10:40</td><td>12:00</td><td>12:05</td><td>12:15</td></tr>
+                                <tr><td>12:00</td><td>13:20</td><td>13:25</td><td>13:35</td></tr>
+                                <tr><td>13:20</td><td>14:40</td><td>14:45</td><td>14:55</td></tr>
+                                <tr><td>14:40</td><td>16:00</td><td>16:05</td><td>16:15</td></tr>
+                                <tr><td>16:00</td><td>17:20</td><td>17:25</td><td>17:35</td></tr>
+                                <tr><td>17:20</td><td>18:40</td><td>18:45</td><td>18:55</td></tr>
+                                <tr><td>18:40</td><td>20:00</td><td>20:05</td><td>20:15</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>一車直達，無需轉乘</li><li><i class="fas fa-check-circle text-success me-2"></i>專人協助搬運行李</li><li><i class="fas fa-check-circle text-success me-2"></i>座位保證，乘坐舒適</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>費用高於電車</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>可能受交通狀況影響</li></ul></div>
+                    </div>
+                </div></div></div>
+                <div class="tab-pane fade" id="train-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">方案B：電車 (經由川崎)</h3>
+                    <p class="text-muted mb-4">最經濟實惠的選擇，且時間準確，不受路況影響。</p>
+                    <div class="mb-4 d-flex flex-wrap align-items-center gap-2"><span class="badge bg-secondary fs-6">立川站</span> → <span class="badge bg-success fs-6">JR南武線</span> → <span class="badge bg-secondary fs-6">JR川崎</span> <span class="fw-bold text-muted small">(步行)</span> <span class="badge bg-secondary fs-6">京急川崎</span> → <span class="badge bg-danger fs-6">京急線</span> → <span class="badge bg-secondary fs-6">羽田機場</span></div>
+                    
+                    <div class="map-container-wrapper">
+                        <a href="https://www.google.com/maps/dir/%E7%AB%8B%E5%B7%9D%E9%A7%85/%E7%BE%BD%E7%94%B0%E6%A9%9F%E5%A0%B4%E7%AC%AC%EF%BC%91%E3%83%BB%E7%AC%AC%EF%BC%92%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E9%A7%85%EF%BC%88%E4%BA%AC%E6%80%A5%EF%BC%89/@35.6235165,139.540195,11z/data=!4m14!4m13!1m5!1m1!1s0x6018e1739c2865e7:0x36e84d1d94895782!2m2!1d139.413794!2d35.698305!1m5!1m1!1s0x6018615b573a7001:0x2c64e59038d50456!2m2!1d139.7798369!2d35.5492931!3e3?entry=ttu" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟路線規劃">
+                            <div class="map-container">
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d415647.9238385618!2d139.54019500282033!3d35.62351645795498!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e2!4m5!1s0x6018e1739c2865e7%3A0x36e84d1d94895782!2z56uL5bed6aeF!3m2!1d35.698305!2d139.413794!4m5!1s0x6018615b573a7001%3A0x2c64e59038d50456!2z576p55Sw5qmp5aC056ysMeODleODq-ODs-ODrO-8leS6jOWupO-8lg!3m2!1d35.5492931!2d139.7798369!5e0!3m2!1szh-TW!2stw!4v1755740523087!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </a>
+                    </div>
+
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>費用最低，CP值高</li><li><i class="fas fa-check-circle text-success me-2"></i>時間準確，不受路況影響</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需要轉乘並步行</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>尖峰時段可能擁擠</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>需自行搬運行李</li></ul></div>
+                    </div>
+                </div></div></div>
+                <div class="tab-pane fade" id="taxi-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h3 class="fw-bold mb-3">方案C：計程車</h3>
+                    <p class="text-muted mb-4">最舒適便利的點對點服務，但費用極其高昂，僅適用於多人同行分攤或有特殊需求之情況。</p>
+                    <hr class="my-4">
+                    <div class="row">
+                        <div class="col-md-6"><h5 class="fw-bold">優點</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-check-circle text-success me-2"></i>點對點直達，無需轉乘</li><li><i class="fas fa-check-circle text-success me-2"></i>隱私性與舒適度最高</li><li><i class="fas fa-check-circle text-success me-2"></i>適合攜帶大量行李</li></ul></div>
+                        <div class="col-md-6"><h5 class="fw-bold">挑戰</h5><ul class="list-unstyled text-muted"><li><i class="fas fa-exclamation-circle text-warning me-2"></i>費用極高 (約 ¥20,000+)</li><li><i class="fas fa-exclamation-circle text-warning me-2"></i>易受交通狀況影響，耗時不固定</li></ul></div>
+                    </div>
+                </div></div></div>
             </div>
         </section>
 
-        <section id="departure" class="mb-5">
-            <h2 class="text-center fw-bold mb-4">第二部分：羽田機場出境流程</h2>
-            <div class="row g-3"><div class="col-md-4"><div class="card h-100"><div class="card-body text-center"><div class="display-4 mb-2">1️⃣</div><h5 class="card-title">航空公司報到</h5><p class="card-text text-muted small">前往3樓出發大廳，找到您航班的櫃檯，辦理登機與行李托運。</p></div></div></div><div class="col-md-4"><div class="card h-100"><div class="card-body text-center"><div class="display-4 mb-2">2️⃣</div><h5 class="card-title">安全檢查</h5><p class="card-text text-muted small">準備好護照與登機證，取出筆電、液體，脫下外套與金屬配件。</p></div></div></div><div class="col-md-4"><div class="card h-100"><div class="card-body text-center"><div class="display-4 mb-2">3️⃣</div><h5 class="card-title">出境審查</h5><p class="card-text text-muted small">建議使用「顔認証ゲート」(臉部辨識自動通關) 以節省時間。</p></div></div></div></div>
+        <section id="final-step" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">第三部分：抵達機場，完成報到</h2>
+            <div class="alert alert-info shadow-sm">
+                <h5 class="alert-heading fw-bold"><i class="fas fa-info-circle me-2"></i>重要提醒</h5>
+                <p>大部分國際線航班（包含飛往台灣的航班）均在**第3航廈 (T3)**辦理報到手續。利木津巴士會依序停靠T1、T2、T3，請務必在正確的航廈下車。</p>
+                <hr>
+                <p class="mb-0">下車後，請根據電子看板的指示，找到您所搭乘航空公司的報到櫃檯即可。</p>
+            </div>
         </section>
-        
-        <section id="arrival" class="mb-5">
-             <h2 class="text-center fw-bold mb-4">第三部分：抵達松山機場入境</h2>
-             <div class="alert alert-danger text-center fw-bold"><i class="fas fa-exclamation-triangle me-2"></i>最重要！請務必在出發前線上填寫「台灣入境卡」。</div>
-             <div class="row g-3"><div class="col-md-3"><div class="card h-100"><div class="card-body text-center"><div class="display-4 mb-2">1️⃣</div><h5 class="card-title">檢疫規定</h5><p class="card-text text-muted small">嚴禁攜帶任何肉類製品入境，違者將處以高額罰款。</p></div></div></div><div class="col-md-3"><div class="card h-100"><div class="card-body text-center"><div class="display-4 mb-2">2️⃣</div><h5 class="card-title">證照查驗</h5><p class="card-text text-muted small">向移民官員出示護照，並告知已線上填寫入境卡。</p></div></div></div><div class="col-md-3"><div class="card h-100"><div class="card-body text-center"><div class="display-4 mb-2">3️⃣</div><h5 class="card-title">提領行李</h5><p class="card-text text-muted small">根據電子看板資訊，前往對應的行李轉盤領取行李。</p></div></div></div><div class="col-md-3"><div class="card h-100"><div class="card-body text-center"><div class="display-4 mb-2">4️⃣</div><h5 class="card-title">海關檢查</h5><p class="card-text text-muted small">若無應申報物品，請直接通過綠線通道。旅程圓滿結束！</p></div></div></div></div>
+
+        <section id="arrival-songshan" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">第四部分：抵達松山機場後，前往台北市區</h2>
+            <p class="text-center text-muted mb-4">歡迎回到台北！松山機場位於市中心，交通極為便利。以下是前往台北車站及市區各處的主要交通方式。</p>
+            
+            <ul class="nav nav-tabs justify-content-center mb-4" id="songshanRouteTab" role="tablist">
+                <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#mrt-songshan-panel" type="button"><i class="fas fa-train-subway me-2"></i>台北捷運</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#bus-songshan-panel" type="button"><i class="fas fa-bus me-2"></i>市區公車</button></li>
+                <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#taxi-songshan-panel" type="button"><i class="fas fa-taxi me-2"></i>計程車</button></li>
+            </ul>
+
+            <div class="tab-content" id="songshanRouteTabContent">
+                <div class="tab-pane fade show active" id="mrt-songshan-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h4 class="fw-bold mb-3">方案A: 台北捷運 (最推薦)</h4>
+                    <p class="text-muted mb-4">最快速、方便且不受交通狀況影響的選擇，可輕鬆轉乘至台北各大區域。</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>路線：</strong>出關後步行至 <span class="badge" style="background-color: #C48C31; color: white;">文湖線(BR) 松山機場站</span>。</li>
+                        <li class="list-group-item"><strong>前往台北車站：</strong>搭乘往「動物園」方向，於「忠孝復興站」轉乘 <span class="badge bg-primary">板南線(BL)</span> 即可抵達。</li>
+                        <li class="list-group-item"><strong>預估時間：</strong>至台北車站約 20-25 分鐘 (含轉車)。</li>
+                        <li class="list-group-item"><strong>費用：</strong>單程票價約 NT$25 - NT$35。</li>
+                        <li class="list-group-item"><strong>營運時間：</strong>約 06:00 - 24:00。</li>
+                        <li class="list-group-item"><strong>優點：</strong>快速、乾淨、指標清晰、班次密集。</li>
+                        <li class="list-group-item"><strong>挑戰：</strong>尖峰時段人潮較多，攜帶超大行李可能稍有不便。</li>
+                    </ul>
+                </div></div></div>
+
+                <div class="tab-pane fade" id="bus-songshan-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h4 class="fw-bold mb-3">方案B: 市區公車 (經濟實惠)</h4>
+                    <p class="text-muted mb-4">最經濟的選擇，有多條路線可通往不同區域，適合行李輕便且熟悉路線的旅客。</p>
+                     <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>乘車點：</strong>機場出口處即有公車站牌。</li>
+                        <li class="list-group-item"><strong>主要路線：</strong>有多條路線行經敦化南北路、民權東西路等主要幹道，可查詢 Google Maps 規劃最佳路線。</li>
+                        <li class="list-group-item"><strong>車程：</strong>視目的地與交通狀況而定，約 20 - 40 分鐘。</li>
+                        <li class="list-group-item"><strong>費用：</strong>單程票價約 NT$15 - NT$30。</li>
+                        <li class="list-group-item"><strong>優點：</strong>價格最便宜，路線網絡廣泛。</li>
+                        <li class="list-group-item"><strong>挑戰：</strong>容易受交通狀況影響，需注意下車站點。</li>
+                    </ul>
+                </div></div></div>
+                
+                <div class="tab-pane fade" id="taxi-songshan-panel"><div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                    <h4 class="fw-bold mb-3">方案C: 計程車 (最便利)</h4>
+                    <p class="text-muted mb-4">點對點直達，最省時省力的選擇，特別適合攜帶多件行李或深夜抵達的旅客。</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>乘車點：</strong>機場出口處設有排班計程車招呼站。</li>
+                        <li class="list-group-item"><strong>費用：</strong>跳錶計費，至台北車站約 NT$200 - NT$300，視路況而定。</li>
+                        <li class="list-group-item"><strong>車程：</strong>約 15 - 25 分鐘。</li>
+                        <li class="list-group-item"><strong>服務時間：</strong>24小時服務。</li>
+                        <li class="list-group-item"><strong>優點：</strong>點對點直達，快速方便，適合攜帶重行李。</li>
+                        <li class="list-group-item"><strong>挑戰：</strong>費用最高。</li>
+                    </ul>
+                </div></div></div>
+            </div>
+        </section>
+
+        <section id="summary">
+            <h2 class="text-center fw-bold mb-4">✨ 總結與專家建議</h2>
+            <div class="row g-4"><div class="col-lg-6"><div class="alert alert-theme-primary h-100"><h5 class="alert-heading fw-bold">給大多數旅客的最佳建議</h5><p>選擇【利木津巴士】。它「一車直達」的極致便利性，是回程時的最佳選擇，能讓您在旅途的最後階段也保持輕鬆優雅。這是確保您準時、舒適地抵達機場的最可靠投資。</p></div></div><div class="col-lg-6"><div class="alert alert-theme-secondary h-100"><h5 class="alert-heading fw-bold">給預算有限且行李輕便的旅客</h5><p>選擇【電車】路線。這是最經濟的選擇，且行車時間穩定。只要您不介意轉乘時的短程步行與自行看管行李，這條路線的CP值無可匹敵。</p></div></div></div>
         </section>
         
         <div class="back-to-home-btn-container">
@@ -172,9 +355,49 @@
         </div>
     </div>
 
-    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-green);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">親苑→台北參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+
+    <!-- START: 懸浮雙白馬按鈕 HTML -->
+    <div id="floating-horses-container">
+        <a href="#" id="horse-to-top" class="floating-horse" title="回到頂部">
+            <img src="horse_alpha.png" alt="回到頂部">
+        </a>
+        <a href="#page-footer" id="horse-to-bottom" class="floating-horse" title="前往頁尾">
+            <img src="horse_alpha.png" alt="前往頁尾">
+        </a>
+    </div>
+    <!-- END: 懸浮雙白馬按鈕 HTML -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
+
+    <!-- START: 雙白馬功能性腳本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const topHorse = document.getElementById('horse-to-top');
+        const bottomHorse = document.getElementById('horse-to-bottom');
+        const pageFooter = document.getElementById('page-footer');
+
+        if (topHorse) {
+            topHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        if (bottomHorse && pageFooter) {
+            bottomHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                pageFooter.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
+    </script>
+    <!-- END: 雙白馬功能性腳本 -->
 </body>
 </html>

@@ -86,6 +86,54 @@
             color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
         }
     </style>
+    <!-- START: 懸浮雙白馬按鈕樣式 -->
+    <style>
+        #floating-horses-container {
+          position: fixed;
+          bottom: 25px;
+          right: 25px;
+          z-index: 1050;
+          display: flex;
+          flex-direction: column;
+          gap: 10px; /* 兩隻馬之間的間距 */
+          align-items: center;
+        }
+        .floating-horse {
+          display: block;
+          width: 80px;
+          height: auto;
+          cursor: pointer;
+          transition: opacity 0.3s ease, transform 0.2s ease;
+          opacity: 0.9;
+        }
+        .floating-horse:hover {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+        .floating-horse img {
+          width: 100%;
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+          transition: transform 0.3s ease;
+        }
+        /* 調整馬匹角度 */
+        #horse-to-top img {
+          transform: rotate(-15deg);
+        }
+        #horse-to-top:hover img {
+          transform: rotate(-20deg) scale(1.05);
+        }
+        #horse-to-bottom img {
+          transform: rotate(15deg) scaleX(-1); /* 水平翻轉 */
+        }
+        #horse-to-bottom:hover img {
+          transform: rotate(20deg) scaleX(-1) scale(1.05);
+        }
+        @media (max-width: 768px){
+          #floating-horses-container { right: 15px; bottom: 15px; gap: 5px; }
+          .floating-horse { width: 65px; }
+        }
+    </style>
+    <!-- END: 懸浮雙白馬按鈕樣式 -->
 </head>
 <body class="antialiased">
 
@@ -152,7 +200,6 @@
             </div>
         </section>
 
-        <!-- START: 新增交通指南區塊 -->
         <section id="transport-info" class="mb-5">
             <h2 class="text-center fw-bold mb-4">立川親苑 → 友心院 交通指南</h2>
              <ul class="nav nav-tabs justify-content-center mb-4" id="routeTab" role="tablist">
@@ -195,16 +242,15 @@
                 </div>
             </div>
         </section>
-        <!-- END: 新增交通指南區塊 -->
 
         <section id="map-location">
-            <h2 class="text-center fw-bold mb-4">地理位置</h2>
+            <h2 class="text-center fw-bold mb-4">友心院(半藏門博物館)地理位置</h2>
             <div class="card shadow-sm">
-                <div class="card-body p-4">
-                    <div class="text-center mb-3">
+                <div class="card-body p-4 text-center">
+                    <div class="mb-3">
                          <div class="alert alert-light text-center small mt-3 py-2">
                             <i class="fas fa-info-circle me-1"></i>
-                            地圖中的紅色箭頭標示的地點即為「友心院」，而「半藏門博物館」便設立於友心院的建築之內。
+                            地圖中的黑色箭頭標示的地點即為「友心院」，而「半藏門博物館」便設立於友心院的建築之內，按一下開啟Google Map。
                         </div>
                     </div>
                     <a href="https://www.google.com/maps/place/%E7%9C%9F%E5%A6%82%E8%8B%91+%E5%8F%8B%E5%BF%83%E9%99%A2/@35.6883268,139.7423019,17z" target="_blank" rel="noopener noreferrer" title="點擊以在 Google 地圖中開啟">
@@ -246,9 +292,49 @@
         </div>
     </div>
 
-    <footer class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">友心院參拜指南</h5><p class="mb-0 text-white-50 small">提供最完整的行動資訊和智慧搜尋服務</p></div></footer>
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">友心院參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+
+    <!-- START: 懸浮雙白馬按鈕 HTML -->
+    <div id="floating-horses-container">
+        <a href="#" id="horse-to-top" class="floating-horse" title="回到頂部">
+            <img src="horse_alpha.png" alt="回到頂部">
+        </a>
+        <a href="#page-footer" id="horse-to-bottom" class="floating-horse" title="前往頁尾">
+            <img src="horse_alpha.png" alt="前往頁尾">
+        </a>
+    </div>
+    <!-- END: 懸浮雙白馬按鈕 HTML -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
+
+    <!-- START: 雙白馬功能性腳本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const topHorse = document.getElementById('horse-to-top');
+        const bottomHorse = document.getElementById('horse-to-bottom');
+        const pageFooter = document.getElementById('page-footer');
+
+        if (topHorse) {
+            topHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        if (bottomHorse && pageFooter) {
+            bottomHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                pageFooter.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
+    </script>
+    <!-- END: 雙白馬功能性腳本 -->
 </body>
 </html>
