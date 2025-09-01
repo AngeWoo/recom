@@ -41,9 +41,6 @@
             margin-bottom: 1rem; /* 調整與副標題的間距 */
             text-shadow: 2px 2px 4px var(--btn-shadow);
         }
-        .header-subtitle {
-            font-size: 1.1rem; /* 放大字體 */
-        }
         .section-title-container {
             display: flex;
             justify-content: space-between;
@@ -55,8 +52,8 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin-top: 2.5rem;
-            margin-bottom: 0;
-            border-bottom: none;
+            margin-bottom: 0; /* Changed */
+            border-bottom: none; /* Removed */
             padding-bottom: 0.5rem;
             flex-grow: 1;
         }
@@ -87,13 +84,16 @@
             font-size: 2.5rem;
             margin-bottom: 0.75rem;
         }
+        /* 按鈕顏色應用 */
         .btn-search { background-color: var(--btn-bg-search); }
         .btn-teal { background-color: var(--btn-bg-teal); }
+        .btn-prepare { background-color: var(--btn-bg-prepare); }
         .btn-transport { background-color: var(--btn-bg-transport); }
         .btn-worship { background-color: var(--btn-bg-worship); }
         .btn-shuttle { background-color: var(--btn-bg-shuttle); }
         .btn-other { background-color: var(--btn-bg-other); }
 
+        /* --- 針對水平按鈕的特別樣式 --- */
         .btn-horizontal {
             height: 75px;
             flex-direction: row;
@@ -109,9 +109,9 @@
             text-align: center;
         }
         .back-to-home-btn {
-            display: block;
-            width: 100%;
-            margin-bottom: 1rem;
+            display: block; /* 改為 block 或 inline-block 搭配 width */
+            width: 100%;   /* <<< 新增此行讓按鈕填滿容器寬度 */
+            margin-bottom: 1rem; /* 與下方的狀態標示產生間距 */
             padding: 0.75rem 2rem;
             border: 2px solid #6c757d;
             border-radius: 50px;
@@ -125,37 +125,110 @@
             color: var(--bg-dark-blue);
         }
 
+        /* --- START: 站內搜尋助理(Modal)優化 --- */
         #aiChatModal .modal-content {
-             background-color: #f8f9fa;
-             color: #212529;
+             background-color: #f8f9fa; /* 改為淺色背景 */
+             color: #212529; /* 改為深色文字 */
         }
         #aiChatModal .modal-header, #aiChatModal .modal-footer {
-            border-color: #dee2e6;
+            border-color: #dee2e6; /* 淺色邊線 */
         }
-        #aiChatModal .btn-close { filter: none; }
-        #aiChatModal .chat-messages { height: 60vh; overflow-y: auto; padding: 1rem; }
-        #aiChatModal .message { margin-bottom: 1rem; display: flex; }
-        #aiChatModal .message-content { padding: 0.75rem 1rem; border-radius: 18px; max-width: 85%; word-wrap: break-word; overflow-wrap: break-word; }
+        #aiChatModal .btn-close {
+            filter: none; /* 移除白色濾鏡，讓 X 變回黑色 */
+        }
+        #aiChatModal .chat-messages { 
+            height: 60vh; 
+            overflow-y: auto; 
+            padding: 1rem;
+        }
+        #aiChatModal .message { 
+            margin-bottom: 1rem; 
+            display: flex; 
+        }
+        #aiChatModal .message-content { 
+            padding: 0.75rem 1rem;
+            border-radius: 18px; 
+            max-width: 85%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
         #aiChatModal .user-message { justify-content: flex-end; }
         #aiChatModal .user-message .message-content { background-color: var(--btn-bg-transport); color: white; border-bottom-right-radius: 4px; }
         #aiChatModal .bot-message { justify-content: flex-start; }
-        #aiChatModal .bot-message .message-content { background-color: #e9ecef; color: #212529; border-bottom-left-radius: 4px; }
-        #aiChatModal #chatInput { resize: none; background-color: #fff; color: #212529; border-color: #ced4da; }
-        #aiChatModal #chatInput:focus { box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25); border-color: var(--btn-bg-transport); }
-        #aiChatModal .modal-footer .btn-primary { background-color: var(--btn-bg-transport); border-color: var(--btn-bg-transport); }
+        #aiChatModal .bot-message .message-content { background-color: #e9ecef; color: #212529; border-bottom-left-radius: 4px; } /* Bot訊息用淺灰色 */
+        #aiChatModal #chatInput { 
+            resize: none; 
+            background-color: #fff; 
+            color: #212529; 
+            border-color: #ced4da;
+        }
+        #aiChatModal #chatInput:focus {
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+            border-color: var(--btn-bg-transport);
+        }
+         #aiChatModal .modal-footer .btn-primary {
+            background-color: var(--btn-bg-transport);
+            border-color: var(--btn-bg-transport);
+        }
 
+
+        /* 手機版滿版顯示 */
         @media (max-width: 768px) {
-            #aiChatModal .modal-dialog { width: 100%; max-width: 100%; height: 100%; max-height: 100%; margin: 0; }
-            #aiChatModal .modal-content { height: 100%; border-radius: 0; display: flex; flex-direction: column; }
-            #aiChatModal .modal-body { flex-grow: 1; overflow-y: auto; }
-            #aiChatModal .chat-messages { height: 100%; }
+            #aiChatModal .modal-dialog {
+                width: 100%; /* 使用百分比而非 vw */
+                max-width: 100%;
+                height: 100%; /* 使用百分比而非 vh */
+                max-height: 100%;
+                margin: 0;
+            }
+            #aiChatModal .modal-content {
+                height: 100%;
+                border-radius: 0;
+                display: flex;
+                flex-direction: column;
+            }
+            #aiChatModal .modal-body {
+                flex-grow: 1;
+                overflow-y: auto;
+            }
+            #aiChatModal .chat-messages {
+                height: 100%;
+            }
+        }
+        /* --- END: 站內搜尋助理(Modal)優化 --- */
+
+        /* 行前準備收合內容樣式 */
+        .prepare-content {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
     </style>
 
     <!-- 腳印動畫樣式 -->
     <style>
-        .lfp-trail{ position:fixed; inset:0; width:100%; height:100vh; pointer-events:none; z-index:1000; overflow:hidden; }
-        .lfp-foot{ position:absolute; width: 60px; height: 82px; background-image:url('1_transparent2.png'); background-repeat:no-repeat; background-size:contain; background-position:center; opacity:0; left: 1%; transform: translateY(110vh) rotate(var(--rot, 0deg)); animation: lfp-rise var(--dur, 38s) ease-in-out var(--delay, 0s) infinite; will-change: transform, opacity; filter: drop-shadow(0 3px 6px rgba(244, 208, 63, 0.25)); }
+        .lfp-trail{
+          position:fixed; inset:0; width:100%; height:100vh;
+          pointer-events:none; z-index:1000; overflow:hidden;
+        }
+        .lfp-foot{
+          position:absolute;
+          width: 60px; 
+          height: 82px;
+          background-image:url('1_transparent2.png');
+          background-repeat:no-repeat;
+          background-size:contain;
+          background-position:center;
+          opacity:0;
+          left: 1%;
+          transform: translateY(110vh) rotate(var(--rot, 0deg));
+          animation: lfp-rise var(--dur, 38s) ease-in-out var(--delay, 0s) infinite;
+          will-change: transform, opacity;
+          filter: drop-shadow(0 3px 6px rgba(244, 208, 63, 0.25));
+        }
         .lfp-foot.right { left: 3%; }
         @keyframes lfp-rise {
           0%   { opacity: 0; transform: translateY(110vh) rotate(var(--rot, 0deg)) scale(0.96); }
@@ -168,60 +241,11 @@
           .lfp-foot.right{ left: 2.5%; }
         }
     </style>
-
-    <!-- START: 懸浮雙白馬按鈕樣式 -->
-    <style>
-        #floating-horses-container {
-          position: fixed;
-          bottom: 25px;
-          right: 25px;
-          z-index: 1050;
-          display: flex;
-          flex-direction: column;
-          gap: 10px; /* 兩隻馬之間的間距 */
-          align-items: center;
-        }
-        .floating-horse {
-          display: block;
-          width: 80px;
-          height: auto;
-          cursor: pointer;
-          transition: opacity 0.3s ease, transform 0.2s ease;
-          opacity: 0.9;
-        }
-        .floating-horse:hover {
-          opacity: 1;
-          transform: scale(1.1);
-        }
-        .floating-horse img {
-          width: 100%;
-          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-          transition: transform 0.3s ease;
-        }
-        /* 調整馬匹角度 */
-        #horse-to-top img {
-          transform: rotate(-15deg);
-        }
-        #horse-to-top:hover img {
-          transform: rotate(-20deg) scale(1.05);
-        }
-        #horse-to-bottom img {
-          transform: rotate(15deg) scaleX(-1); /* 水平翻轉 */
-        }
-        #horse-to-bottom:hover img {
-          transform: rotate(20deg) scaleX(-1) scale(1.05);
-        }
-        @media (max-width: 768px){
-          #floating-horses-container { right: 15px; bottom: 15px; gap: 5px; }
-          .floating-horse { width: 65px; }
-        }
-    </style>
-    <!-- END: 懸浮雙白馬按鈕樣式 -->
 </head>
 <body>
     <div class="container main-container">
         <h1 class="text-center header-title"><a href="Full/index.html" style="color: inherit; text-decoration: none;"><i class="fas fa-mobile-screen-button"></i></a>  回歸親苑參拜の簡易指南</h1>
-        <p class="text-center text-white-50 header-subtitle mb-4">(提供統整資料作為參考，建議出發前與經親事務局再度確認。)</p>
+        <p class="text-center text-white-50 small mb-4">(提供統整資料作為參考，建議出發前與經親事務局再度確認。)</p>
 
         <!-- 搜尋功能按鈕 -->
         <div class="row">
@@ -418,7 +442,7 @@
         </div>
     </div>
 
-    <!-- 詳細資訊 Modal -->
+    <!-- 詳細資訊 Modal (for onPlanningStepClick) -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content" style="background-color: #f8f9fa; color: #333;">
@@ -426,7 +450,9 @@
                     <h5 class="modal-title" id="infoModalTitle">詳細資訊</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="infoModalBody"></div>
+                <div class="modal-body" id="infoModalBody">
+                    <!-- Content will be injected by JavaScript -->
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
                 </div>
@@ -446,50 +472,8 @@
       <div class="lfp-foot right" style="--rot: 4deg; --delay:15.4s; --dur:38s;"></div>
     </div>
 
-    <!-- START: 懸浮雙白馬按鈕 HTML -->
-    <div id="floating-horses-container">
-        <a href="#" id="horse-to-top" class="floating-horse" title="回到頂部">
-            <img src="horse_alpha.png" alt="回到頂部">
-        </a>
-        <a href="#page-footer" id="horse-to-bottom" class="floating-horse" title="前往頁尾">
-            <img src="horse_alpha.png" alt="前往頁尾">
-        </a>
-    </div>
-    <!-- END: 懸浮雙白馬按鈕 HTML -->
-    
     <!-- 引入必要的JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="app.js"></script>
-
-    <!-- START: 雙白馬功能性腳本 -->
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const topHorse = document.getElementById('horse-to-top');
-        const bottomHorse = document.getElementById('horse-to-bottom');
-        const pageFooter = document.getElementById('page-footer');
-
-        if (topHorse) {
-            topHorse.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-        }
-
-        if (bottomHorse && pageFooter) {
-            bottomHorse.addEventListener('click', (e) => {
-                e.preventDefault();
-                pageFooter.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        }
-    });
-    </script>
-    <!-- END: 雙白馬功能性腳本 -->
-
-    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台灣→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
 </body>
 </html>
