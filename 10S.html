@@ -14,31 +14,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 原有顏色 */
-            --theme-khaki: #C4B299;
-            --theme-purple: #A68CB8;
-            /* 新增來自圖片的陶土色 */
-            --theme-other-red: #E55934;
+            /* 定義來自圖片的陶土色作為主要顏色 */
+            --theme-application-red: #E55934;
+            --theme-khaki: #C4B299; /* 保留備用 */
 
-            --bs-primary: var(--theme-purple);
-            --bs-primary-rgb: 166, 140, 184;
-            --bs-link-color: var(--theme-purple);
-            --bs-link-hover-color: #856a94;
+            /* 將 Bootstrap 和舊主題的主要顏色都指向新的陶土色 */
+            --bs-primary: var(--theme-application-red);
+            --theme-purple: var(--theme-application-red); /* 替換原有的紫色 */
+            
+            --bs-primary-rgb: 229, 89, 52; /* #E55934 的 RGB 值 */
+            --bs-link-color: var(--theme-application-red);
+            --bs-link-hover-color: #c34a2c; /* 較深的陶土色 */
         }
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #f8f9fa;
         }
+        /* 以下樣式會自動繼承新的 --bs-primary 顏色 */
         .nav-tabs .nav-link.active {
-            background-color: var(--theme-purple);
-            border-color: var(--theme-purple);
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
             color: white;
         }
         .nav-tabs .nav-link {
             color: var(--bs-link-hover-color);
         }
         .alert-theme-primary {
-            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+            color: #7d321d; background-color: #fce8e3; border-color: #f8d3c9;
         }
         .alert-theme-secondary {
             color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
@@ -51,20 +53,19 @@
             margin-top: 3rem;
             text-align: center;
         }
-        /* 修改「回到首頁」按鈕顏色 */
         .back-to-home-btn {
             display: inline-block;
             margin-bottom: 1rem;
             padding: 0.75rem 2rem;
-            border: 2px solid var(--theme-other-red); /* 修改邊框顏色 */
+            border: 2px solid var(--theme-application-red);
             border-radius: 50px;
-            color: var(--theme-other-red); /* 修改文字顏色 */
+            color: var(--theme-application-red);
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.2s, color 0.2s;
         }
         .back-to-home-btn:hover {
-            background-color: var(--theme-other-red); /* 修改滑鼠懸停背景色 */
+            background-color: var(--theme-application-red);
             color: white;
         }
         .airline-logo {
@@ -127,7 +128,7 @@
 
     <!-- Header: Navbar -->
     <!-- 修改頂部導覽列背景顏色 -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-other-red);">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-application-red);">
         <div class="container">
             <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>台灣東京航班指南</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -339,7 +340,7 @@
     </div>
 
     <!-- 修改底部頁尾背景顏色 -->
-    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-other-red);"><div class="container text-center"><h5 class="mb-1">台灣→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-application-red);"><div class="container text-center"><h5 class="mb-1">台灣→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
 
     <!-- START: 懸浮雙白馬按鈕 HTML -->
     <div id="floating-horses-container">
