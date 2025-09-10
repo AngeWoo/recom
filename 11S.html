@@ -15,8 +15,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* 原有顏色 */
             --theme-khaki: #C4B299;
             --theme-purple: #A68CB8;
+            /* 新增來自圖片的陶土色 */
+            --theme-other-red: #E55934;
+
             --bs-primary: var(--theme-purple);
             --bs-primary-rgb: 166, 140, 184;
             --bs-link-color: var(--theme-purple);
@@ -40,19 +44,20 @@
             margin-top: 3rem;
             text-align: center;
         }
+        /* 修改「回到首頁」按鈕顏色 */
         .back-to-home-btn {
             display: inline-block;
             margin-bottom: 1rem;
             padding: 0.75rem 2rem;
-            border: 2px solid var(--theme-khaki);
+            border: 2px solid var(--theme-other-red); /* 修改邊框顏色 */
             border-radius: 50px;
-            color: var(--theme-khaki);
+            color: var(--theme-other-red); /* 修改文字顏色 */
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.2s, color 0.2s;
         }
         .back-to-home-btn:hover {
-            background-color: var(--theme-khaki);
+            background-color: var(--theme-other-red); /* 修改滑鼠懸停背景色 */
             color: white;
         }
     </style>
@@ -108,7 +113,8 @@
 <body class="antialiased">
 
     <!-- Header: Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-khaki);">
+    <!-- 修改頂部導覽列背景顏色 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-other-red);">
         <div class="container">
             <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>團參申請指南</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -222,7 +228,8 @@
         </div>
     </div>
 
-    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">團參申請指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+    <!-- 修改底部頁尾背景顏色 -->
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-other-red);"><div class="container text-center"><h5 class="mb-1">團參申請指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
 
     <!-- START: 懸浮雙白馬按鈕 HTML -->
     <div id="floating-horses-container">
