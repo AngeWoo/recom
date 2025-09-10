@@ -18,6 +18,9 @@
             --theme-red: #EE3239;
             --theme-yellow: #FECE00;
             --theme-grape: #9D6AB9;
+            
+            /* 新增來自圖片的藍色 */
+            --theme-transport-blue: #0077B6;
 
             --bs-primary: var(--theme-red);
             --bs-primary-rgb: 238, 50, 57;
@@ -72,19 +75,20 @@
             margin-top: 3rem;
             text-align: center;
         }
+        /* 修改「回到首頁」按鈕顏色 */
         .back-to-home-btn {
             display: inline-block;
             margin-bottom: 1rem;
             padding: 0.75rem 2rem;
-            border: 2px solid var(--theme-green);
+            border: 2px solid var(--theme-transport-blue); /* 修改邊框顏色 */
             border-radius: 50px;
-            color: var(--theme-green);
+            color: var(--theme-transport-blue); /* 修改文字顏色 */
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.2s, color 0.2s;
         }
         .back-to-home-btn:hover {
-            background-color: var(--theme-green);
+            background-color: var(--theme-transport-blue); /* 修改滑鼠懸停背景色 */
             color: white;
         }
     </style>
@@ -139,7 +143,8 @@
 </head>
 <body class="antialiased">
 
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-green);">
+    <!-- 修改頂部導覽列背景顏色 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-transport-blue);">
         <div class="container">
             <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>立川成田桃園交通指南</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -337,7 +342,8 @@
         </div>
     </div>
 
-    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-green);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+    <!-- 修改底部頁尾背景顏色 -->
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-transport-blue);"><div class="container text-center"><h5 class="mb-1">台北→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
 
     <!-- START: 懸浮雙白馬按鈕 HTML -->
     <div id="floating-horses-container">
