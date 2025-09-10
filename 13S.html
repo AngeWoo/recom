@@ -14,17 +14,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 原有顏色變數 */
+            /* 舊顏色 */
             --theme-khaki: #C4B299;
             --theme-purple: #A68CB8;
-            
-            /* 新增琥珀色變數以匹配首頁按鈕 */
+            /* 新增並設定主要顏色為琥珀色 */
             --theme-amber: #ee9b00;
 
-            --bs-primary: var(--theme-purple);
-            --bs-primary-rgb: 166, 140, 184;
-            --bs-link-color: var(--theme-purple);
-            --bs-link-hover-color: #856a94;
+            --bs-primary: var(--theme-amber);
+            --bs-primary-rgb: 238, 155, 0;
+            --bs-link-color: var(--theme-amber);
+            --bs-link-hover-color: #d48c00; /* 較深的琥珀色 */
         }
         body {
             font-family: 'Noto Sans TC', sans-serif;
@@ -43,15 +42,15 @@
             display: inline-block;
             margin-bottom: 1rem;
             padding: 0.75rem 2rem;
-            border: 2px solid var(--theme-amber); /* 修改邊框顏色 */
+            border: 2px solid var(--theme-amber);
             border-radius: 50px;
-            color: var(--theme-amber); /* 修改文字顏色 */
+            color: var(--theme-amber);
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.2s, color 0.2s;
         }
         .back-to-home-btn:hover {
-            background-color: var(--theme-amber); /* 修改滑鼠懸停背景色 */
+            background-color: var(--theme-amber);
             color: white;
         }
         .map-container-wrapper {
@@ -76,17 +75,20 @@
             border: 0;
             pointer-events: none; /* 讓點擊事件穿透到外層 a 標籤 */
         }
-        /* 交通頁籤樣式 */
+        /* 修改交通頁籤樣式 */
         .nav-tabs .nav-link.active {
-            background-color: var(--theme-purple);
-            border-color: var(--theme-purple);
+            background-color: var(--theme-amber);
+            border-color: var(--theme-amber);
             color: white;
         }
         .nav-tabs .nav-link {
             color: var(--bs-link-hover-color);
         }
+        /* 修改提示框顏色 */
         .alert-theme-primary {
-            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+            color: #7a4f01; 
+            background-color: #fff3cd; 
+            border-color: #ffeeba;
         }
         .alert-theme-secondary {
             color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
@@ -175,6 +177,7 @@
                     <h3 class="card-title fw-bold mb-4">詳細資訊</h3>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex align-items-center ps-0">
+                            <!-- text-primary 將會套用 --bs-primary 的顏色 -->
                             <i class="fas fa-map-marker-alt fa-fw me-3 text-primary fs-5"></i>
                             <div><strong>所在地：</strong>〒102-0082 東京都千代田区一番町25-7</div>
                         </li>
@@ -193,6 +196,7 @@
                     </ul>
                 </div>
                 <div class="card-footer bg-white text-center p-3">
+                    <!-- btn-primary 將會套用 --bs-primary 的顏色 -->
                     <a href="https://www.hanzomonmuseum.jp/access/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                         <i class="fas fa-link me-2"></i>前往半藏門博物館官方網站
                     </a>
