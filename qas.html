@@ -9,27 +9,26 @@
     <link rel="stylesheet" href="main.css?v=1.6">
     <style>
         :root {
-            /* 原有顏色 */
+            /* 舊顏色 */
             --theme-green: #5B7D4B;
             --theme-beige: #EADFD4;
-            /* 新增琥珀色變數 */
+            /* 新增並設定主要顏色為琥珀色 */
             --theme-amber: #ee9b00;
 
-            /* 主要內容顏色維持不變 */
-            --bs-primary: var(--theme-green);
-            --bs-primary-rgb: 91, 125, 75;
-            --bs-link-color: var(--theme-green);
-            --bs-link-hover-color: #4a663c;
+            --bs-primary: var(--theme-amber);
+            --bs-primary-rgb: 238, 155, 0;
+            --bs-link-color: var(--theme-amber);
+            --bs-link-hover-color: #d48c00; /* 較深的琥珀色 */
         }
         .btn-primary {
-            --bs-btn-bg: var(--theme-green);
-            --bs-btn-border-color: var(--theme-green);
-            --bs-btn-hover-bg: #4a663c;
-            --bs-btn-hover-border-color: #4a663c;
+            --bs-btn-bg: var(--theme-amber);
+            --bs-btn-border-color: var(--theme-amber);
+            --bs-btn-hover-bg: #d48c00;
+            --bs-btn-hover-border-color: #d48c00;
         }
         .list-group-item.active {
-            background-color: var(--theme-green);
-            border-color: var(--theme-green);
+            background-color: var(--theme-amber);
+            border-color: var(--theme-amber);
         }
         .navbar-brand, .navbar-nav .nav-link {
             font-weight: bold !important;
@@ -44,16 +43,24 @@
             display: inline-block;
             margin-bottom: 1rem;
             padding: 0.75rem 2rem;
-            border: 2px solid var(--theme-amber); /* 修改邊框顏色 */
+            border: 2px solid var(--theme-amber);
             border-radius: 50px;
-            color: var(--theme-amber); /* 修改文字顏色 */
+            color: var(--theme-amber);
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.2s, color 0.2s;
         }
         .back-to-home-btn:hover {
-            background-color: var(--theme-amber); /* 修改滑鼠懸停背景色 */
+            background-color: var(--theme-amber);
             color: white;
+        }
+        /* 修改頁首標題顏色以匹配主題 */
+        .page-header-qa .page-title { 
+            color: var(--theme-amber); 
+        }
+        .page-header-qa .page-subtitle { 
+            color: var(--theme-amber); 
+            opacity: 0.85; 
         }
     </style>
     <!-- START: 懸浮雙白馬按鈕樣式 -->
