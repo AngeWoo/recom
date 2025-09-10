@@ -14,31 +14,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* 原有顏色 */
-            --theme-khaki: #C4B299;
-            --theme-purple: #A68CB8;
-            /* 新增來自圖片的綠色 */
-            --theme-green: #40916C;
+            /* 定義來自圖片的綠色作為主要顏色 */
+            --theme-shuttle-green: #40916C;
+            --theme-khaki: #C4B299; /* 保留備用 */
 
-            --bs-primary: var(--theme-purple);
-            --bs-primary-rgb: 166, 140, 184;
-            --bs-link-color: var(--theme-purple);
-            --bs-link-hover-color: #856a94;
+            /* 將 Bootstrap 和舊主題的主要顏色都指向新的綠色 */
+            --bs-primary: var(--theme-shuttle-green);
+            --theme-purple: var(--theme-shuttle-green); /* 替換原有的紫色 */
+
+            --bs-primary-rgb: 64, 145, 108; /* #40916C 的 RGB 值 */
+            --bs-link-color: var(--theme-shuttle-green);
+            --bs-link-hover-color: #337356; /* 較深的綠色用於滑鼠懸停 */
         }
         body {
             font-family: 'Noto Sans TC', sans-serif;
             background-color: #f8f9fa;
         }
+        /* 以下樣式會自動繼承新的 --bs-primary 顏色 */
         .nav-tabs .nav-link.active {
-            background-color: var(--theme-purple);
-            border-color: var(--theme-purple);
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
             color: white;
         }
         .nav-tabs .nav-link {
             color: var(--bs-link-hover-color);
         }
         .alert-theme-primary {
-            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+            color: #1c4b2c; background-color: #d8f3e5; border-color: #c4ebd7;
         }
         .alert-theme-secondary {
             color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
@@ -74,15 +76,15 @@
             display: inline-block;
             margin-bottom: 1rem;
             padding: 0.75rem 2rem;
-            border: 2px solid var(--theme-green); /* 修改邊框顏色 */
+            border: 2px solid var(--theme-shuttle-green);
             border-radius: 50px;
-            color: var(--theme-green); /* 修改文字顏色 */
+            color: var(--theme-shuttle-green);
             text-decoration: none;
             font-weight: 700;
             transition: background-color 0.2s, color 0.2s;
         }
         .back-to-home-btn:hover {
-            background-color: var(--theme-green); /* 修改滑鼠懸停背景色 */
+            background-color: var(--theme-shuttle-green);
             color: white;
         }
     </style>
@@ -139,7 +141,7 @@
 
     <!-- Header -->
     <!-- 修改頂部導覽列背景顏色 -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-green);">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-shuttle-green);">
         <div class="container">
             <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>應現院交通指南</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -233,7 +235,7 @@
     </div>
 
     <!-- 修改底部頁尾背景顏色 -->
-    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-green);"><div class="container text-center"><h5 class="mb-1">應現院→Shinnyo Yana 參訪指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-shuttle-green);"><div class="container text-center"><h5 class="mb-1">應現院→Shinnyo Yana 參訪指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
 
     <!-- START: 懸浮雙白馬按鈕 HTML -->
     <div id="floating-horses-container">
