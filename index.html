@@ -152,6 +152,28 @@
         }
     </style>
 
+    <!-- ***** 立體感按鈕 START ***** -->
+    <style>
+        .guide-button {
+            border: none;
+            /* 透過 filter 讓每種顏色的按鈕都能產生一個更深的陰影色 */
+            border-bottom: 5px solid;
+            border-color: color-mix(in srgb, currentColor, black 35%);
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out, border-bottom-width 0.15s ease-out;
+        }
+        .guide-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px var(--btn-shadow);
+        }
+        .guide-button:active {
+            transform: translateY(2px); /* 按下時往下移動 */
+            border-bottom-width: 2px; /* 底部邊框變薄，模擬被壓扁 */
+            box-shadow: 0 2px 5px var(--btn-shadow); /* 陰影變小 */
+        }
+    </style>
+    <!-- ***** 立體感按鈕 END ***** -->
+
+
     <!-- 腳印動畫樣式 -->
     <style>
         .lfp-trail{ position:fixed; inset:0; width:100%; height:100vh; pointer-events:none; z-index:1000; overflow:hidden; }
@@ -497,6 +519,6 @@
     </script>
     <!-- END: 雙白馬功能性腳本 -->
 
-    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">回歸親苑の簡易指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-khaki);"><div class="container text-center"><h5 class="mb-1">台灣→親苑參拜指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
 </body>
 </html>
