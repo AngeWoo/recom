@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>指南：團參申請</title>
+    <!-- START: 框架與樣式替換 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <!-- END: 框架與樣式替換 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 原有顏色 */
+            --theme-khaki: #C4B299;
+            --theme-purple: #A68CB8;
+            /* 新增來自圖片的陶土色 */
+            --theme-other-red: #E55934;
+
+            --bs-primary: var(--theme-purple);
+            --bs-primary-rgb: 166, 140, 184;
+            --bs-link-color: var(--theme-purple);
+            --bs-link-hover-color: #856a94;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .alert-theme-primary {
+            color: #533764; background-color: #e6ddeb; border-color: #d3c3de;
+        }
+        .alert-theme-secondary {
+            color: #6a5840; background-color: #f0e9e1; border-color: #e5dacc;
+        }
+        .navbar-brand, .navbar-nav .nav-link {
+            font-weight: bold !important;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+        }
+        .back-to-home-btn-container {
+            margin-top: 3rem;
+            text-align: center;
+        }
+        /* 修改「回到首頁」按鈕顏色 */
+        .back-to-home-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-other-red); /* 修改邊框顏色 */
+            border-radius: 50px;
+            color: var(--theme-other-red); /* 修改文字顏色 */
+            text-decoration: none;
+            font-weight: 700;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover {
+            background-color: var(--theme-other-red); /* 修改滑鼠懸停背景色 */
+            color: white;
+        }
+    </style>
+    <!-- START: 懸浮雙白馬按鈕樣式 -->
+    <style>
+        #floating-horses-container {
+          position: fixed;
+          bottom: 25px;
+          right: 25px;
+          z-index: 1050;
+          display: flex;
+          flex-direction: column;
+          gap: 10px; /* 兩隻馬之間的間距 */
+          align-items: center;
+        }
+        .floating-horse {
+          display: block;
+          width: 80px;
+          height: auto;
+          cursor: pointer;
+          transition: opacity 0.3s ease, transform 0.2s ease;
+          opacity: 0.9;
+        }
+        .floating-horse:hover {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+        .floating-horse img {
+          width: 100%;
+          filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+          transition: transform 0.3s ease;
+        }
+        /* 調整馬匹角度 */
+        #horse-to-top img {
+          transform: rotate(-15deg);
+        }
+        #horse-to-top:hover img {
+          transform: rotate(-20deg) scale(1.05);
+        }
+        #horse-to-bottom img {
+          transform: rotate(15deg) scaleX(-1); /* 水平翻轉 */
+        }
+        #horse-to-bottom:hover img {
+          transform: rotate(20deg) scaleX(-1) scale(1.05);
+        }
+        @media (max-width: 768px){
+          #floating-horses-container { right: 1px; bottom: 15px; gap: 5px; }
+          .floating-horse { width: 65px; }
+        }
+    </style>
+    <!-- END: 懸浮雙白馬按鈕樣式 -->
+</head>
+<body class="antialiased">
+
+    <!-- Header: Navbar -->
+    <!-- 修改頂部導覽列背景顏色 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-other-red);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>團參申請指南</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-5">
+
+        <section class="text-center mb-5">
+            <h1 class="display-4 fw-bold text-dark mb-3">團體參拜申請指南</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">請詳閱團參的申請流程與注意事項。</p>
+        </section>
+
+        <section id="preparation" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✈️ 申請前的準備與資格確認</h2>
+            <div class="row g-4">
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">1. 確認團體人數</h5><p class="card-text text-muted">本申請適用於10人以上（含）的團體。9人（含）以下的小團體，不需提交團參計畫書，但請務必於7天前（不含苑休日）提出既有的申請方法。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 遵守提交期限</h5><p class="card-text text-muted">根據團參規模，提交期限不同：<br><b>10-40人團體：</b>一個月前。<br><b>41人以上團體：</b>兩個月前。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 投保旅遊保險</h5><p class="card-text text-muted"><b>所有參加團參的成員都「必須」投保海外旅行平安險</b>。另請考量自身體狀況，避免勉強，並務必每天攜帶常備藥。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="application-process" class="mb-5">
+            <h2 class="text-center fw-bold mb-2">📝 申請流程</h2>
+            <div class="card shadow-lg"><div class="card-body p-4 p-md-5">
+                <h3 class="fw-bold mb-3">逐步指南</h3>
+                <p class="text-muted mb-4">請依照以下步驟操作，以確保您的團參申請能被順利受理。</p>
+                <ol class="list-group list-group-numbered">
+                    <li class="list-group-item">向所屬事務局洽詢，領取「團參計劃書」與「團參名單」的電子檔案。</li>
+                    <li class="list-group-item">詳實填寫團體資訊，包含預計行程、參拜地點與所有成員的真實姓名。</li>
+                    <li class="list-group-item">將填寫完整的計劃書與名單，透過電子郵件方式提交給事務局。</li>
+                    <li class="list-group-item">負責人請為團體準備統一的識別名牌或識別帶，並於當天配戴。</li>
+                    <li class="list-group-item">為避免報到擁擠，請負責人預先統整接心人數與費用，於櫃檯統一辦理。</li>
+                    <li class="list-group-item">若行程包含參拜應現院以外的皈依處（例如長岡紀念館等），請一併填寫在計劃書中。</li>
+                </ol>
+            </div></div>
+        </section>
+
+        <section id="final-leg" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">✨ 重要提醒事項</h2>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">個人修行與住宿</h5><p class="text-muted">若團員欲參加接心、會座等個人修行，仍須另外提交個人申請。團體住宿（如飯店或研修所）也需由團體自行安排與申請，並遵守各設施規定。</p></div></div></div>
+                <div class="col-lg-4 col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">翻譯設備須知</h5><p class="text-muted">如需法會中文翻譯，請務必自備<b>智慧型手機</b>及「<b>有線耳機</b>」，並預先安裝ZOOM應用程式，以便收聽法會中文翻譯。</p></div></div></div>
+                <div class="col-lg-4 col-md-12"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">法會與時程調整</h5><p class="text-muted">部分特殊法會（如山梨縣真澄寺法會、大祭等）可能有座位名額限制，請務必事先向事務局確認。若未按時提交計畫，可能無法提供翻譯及座位。即使準時提交，苑方仍可能因現場狀況進行調整，懇請諒解。</p></div></div></div>
+            </div>
+        </section>
+
+        <section id="summary" class="mb-5">
+            <h2 class="text-center fw-bold mb-4">申請書下載</h2>
+            <div class="card shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="row g-3 justify-content-center">
+                        <div class="col-md-4">
+                            <a href="團參申請書1.pdf" target="_blank" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-file-alt me-2"></i>Ⅰ總本部
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="團參申請書2.pdf" target="_blank" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-file-alt me-2"></i>Ⅱ應現院➡總本部
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a href="團參申請書3.pdf" target="_blank" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-file-alt me-2"></i>Ⅲ泊 總本部➡應現院
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn">
+                <i class="fas fa-home me-2"></i> 回到首頁
+            </a>
+        </div>
+
+    </main>
+    
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改底部頁尾背景顏色 -->
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-other-red);"><div class="container text-center"><h5 class="mb-1">回歸親苑の簡易指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+
+    <!-- START: 懸浮雙白馬按鈕 HTML -->
+    <div id="floating-horses-container">
+        <a href="#" id="horse-to-top" class="floating-horse" title="回到頂部">
+            <img src="horse_alpha.png" alt="回到頂部">
+        </a>
+        <a href="#page-footer" id="horse-to-bottom" class="floating-horse" title="前往頁尾">
+            <img src="horse_alpha.png" alt="前往頁尾">
+        </a>
+    </div>
+    <!-- END: 懸浮雙白馬按鈕 HTML -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+
+    <!-- START: 雙白馬功能性腳本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const topHorse = document.getElementById('horse-to-top');
+        const bottomHorse = document.getElementById('horse-to-bottom');
+        const pageFooter = document.getElementById('page-footer');
+
+        if (topHorse) {
+            topHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        if (bottomHorse && pageFooter) {
+            bottomHorse.addEventListener('click', (e) => {
+                e.preventDefault();
+                pageFooter.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        }
+    });
+    </script>
+    <!-- END: 雙白馬功能性腳本 -->
+</body>
+</html>
