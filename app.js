@@ -61,6 +61,7 @@ let allQaData = [];
 let searchCorpus = [];
 let heroMapInstance = null;
 let dataSourceStatus = 'loading';
+let dataReadyPromise = null;   // 試算表資料載入完成的 Promise（搜尋時會等待）
 
 document.addEventListener('DOMContentLoaded', initializeApp);
 
@@ -76,15 +77,20 @@ async function initializeApp() {
     displayExchangeRate(); // 呼叫統一的匯率函式
     setupBackToTopHorse(); // 啟用回到頂部白馬功能
 
-    const loadingIndicator = document.getElementById('loading-indicator');
-    if(loadingIndicator) loadingIndicator.style.display = 'flex';
-    else {
-        const indicator = document.createElement('div');
-        indicator.id = 'loading-indicator';
-        indicator.innerHTML = `<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); z-index:2000; display:flex; flex-direction:column; justify-content:center; align-items:center;"><div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div><p class="mt-3 text-muted">資料載入中...</p></div>`;
-        document.body.prepend(indicator);
-    }
-    
+    // 靜態頁面（交通、申請指南等）不需要等資料：由搜尋結果進入時立即標示並捲動
+    const needsSheetData = !!document.getElementById('qa-accordion-container');
+    if (parseFindHash() && !needsSheetData) setTimeout(applySearchHighlight, 0);
+
+    // 試算表資料在背景載入，不再用「資料載入中」遮住整個頁面
+    dataReadyPromise = loadSiteData();
+    await dataReadyPromise;
+    if (parseFindHash() && needsSheetData) setTimeout(applySearchHighlight, 0);
+}
+
+/**
+ * 載入 Google Sheets 資料（失敗時改用本地備份），並更新需要資料的區塊
+ */
+async function loadSiteData() {
     try {
         await loadAllDataFromCsv();
         dataSourceStatus = 'api';
@@ -92,21 +98,14 @@ async function initializeApp() {
     } catch (error) {
         console.warn(`⚠️ 無法從 CSV 載入即時資料: ${error.message}`);
         showGlobalErrorBanner(`無法載入即時資料，已切換至離線備份模式。`);
-        console.log('🔄 切換至本地備份資料模式...');
         loadAllDataFromBackup();
         dataSourceStatus = 'backup';
         console.log('🔄 資料來源: 本地備份');
     }
-
     buildSearchCorpus();
-    if (parseFindHash()) setTimeout(applySearchHighlight, 0); // 由搜尋結果進入：標示關鍵字並捲動到該段落
     if (document.getElementById('heroMap') || document.getElementById('shinyuanMap')) initializePage('homeOrShinyuan');
     if (document.getElementById('qa-accordion-container')) initializePage('qa');
-    
     updateFooterDataSourceStatus();
-    
-    const finalLoadingIndicator = document.getElementById('loading-indicator');
-    if(finalLoadingIndicator) finalLoadingIndicator.style.display = 'none';
 }
 
 function parseCsv(csvText) {
@@ -233,14 +232,18 @@ function showInfoModal(title, data) {
     const modalBody = document.getElementById("infoModalBody");
     if (data && data.length > 0) {
         modalBody.innerHTML = data.map(item => {
+            const e = escapeHtml;
             let content = "", cardTitle = item.name_zh || item.name_jp || item.name || "詳細資訊";
             if (item.transport_type) {
                 cardTitle = `${item.from_location} → ${item.to_location}`;
-                content += `<p><strong>交通工具：</strong>${item.transport_type}</p><p><strong>時間：</strong>${item.duration}分鐘 | <strong>費用：</strong>¥${item.cost}</p>`;
+                content += `<p><strong>交通工具：</strong>${e(item.transport_type)}</p><p><strong>時間：</strong>約${e(item.duration)}分鐘 | <strong>費用：</strong>約¥${e(item.cost)}</p>`;
             }
-            if (item.price_per_night) content += `<p><strong>房價：</strong>¥${item.price_per_night}/晚</p>`;
-            const bookingLink = item.booking_url ? `<div class="mt-3"><a href="${item.booking_url}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">前往訂房</a></div>` : "";
-            return `<div class="card mb-3"><div class="card-body"><h5>${cardTitle}</h5><hr>${content}<p class="mt-2">${item.description || ""}</p>${bookingLink}</div></div>`;
+            if (item.price_per_night) content += `<p><strong>房價：</strong>約¥${e(item.price_per_night)}/晚</p>`;
+            if (item.address) content += `<p><strong>地址：</strong>${e(item.address)}</p>`;
+            const bookingUrl = safeUrl(item.booking_url);
+            const bookingLink = bookingUrl ? `<div class="mt-3"><a href="${bookingUrl}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">前往官方網站</a></div>` : "";
+            const tips = item.tips ? `<p class="text-muted small mb-0">${linkify(item.tips)}</p>` : "";
+            return `<div class="card mb-3"><div class="card-body"><h5>${e(cardTitle)}</h5><hr>${content}<p class="mt-2">${linkify(item.description || "")}</p>${tips}${bookingLink}</div></div>`;
         }).join("");
     } else {
         modalBody.innerHTML = '<div class="alert alert-warning">此類別的資料目前無法載入。</div>';
@@ -279,7 +282,7 @@ async function displayExchangeRate() {
 
 function initializePage(pageType) {
     if (pageType === 'homeOrShinyuan' && document.getElementById('shinyuanMap')) {
-        renderWorshipSteps();
+        if (typeof renderWorshipSteps === 'function') renderWorshipSteps();
     } else if (pageType === 'qa') {
         renderQACategories();
         renderQAItems('all');
@@ -337,8 +340,8 @@ function renderQACategories() {
     }
     const categories = ['all', ...new Set(allQaData.map(item => item.category).filter(Boolean))];
     container.innerHTML = categories.map(cat =>
-        `<button type="button" class="list-group-item list-group-item-action ${cat === 'all' ? 'active' : ''}" data-category="${cat}">
-            ${cat === 'all' ? '全部問題' : cat}
+        `<button type="button" class="list-group-item list-group-item-action ${cat === 'all' ? 'active' : ''}" data-category="${escapeHtml(cat)}">
+            ${cat === 'all' ? '全部問題' : escapeHtml(cat)}
         </button>`
     ).join('');
 }
@@ -352,16 +355,16 @@ function renderQAItems(category) {
         return;
     }
     container.innerHTML = items.map((item, index) => {
-        const collapseId = `qa-${category.replace(/\s+/g, '-')}-${index}`;
-        const answer = linkify(item.answer || "").replace(/\n/g, "<br>");
+        const collapseId = `qa-${index}`;
+        const answer = linkify(item.answer || "");
         const imageUrl = getImageUrl(item.image_url);
-        const imageHtml = imageUrl ? `<img src="${imageUrl}" class="img-fluid rounded mt-3" alt="問題附圖">` : "";
+        const imageHtml = imageUrl ? `<img src="${escapeHtml(imageUrl)}" class="img-fluid rounded mt-3" alt="問題附圖" loading="lazy">` : "";
         const remarks = linkify(item.備註 || "");
         const remarksHtml = remarks ? `<div class="remark-section mt-3" style="background-color: #f8f9fa; border-left: 3px solid #6c757d; padding: 10px; font-size: 0.9em;"><small><strong>備註：</strong> ${remarks}</small></div>` : "";
         return `<div class="accordion-item">
             <h2 class="accordion-header" id="heading-${collapseId}">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${collapseId}">
-                    ${item.question || "無標題問題"}
+                    ${escapeHtml(item.question || "無標題問題")}
                 </button>
             </h2>
             <div id="collapse-${collapseId}" class="accordion-collapse collapse" data-bs-parent="#qa-accordion-container">
@@ -381,11 +384,20 @@ function getImageUrl(path) {
     return path.startsWith('/') ? path.substring(1) : path;
 }
 
+/** 將試算表文字轉為安全的 HTML：先跳脫特殊字元，再把網址轉成連結、換行轉成 <br> */
 function linkify(text) {
     if (!text) return "";
-    if (text.includes("<a href")) return text;
-    const urlRegex = /(https?:\/\/[^\s,]+)/g;
-    return text.replace(urlRegex, url => `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`);
+    const urlRegex = /(https?:\/\/[^\s,，、。<>"']+)/g;
+    return String(text).split(urlRegex).map((part, i) => {
+        const safe = escapeHtml(part);
+        return i % 2 ? `<a href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>` : safe;
+    }).join("").replace(/\n/g, "<br>");
+}
+
+/** 只接受 http(s) 網址，避免試算表內容被當成指令碼執行 */
+function safeUrl(url) {
+    const value = String(url ?? "").trim();
+    return /^https?:\/\//i.test(value) ? escapeHtml(value) : "";
 }
 
 // ====================================================================
@@ -400,7 +412,8 @@ const SITE_PAGES_FALLBACK = [            // 首頁讀取失敗時的備用清單
 ];
 const SEARCH_PAGE_SIZE = 6;              // 每次顯示幾筆結果
 const SEARCH_MAX_PER_PAGE = 3;           // 同一頁面最多列出幾筆，避免洗版
-const SEARCH_SUGGESTIONS = ['利木津巴士', '接心申請', '研修所', '住宿', '時刻表'];
+// 預設關鍵字：顯示在搜尋視窗的開場訊息中，點一下就直接搜尋（可自行增減）
+const SEARCH_SUGGESTIONS = ['利木津巴士', '時刻表', '羽田', '成田', '接心申請', '研修所', '團參', '住宿', '機票', '護照', '應現院', '友心院', '申請書', '地圖'];
 
 const HEADING_SELECTOR = 'h1,h2,h3,h4,h5,h6';
 const INDEX_SKIP_SELECTOR = 'script,style,noscript,template,nav,footer,iframe,svg,canvas,.modal,.lfp-trail,#floating-horses-container,.back-to-home-btn-container,.visually-hidden';
@@ -728,9 +741,11 @@ function setupSearchUI() {
     const input = document.getElementById("chatInput");
     if (input) input.placeholder = "輸入關鍵字，例如：利木津巴士、接心申請";
 
+    // 開場訊息：原本的說明文字改為常用關鍵字，點一下就直接搜尋
     const greeting = modalEl.querySelector("#chatMessages .bot-message .message-content");
     if (greeting) {
-        greeting.innerHTML = `您好！輸入關鍵字即可搜尋全站內容，包含各頁面內文、交通、住宿、Q&amp;A 與文件下載。多個關鍵字請用空格分開。
+        greeting.classList.add("ss-greeting");
+        greeting.innerHTML = `<div class="ss-greeting-title">常用關鍵字（點一下就能搜尋）</div>
             <div class="ss-chips">${SEARCH_SUGGESTIONS.map(s => `<button type="button" class="ss-chip" data-search-suggestion="${escapeHtml(s)}">${escapeHtml(s)}</button>`).join('')}</div>`;
     }
 
@@ -772,7 +787,11 @@ function injectSearchStyles() {
         .ss-more { margin-top: .6rem; }
         .ss-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .6rem; }
         .ss-chip { padding: .2rem .7rem; border: 1px solid #adb5bd; border-radius: 50rem; background: #fff; color: #343a40; font-size: .85rem; }
+        .ss-chip { flex-shrink: 0; white-space: nowrap; }
         .ss-chip:hover { border-color: #0077B6; color: #0b5a85; }
+        #aiChatModal .message-content.ss-greeting { max-width: 100%; }
+        .ss-greeting-title { font-weight: 700; }
+        .ss-chip { padding: .35rem .85rem; font-size: .95rem; }
         .ss-target { outline: 3px solid #ee9b00; outline-offset: 4px; border-radius: 4px; scroll-margin-top: 90px; }
     `;
     document.head.appendChild(style);
@@ -792,7 +811,7 @@ async function sendSearchMessage(presetQuery) {
     const userMessage = addChatMessage(query, "user");
     if (input) input.value = "";
     const indicator = addChatMessage("搜尋中...", "bot");
-    await ensurePageIndex();
+    await Promise.all([ensurePageIndex(), dataReadyPromise]);   // 等頁面內文索引與試算表資料都就緒
     indicator?.remove();
     const resultMessage = renderSearchResults(query, siteSearch(query));
     // 只捲動對話區，讓「提問＋結果」從頂端開始顯示（不影響背後的頁面）
