@@ -1,3 +1,5 @@
+--- START OF FILE 01S.html ---
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -170,8 +172,8 @@
             <h2 class="text-center fw-bold mb-4">✈️ 順利啟程的關鍵第一步</h2>
             <div class="row g-4">
                 <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">1. 辦理入境</h5><p class="card-text text-muted">依循「到着」(Arrival) 指引完成護照查驗、提領行李與海關檢查。羽田機場動線清晰，過程順暢有序。</p></div></div></div>
-                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 準備IC交通卡</h5><p class="card-text text-muted">建議在入境大廳購買 Welcome Suica 或 PASMO PASSPORT。兩者功能相同，可大幅節省購票時間。</p></div></div></div>
-                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 尋找售票處</h5><p class="card-text text-muted">依據您的選擇，尋找位於2樓入境大廳的<span class="fw-bold" style="color:var(--theme-purple)">利木津巴士櫃檯</span>，或前往B1的<span class="fw-bold text-danger">京急線鐵路售票處</span>。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">2. 準備IC交通卡</h5><p class="card-text text-muted">建議在機場車站購買訪日旅客專用的 Welcome Suica（PASMO PASSPORT 已停止販售），或在手機加入行動版 Suica／PASMO，可大幅節省購票時間。</p></div></div></div>
+                <div class="col-md-4"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">3. 尋找售票處</h5><p class="card-text text-muted">依據您的選擇，尋找位於2樓入境大廳的<span class="fw-bold" style="color:var(--theme-purple)">利木津巴士櫃檯</span>，或前往同樓層（2樓）的<span class="fw-bold text-danger">京急線售票處</span>。</p></div></div></div>
             </div>
         </section>
 
@@ -190,21 +192,52 @@
                     <h3 class="fw-bold mb-3">A: 利木津巴士</h3>
                     <p class="text-muted mb-4">攜帶大型行李旅客的首選。一車直達，無需搬運行李轉乘，提供最輕鬆無壓力的旅程體驗。</p>
                     
-                    <h5 class="fw-bold mt-4">羽田空港 → 谷保駅・国立駅・立川駅・昭島駅 官方即時時刻表</h5>
-                    <p class="text-muted small mb-3">本區會在載入頁面時直接讀取立川巴士官網的最新時刻表圖片，不再手動維護固定班次；官網更新後，本頁會自動跟著更新。</p>
-                    <div class="d-flex flex-wrap gap-2 mb-3">
-                        <a href="https://www.tachikawabus.co.jp/highway/haneda/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-                            <i class="fas fa-external-link-alt me-2"></i>開啟立川巴士官網
-                        </a>
-                        <a id="haneda-arrival-timetable-pdf-link" href="https://www.tachikawabus.co.jp/assets/pdf/highway/haneda/20250716_hanedaline_timetable.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-file-pdf me-2"></i>開啟官網 PDF
-                        </a>
-                    </div>
-                    <div id="haneda-arrival-timetable-embed" class="border rounded-4 bg-light p-3 p-md-4">
-                        <div class="text-center text-muted py-4">
-                            <div class="spinner-border spinner-border-sm text-primary me-2" role="status" aria-hidden="true"></div>
-                            正在讀取立川巴士官網時刻表...
-                        </div>
+                    <h5 class="fw-bold mt-4">羽田機場 → 谷保/國立/立川/昭島 便 時刻表</h5>
+                    <p class="text-muted small mb-2">以下為各航廈的預計發車時間及抵達時間（2025年7月16日起適用）。單程票價：大人 ¥2,000、兒童 ¥1,000；從機場出發須先在巴士售票櫃檯或自動售票機購買指定班次的車票。時刻表/停靠站別也可能有變動，出發前請務必至官網確認。</p>
+                    <a href="https://www.tachikawabus.co.jp/highway/haneda/" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm mb-3">
+                        <i class="fas fa-external-link-alt me-2"></i>前往巴士官網確認
+                    </a>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered text-center">
+                            <thead class="table-light">
+                                <tr>
+                                    <th colspan="3">出發 (預定) 時刻 (羽田機場)</th>
+                                    <th colspan="3">到達 (預定) 時刻 (立川駅北口)</th>
+                                </tr>
+                                <tr>
+                                    <th>第3航廈 (T3)</th>
+                                    <th>第2航廈 (T2)</th>
+                                    <th>第1航廈 (T1)</th>
+                                    <th>谷保駅</th>
+                                    <th>国立駅南口</th>
+                                    <th>立川駅北口 (立川)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><span style="color:red;">06:40</span></td><td><span style="color:red;">06:50</span></td><td>→</td><td><span style="color:red;">08:15</span></td><td><span style="color:red;">08:20</span></td><td><span style="color:red;">08:40</span></td></tr>
+                                <tr><td><span style="color:blue;">07:15</span></td><td><span style="color:blue;">07:25</span></td><td>→</td><td>→</td><td>→</td><td><span style="color:blue;">08:55</span></td></tr>
+                                <tr><td><span style="color:red;">08:40</span></td><td><span style="color:red;">08:50</span></td><td><span style="color:red;">08:55</span></td><td>→</td><td>→</td><td><span style="color:red;">10:15</span></td></tr>
+                                <tr><td><span style="color:red;">10:10</span></td><td><span style="color:red;">10:20</span></td><td><span style="color:red;">10:25</span></td><td>→</td><td>→</td><td><span style="color:red;">11:45</span></td></tr>
+                                <tr><td><span style="color:blue;">11:10</span></td><td><span style="color:blue;">11:20</span></td><td><span style="color:blue;">11:25</span></td><td>→</td><td>→</td><td><span style="color:blue;">12:45</span></td></tr>
+                                <tr><td><span style="color:red;">12:10</span></td><td><span style="color:red;">12:20</span></td><td><span style="color:red;">12:25</span></td><td>→</td><td>→</td><td><span style="color:red;">13:45</span></td></tr>
+                                <tr><td><span style="color:blue;">13:10</span></td><td><span style="color:blue;">13:20</span></td><td><span style="color:blue;">13:25</span></td><td>→</td><td>→</td><td><span style="color:blue;">14:45</span></td></tr>
+                                <tr><td><span style="color:blue;">14:10</span></td><td><span style="color:blue;">14:20</span></td><td><span style="color:blue;">14:25</span></td><td>→</td><td>→</td><td><span style="color:blue;">15:45</span></td></tr>
+                                <tr><td><span style="color:red;">14:55</span></td><td><span style="color:red;">15:05</span></td><td><span style="color:red;">15:10</span></td><td>→</td><td>→</td><td><span style="color:red;">16:30</span></td></tr>
+                                <tr><td><span style="color:red;">15:45</span></td><td><span style="color:red;">15:55</span></td><td><span style="color:red;">16:00</span></td><td>→</td><td>→</td><td><span style="color:red;">17:20</span></td></tr>
+                                <tr><td><span style="color:blue;">16:35</span></td><td><span style="color:blue;">16:45</span></td><td><span style="color:blue;">16:50</span></td><td><span style="color:blue;">18:05</span></td><td><span style="color:blue;">18:10</span></td><td><span style="color:blue;">18:30</span></td></tr>
+                                <tr><td><span style="color:red;">17:15</span></td><td><span style="color:red;">17:25</span></td><td><span style="color:red;">17:30</span></td><td>→</td><td>→</td><td><span style="color:red;">18:50</span></td></tr>
+                                <tr><td><span style="color:blue;">17:50</span></td><td><span style="color:blue;">18:00</span></td><td><span style="color:blue;">18:05</span></td><td><span style="color:blue;">19:20</span></td><td><span style="color:blue;">19:25</span></td><td><span style="color:blue;">19:45</span></td></tr>
+                                <tr><td><span style="color:red;">18:30</span></td><td><span style="color:red;">18:40</span></td><td><span style="color:red;">18:45</span></td><td>→</td><td>→</td><td><span style="color:red;">20:05</span></td></tr>
+                                <tr><td><span style="color:blue;">19:10</span></td><td><span style="color:blue;">19:20</span></td><td><span style="color:blue;">19:25</span></td><td>→</td><td>→</td><td><span style="color:blue;">20:25</span></td></tr>
+                                <tr><td><span style="color:red;">19:40</span></td><td><span style="color:red;">19:50</span></td><td><span style="color:red;">19:55</span></td><td><span style="color:red;">20:50</span></td><td><span style="color:red;">20:55</span></td><td><span style="color:red;">21:15</span></td></tr>
+                                <tr><td><span style="color:blue;">20:10</span></td><td><span style="color:blue;">20:20</span></td><td><span style="color:blue;">20:25</span></td><td>→</td><td>→</td><td><span style="color:blue;">21:25</span></td></tr>
+                                <tr><td><span style="color:red;">20:40</span></td><td><span style="color:red;">20:50</span></td><td><span style="color:red;">20:55</span></td><td><span style="color:red;">21:50</span></td><td><span style="color:red;">21:55</span></td><td><span style="color:red;">22:15</span></td></tr>
+                                <tr><td><span style="color:blue;">21:10</span></td><td><span style="color:blue;">21:20</span></td><td><span style="color:blue;">21:25</span></td><td><span style="color:blue;">22:20</span></td><td><span style="color:blue;">22:25</span></td><td><span style="color:blue;">22:45</span></td></tr>
+                                <tr><td><span style="color:red;">21:40</span></td><td><span style="color:red;">21:50</span></td><td><span style="color:red;">21:55</span></td><td>→</td><td>→</td><td><span style="color:red;">22:55</span></td></tr>
+                                <tr><td><span style="color:blue;">22:10</span></td><td><span style="color:blue;">22:20</span></td><td><span style="color:blue;">22:25</span></td><td><span style="color:blue;">23:20</span></td><td><span style="color:blue;">23:25</span></td><td><span style="color:blue;">23:45</span></td></tr>
+                                <tr><td><span style="color:blue;">22:40</span></td><td><span style="color:blue;">22:50</span></td><td><span style="color:blue;">22:55</span></td><td>→</td><td>→</td><td><span style="color:blue;">23:50</span></td></tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="mb-4 d-flex flex-wrap align-items-center gap-2"><span class="badge bg-secondary fs-6">羽田機場</span> → <span class="badge fs-6" style="background-color: var(--theme-purple);">利木津巴士</span> → <span class="badge bg-secondary fs-6">立川站</span></div>
@@ -247,7 +280,7 @@
 
         <section id="final-leg" class="mb-5">
             <h2 class="text-center fw-bold mb-4">📍 最後一哩路：從立川站到『親苑』</h2>
-            <div class="row g-4"><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚶 步行 (5-7分鐘)</h5><p class="card-text text-muted">如果行李不多，步行是最佳選擇。</p><ol class="list-group list-group-numbered"><li class="list-group-item">從JR立川站<span class="fw-bold">南口</span>出站，下至一樓廣場。</li><li class="list-group-item">向左前方步行，穿越巴士站區域。</li><li class="list-group-item">在第一個十字路口過馬路後左轉。</li><li class="list-group-item">沿著「諏訪通り」直行約200公尺。</li></ol></div></div></div><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚕 計程車 (約 ¥500)</h5><p class="card-text text-muted">攜帶重行李或疲憊時的最佳方案。在南口一樓的計程車排班站乘車，並將以下地址出示給司機看：</p><div class="alert alert-secondary text-center mt-3"><p class="fw-bold fs-5 mb-1">東京都立川市柴崎町1-2-13</p><p class="text-muted mb-0">『真如苑總本部』</p></div></div></div></div></div>
+            <div class="row g-4"><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚶 步行 (約10-12分鐘)</h5><p class="card-text text-muted">如果行李不多，步行是最佳選擇。</p><ol class="list-group list-group-numbered"><li class="list-group-item">從JR立川站<span class="fw-bold">南口</span>出站，下至一樓廣場。</li><li class="list-group-item">出站後往西（背對車站時的右手邊）前進。</li><li class="list-group-item">沿著「諏訪通り」往西步行，全程約 900 公尺。</li><li class="list-group-item">親苑（真如苑總本部）位於柴崎町1-2-13，建議開啟手機地圖導航確認路線。</li></ol></div></div></div><div class="col-md-6"><div class="card h-100 shadow-sm"><div class="card-body p-4"><h5 class="card-title fw-bold">🚕 計程車 (約 ¥500)</h5><p class="card-text text-muted">攜帶重行李或疲憊時的最佳方案。在南口一樓的計程車排班站乘車，並將以下地址出示給司機看：</p><div class="alert alert-secondary text-center mt-3"><p class="fw-bold fs-5 mb-1">東京都立川市柴崎町1-2-13</p><p class="text-muted mb-0">『真如苑總本部』</p></div></div></div></div></div>
         </section>
 
         <section id="summary">
@@ -329,76 +362,6 @@
                 });
             });
         }
-
-        const timetableContainer = document.getElementById('haneda-arrival-timetable-embed');
-        const timetablePdfLink = document.getElementById('haneda-arrival-timetable-pdf-link');
-        const proxyUrl = '/proxy/tachikawabus/haneda/';
-        const officialPageUrl = 'https://www.tachikawabus.co.jp/highway/haneda/';
-        const fallbackImageUrl = 'https://www.tachikawabus.co.jp/assets/images/highway/haneda/img3_20250716_1.png';
-        const fallbackPdfUrl = 'https://www.tachikawabus.co.jp/assets/pdf/highway/haneda/20250716_hanedaline_timetable.pdf';
-
-        const renderTimetable = ({ imageUrl, pdfUrl, isFallback = false }) => {
-            if (!timetableContainer) return;
-            if (timetablePdfLink && pdfUrl) {
-                timetablePdfLink.href = pdfUrl;
-            }
-
-            const fallbackNotice = isFallback
-                ? '<p class="small text-muted mb-3">目前顯示的是最後可辨識到的官方時刻表圖片；若官網暫時無法讀取，請改用上方按鈕直接開啟官網確認。</p>'
-                : '<p class="small text-muted mb-3">圖片由立川巴士官網即時解析取得，內容更新時本頁會同步反映。</p>';
-
-            timetableContainer.innerHTML = `
-                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                    <span class="badge text-bg-primary">立川巴士官網同步</span>
-                    <a href="${officialPageUrl}" target="_blank" rel="noopener noreferrer" class="small text-decoration-none">查看原始頁面</a>
-                </div>
-                ${fallbackNotice}
-                <div class="text-center">
-                    <img
-                        src="${imageUrl}"
-                        alt="立川巴士官網 羽田空港 到 谷保駅・国立駅・立川駅・昭島駅時刻表"
-                        class="img-fluid rounded-3 shadow-sm border"
-                        loading="lazy"
-                        referrerpolicy="no-referrer"
-                    >
-                </div>
-            `;
-        };
-
-        const loadOfficialHanedaArrivalTimetable = async () => {
-            if (!timetableContainer) return;
-
-            try {
-                const response = await fetch(`${proxyUrl}?_=${Date.now()}`, { cache: 'no-store' });
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
-                const html = await response.text();
-                const doc = new DOMParser().parseFromString(html, 'text/html');
-                const timeBoxes = Array.from(doc.querySelectorAll('.timeBox'));
-                const inboundBox = timeBoxes.find((box) => {
-                    const blocks = Array.from(box.querySelectorAll('.route__block')).map((node) => node.textContent.trim());
-                    return blocks[0]?.includes('羽田空港') && blocks[1]?.includes('谷保駅・国立駅・立川駅・昭島駅');
-                });
-
-                const inboundImage = inboundBox?.querySelector('.timeBox__img img');
-                if (!inboundImage?.getAttribute('src')) {
-                    throw new Error('找不到官網時刻表圖片');
-                }
-
-                const pdfPath = doc.querySelector('a[href*="_timetable.pdf"]')?.getAttribute('href') || fallbackPdfUrl;
-                const imageUrl = new URL(inboundImage.getAttribute('src'), officialPageUrl).href;
-                const pdfUrl = new URL(pdfPath, officialPageUrl).href;
-
-                renderTimetable({ imageUrl, pdfUrl });
-            } catch (error) {
-                console.warn('載入立川巴士官網時刻表失敗，改用備援圖片：', error);
-                renderTimetable({ imageUrl: fallbackImageUrl, pdfUrl: fallbackPdfUrl, isFallback: true });
-            }
-        };
-
-        loadOfficialHanedaArrivalTimetable();
     });
     </script>
     <!-- END: 雙白馬功能性腳本 -->
