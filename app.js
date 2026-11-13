@@ -415,6 +415,28 @@ const SEARCH_MAX_PER_PAGE = 3;           // 同一頁面最多列出幾筆，避
 // 預設關鍵字：顯示在搜尋視窗的開場訊息中，點一下就直接搜尋（可自行增減）
 const SEARCH_SUGGESTIONS = ['利木津巴士', '時刻表', '羽田', '成田', '接心申請', '研修所', '團參', '住宿', '機票', '護照', '應現院', '友心院', '申請書', '地圖'];
 
+const SEARCH_MAX_TOPICS = 4;             // 一次搜尋最多列出幾個「主題頁面」
+// 主題頁面的額外關鍵字：搜尋到這些字（或頁面名稱、標題）時，會在結果最上方列出該主題頁面的連結
+// 例如搜尋「飯店」會先給出 12S.html。可自行增減，多個關鍵字用空格分開
+const TOPIC_KEYWORDS = {
+    '01S.html': '羽田 松山 去程 抵達 機場到立川 利木津巴士 機場巴士 電車 交通',
+    '02S.html': '成田 桃園 去程 抵達 機場到立川 N\'EX 成田特快 Skyliner 電車 交通',
+    '03S.html': '羽田 松山 回程 返程 立川到機場 利木津巴士 機場巴士 電車 交通',
+    '04S.html': '成田 桃園 回程 返程 回台灣 立川到機場 N\'EX 成田特快 電車 交通',
+    '05S.html': '應現院 立川站 接駁 接駁車 巴士 步行 交通',
+    '06S.html': '應現院 Shinnyo Yana 接駁 接駁車 巴士 步行 交通',
+    '07S.html': '法會 參座 接心 會座 預約 申請 申請書',
+    '08S.html': '研修所 研修 住宿申請 申請 申請單 規約',
+    '09S.html': '行前準備 準備 護照 簽證 行李 網路 上網 SIM 匯率 日幣 換錢 保險 注意事項',
+    '10S.html': '機票 航班 班機 航空 飛機 訂票 松山 桃園 羽田 成田',
+    '11S.html': '團參 團體參拜 團體 申請 申請書 申請單',
+    '12S.html': '住宿 飯店 旅館 酒店 訂房 住哪 hotel',
+    '13S.html': '友心院 半藏門 美術館 博物館 地圖',
+    'qas.html': 'Q&A QA 問答 常見問題 問題 疑問'
+};
+// 資料表的結果屬於哪個主題頁面：命中該類資料時，也一併列出主題頁面
+const SHEET_TOPIC_PAGES = { '住宿資訊': '12S.html', 'Q&A': 'qas.html' };
+
 const HEADING_SELECTOR = 'h1,h2,h3,h4,h5,h6';
 const INDEX_SKIP_SELECTOR = 'script,style,noscript,template,nav,footer,iframe,svg,canvas,.modal,.lfp-trail,#floating-horses-container,.back-to-home-btn-container,.visually-hidden';
 const BLOCK_TAGS = /^(P|DIV|LI|TR|TD|TH|SECTION|ARTICLE|UL|OL|TABLE|THEAD|TBODY|BR|HR|BUTTON|DT|DD|BLOCKQUOTE|A)$/;
@@ -627,7 +649,22 @@ function indexPageDocument(doc, page, files) {
     };
     walk(root);
 
-    return chunks
+    // 主題頁面本身也是一筆資料：用頁面名稱、標題與自訂關鍵字比對
+    const docTitle = normalizeText(doc.title);
+    const h1Title = normalizeText(root.querySelector('h1')?.textContent);
+    const topicEntry = {
+        type: '主題頁面',
+        title: pageTitle,
+        crumb: '',
+        url: page.url,
+        at: '',
+        isFile: false,
+        isTopic: true,
+        summary: [docTitle, h1Title].find(t => t && t !== pageTitle) || '',
+        text: [docTitle, h1Title, TOPIC_KEYWORDS[page.url] || ''].join(' ')
+    };
+
+    return [topicEntry].concat(chunks
         .map(chunk => ({
             type: '頁面內文',
             title: chunk.title,
@@ -637,7 +674,7 @@ function indexPageDocument(doc, page, files) {
             isFile: false,
             text: chunk.parts.join('')
         }))
-        .filter(entry => entry.at || normalizeText(entry.text));
+        .filter(entry => entry.at || normalizeText(entry.text)));
 }
 
 // --- 查詢與排序 ---
@@ -713,9 +750,20 @@ function siteSearch(query) {
     });
     scored.sort((a, b) => b.score - a.score);
 
+    // 主題頁面：關鍵字直接命中的，加上資料表結果所屬的主題頁面，固定排在最前面
+    const topics = scored.filter(item => item.entry.isTopic);
+    const sheetTypes = new Set(scored.filter(item => !item.entry.isTopic).map(item => item.entry.type));
+    Object.entries(SHEET_TOPIC_PAGES).forEach(([type, url]) => {
+        if (!sheetTypes.has(type) || topics.some(item => item.entry.url === url)) return;
+        const entry = pageCorpus.find(e => e.isTopic && e.url === url);
+        if (entry) topics.push({ entry, score: 0, hits: [] });
+    });
+    const topicResults = topics.slice(0, SEARCH_MAX_TOPICS).map(item => ({ ...item, snippet: item.entry.summary }));
+
     const seenKeys = new Set();
     const perPage = new Map();
-    return scored.filter(({ entry }) => {
+    return topicResults.concat(scored.filter(({ entry }) => {
+        if (entry.isTopic) return false;
         const key = entry.isFile ? `file:${entry.url}` : `${entry.type}|${entry.url}|${entry.at}|${entry.title}`;
         if (seenKeys.has(key)) return false;
         seenKeys.add(key);
@@ -725,7 +773,7 @@ function siteSearch(query) {
             perPage.set(entry.url, count + 1);
         }
         return true;
-    }).map(item => ({ ...item, snippet: buildSnippet(item.entry, item.hits) }));
+    }).map(item => ({ ...item, snippet: buildSnippet(item.entry, item.hits) })));
 }
 
 // 保留舊名稱，避免其他頁面仍在呼叫
@@ -784,6 +832,9 @@ function injectSearchStyles() {
         a.ss-card .ss-title { color: #0b5a85; }
         .ss-snippet { margin-top: .2rem; font-size: .85rem; line-height: 1.5; color: #495057; overflow-wrap: anywhere; }
         .ss-card mark, mark.ss-hit { padding: 0 .1em; border-radius: 3px; background: #ffe58a; color: #212529; }
+        .ss-card.ss-topic { border-color: #0077B6; border-left-width: 5px; background: #f3f9fd; }
+        .ss-topic .ss-badge { background: #0077B6; color: #fff; }
+        .ss-url { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; color: #0b5a85; }
         .ss-more { margin-top: .6rem; }
         .ss-chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .6rem; }
         .ss-chip { padding: .2rem .7rem; border: 1px solid #adb5bd; border-radius: 50rem; background: #fff; color: #343a40; font-size: .85rem; }
@@ -826,7 +877,7 @@ async function sendSearchMessage(presetQuery) {
 function buildResultHref(result) {
     const { entry, hits } = result;
     if (!entry.url) return "";
-    if (entry.isFile || /^https?:\/\//i.test(entry.url)) return entry.url;
+    if (entry.isFile || entry.isTopic || /^https?:\/\//i.test(entry.url)) return entry.url;
     const params = new URLSearchParams();
     params.set("find", hits.slice(0, 6).join("|"));
     if (entry.at) params.set("at", entry.at);
@@ -837,7 +888,7 @@ function createResultCard(result) {
     const { entry, hits, snippet } = result;
     const href = buildResultHref(result);
     const card = document.createElement(href ? "a" : "div");
-    card.className = "ss-card";
+    card.className = "ss-card" + (entry.isTopic ? " ss-topic" : "");
     if (href) {
         card.setAttribute("href", href);
         if (entry.isFile || /^https?:\/\//i.test(entry.url)) {
@@ -846,7 +897,7 @@ function createResultCard(result) {
         }
     }
     card.innerHTML = `
-        <div class="ss-meta"><span class="ss-badge">${escapeHtml(entry.type)}</span>${entry.crumb ? `<span>${escapeHtml(entry.crumb)}</span>` : ""}</div>
+        <div class="ss-meta"><span class="ss-badge">${escapeHtml(entry.type)}</span>${entry.crumb ? `<span>${escapeHtml(entry.crumb)}</span>` : ""}${entry.isTopic ? `<span class="ss-url">${escapeHtml(entry.url)}</span>` : ""}</div>
         <div class="ss-title">${highlightHtml(entry.title, hits)}</div>
         ${snippet ? `<div class="ss-snippet">${highlightHtml(snippet, hits)}</div>` : ""}`;
     return card;
