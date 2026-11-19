@@ -408,12 +408,12 @@ function safeUrl(url) {
 const SITE_INDEX_ENTRY = 'index.html';   // 由首頁的連結自動找出要建立索引的頁面
 const SITE_PAGES_FALLBACK = [            // 首頁讀取失敗時的備用清單
     '01S.html', '02S.html', '03S.html', '04S.html', '05S.html', '06S.html', '07S.html',
-    '08S.html', '09S.html', '10S.html', '11S.html', '12S.html', '13S.html', 'qas.html'
+    '08S.html', '09S.html', '10S.html', '11S.html', '12S.html', '13S.html', '14S.html', 'qas.html'
 ];
 const SEARCH_PAGE_SIZE = 6;              // 每次顯示幾筆結果
 const SEARCH_MAX_PER_PAGE = 3;           // 同一頁面最多列出幾筆，避免洗版
 // 預設關鍵字：顯示在搜尋視窗的開場訊息中，點一下就直接搜尋（可自行增減）
-const SEARCH_SUGGESTIONS = ['利木津巴士', '時刻表', '羽田', '成田', '接心申請', '研修所', '團參', '住宿', '機票', '護照', '應現院', '友心院', '申請書', '地圖'];
+const SEARCH_SUGGESTIONS = ['利木津巴士', '時刻表', '羽田', '成田', '接心申請', '研修所', '團參', '住宿', '機票', '護照', '應現院', '友心院', '申請書', '地圖', '海外精舍', '佛教聖地'];
 
 const SEARCH_MAX_TOPICS = 4;             // 一次搜尋最多列出幾個「主題頁面」
 // 主題頁面的額外關鍵字：搜尋到這些字（或頁面名稱、標題）時，會在結果最上方列出該主題頁面的連結
@@ -432,6 +432,7 @@ const TOPIC_KEYWORDS = {
     '11S.html': '團參 團體參拜 團體 申請 申請書 申請單',
     '12S.html': '住宿 飯店 旅館 酒店 訂房 住哪 hotel',
     '13S.html': '友心院 半藏門 美術館 博物館 地圖',
+    '14S.html': '世界 海外 精舍 佈教所 布教所 歸依處 本部 佛教聖地 聖地 藍毗尼 菩提伽耶 鹿野苑 拘尸那羅 竹林精舍 悠音精舍 慧燈院 臺灣本部 台灣本部 美國 歐洲 地圖',
     'qas.html': 'Q&A QA 問答 常見問題 問題 疑問'
 };
 // 資料表的結果屬於哪個主題頁面：命中該類資料時，也一併列出主題頁面

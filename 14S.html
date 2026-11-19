@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界的真如苑：佛教聖地與海外精舍地圖</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --theme-amber: #ee9b00;
+            --bs-primary: var(--theme-amber);
+            --bs-primary-rgb: 238, 155, 0;
+            --bs-link-color: #b87700;
+            --bs-link-hover-color: #8f5c00;
+            /* 據點類型顏色 */
+            --type-holy: #8A54A2;
+            --type-hq: #EE3239;
+            --type-temple: #0077B6;
+            --type-branch: #40916C;
+            --type-center: #6c757d;
+        }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f8f9fa; }
+        .navbar-brand, .navbar-nav .nav-link { font-weight: bold !important; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+        .back-to-home-btn-container { margin-top: 3rem; text-align: center; }
+        .back-to-home-btn {
+            display: inline-block; margin-bottom: 1rem; padding: 0.75rem 2rem;
+            border: 2px solid var(--theme-amber); border-radius: 50px; color: #b87700;
+            text-decoration: none; font-weight: 700; transition: background-color 0.2s, color 0.2s;
+        }
+        .back-to-home-btn:hover { background-color: var(--theme-amber); color: white; }
+
+        /* 統計 */
+        .stat-card { background: #fff; border-radius: 0.75rem; padding: 1rem; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); height: 100%; }
+        .stat-num { font-size: 2rem; font-weight: 700; color: #b87700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+        .stat-label { font-size: 0.85rem; color: #6c757d; }
+
+        /* 篩選 */
+        .region-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+        .region-chip {
+            border: 1px solid #d8c9a8; background: #fff; color: #5a4a2a; border-radius: 999px;
+            padding: 0.35rem 0.9rem; font-size: 0.9rem; font-weight: 500; cursor: pointer;
+        }
+        .region-chip .count { color: #9a8a6a; margin-left: 0.25rem; font-variant-numeric: tabular-nums; }
+        .region-chip.active { background: var(--theme-amber); border-color: var(--theme-amber); color: #fff; }
+        .region-chip.active .count { color: rgba(255,255,255,0.85); }
+
+        /* 地圖 */
+        #map-section { scroll-margin-top: 70px; }
+        #world-map { height: 520px; border-radius: 0.75rem; border: 1px solid #dee2e6; z-index: 1; background: #aad3df; }
+        @media (max-width: 768px) { #world-map { height: 380px; } }
+        .map-legend { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; justify-content: center; font-size: 0.85rem; color: #555; }
+        .legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 0.35rem; vertical-align: -1px; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.25); }
+        .dot-holy { background: var(--type-holy); }
+        .dot-hq { background: var(--type-hq); }
+        .dot-temple { background: var(--type-temple); }
+        .dot-branch { background: var(--type-branch); }
+        .dot-center { background: var(--type-center); }
+        .leaflet-popup-content { font-family: 'Noto Sans TC', sans-serif; font-size: 0.9rem; margin: 12px 14px; }
+        .popup-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
+        .popup-addr { color: #555; margin-bottom: 0.4rem; }
+        .popup-dist { color: #8f5c00; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .popup-links a { display: inline-block; margin-right: 0.75rem; font-weight: 500; }
+
+        /* 據點清單 */
+        .region-block { margin-bottom: 2rem; }
+        .region-block h3 { font-size: 1.25rem; font-weight: 700; border-left: 5px solid var(--theme-amber); padding-left: 0.6rem; margin-bottom: 0.75rem; }
+        .region-block h3 small { font-size: 0.85rem; color: #6c757d; font-weight: 400; }
+        .place-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.5rem; }
+        .place-list > li { display: flex; }
+        .place-btn {
+            width: 100%; height: 100%; min-height: var(--card-h, auto); text-align: left; background: #fff; border: 1px solid #e9ecef; border-radius: 0.5rem;
+            padding: 0.6rem 0.75rem; display: flex; gap: 0.6rem; align-items: flex-start; transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .place-btn:hover, .place-btn:focus-visible { border-color: var(--theme-amber); box-shadow: 0 2px 6px rgba(0,0,0,0.08); outline: none; }
+        .place-btn .legend-dot { margin-top: 0.35rem; flex: none; }
+        .place-name { display: block; font-weight: 500; color: #222; }
+        .place-addr { display: block; font-size: 0.8rem; color: #6c757d; }
+        .is-hidden { display: none !important; }
+
+        .alert-theme-primary { color: #7a4f01; background-color: #fff3cd; border-color: #ffeeba; }
+    </style>
+    <!-- START: 懸浮雙白馬按鈕樣式 -->
+    <style>
+        #floating-horses-container { position: fixed; bottom: 25px; right: 25px; z-index: 1050; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .floating-horse { display: block; width: 80px; height: auto; cursor: pointer; transition: opacity 0.3s ease, transform 0.2s ease; opacity: 0.9; }
+        .floating-horse:hover { opacity: 1; transform: scale(1.1); }
+        .floating-horse img { width: 100%; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); transition: transform 0.3s ease; }
+        #horse-to-top img { transform: rotate(-15deg); }
+        #horse-to-top:hover img { transform: rotate(-20deg) scale(1.05); }
+        #horse-to-bottom img { transform: rotate(15deg) scaleX(-1); }
+        #horse-to-bottom:hover img { transform: rotate(20deg) scaleX(-1) scale(1.05); }
+        @media (max-width: 768px){ #floating-horses-container { right: 1px; bottom: 15px; gap: 5px; } .floating-horse { width: 65px; } }
+    </style>
+    <!-- END: 懸浮雙白馬按鈕樣式 -->
+</head>
+<body class="antialiased">
+
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--theme-amber);">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-chevron-left me-2"></i>世界的真如苑</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div class="d-flex align-items-center">
+                    <button id="btn-ai-chat" class="btn btn-outline-light me-2"><i class="fas fa-robot"></i> 站內搜尋</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container py-5">
+
+        <section class="text-center mb-4">
+            <h1 class="display-5 fw-bold text-dark mb-3">世界的真如苑</h1>
+            <p class="lead text-muted mx-auto" style="max-width: 720px;">從佛陀的足跡到遍布五大洲的精舍與佈教所，在地圖上認識真如苑的世界。點選地圖標記或下方清單，可查看地址、與親苑的距離，並開啟 Google 地圖導航。</p>
+        </section>
+
+        <!-- 統計 -->
+        <section class="row g-3 mb-4" aria-label="據點統計">
+            <div class="col-4"><div class="stat-card"><div class="stat-num" id="stat-places">—</div><div class="stat-label">真如苑據點</div></div></div>
+            <div class="col-4"><div class="stat-card"><div class="stat-num" id="stat-countries">—</div><div class="stat-label">國家／地區</div></div></div>
+            <div class="col-4"><div class="stat-card"><div class="stat-num" id="stat-holy">—</div><div class="stat-label">佛教聖地</div></div></div>
+        </section>
+
+        <!-- 篩選 + 地圖 -->
+        <section id="map-section" class="mb-5">
+            <div class="region-filter mb-3" id="region-filter" role="group" aria-label="依區域篩選"></div>
+            <div id="world-map" role="region" aria-label="世界的真如苑地圖"></div>
+            <div class="map-legend mt-2">
+                <span><span class="legend-dot dot-holy"></span>佛教聖地</span>
+                <span><span class="legend-dot dot-hq"></span>本部</span>
+                <span><span class="legend-dot dot-temple"></span>精舍</span>
+                <span><span class="legend-dot dot-branch"></span>佈教所</span>
+                <span><span class="legend-dot dot-center"></span>中心</span>
+            </div>
+        </section>
+
+        <!-- 據點清單：每個 li 帶有座標，地圖標記由此清單產生（同時供站內搜尋建立索引） -->
+        <section id="place-directory">
+            <h2 class="text-center fw-bold mb-4">據點一覽</h2>
+
+            <div class="region-block" data-region="holy">
+                <h3>佛教聖地 <small>佛陀一生的足跡與第一座精舍</small></h3>
+                <ul class="place-list">
+                    <li data-type="holy" data-lat="27.4833" data-lng="83.2767" data-country="尼泊爾"><span class="place-name">藍毗尼（佛陀誕生處）</span><span class="place-addr">尼泊爾 藍毗尼 Lumbini Garden</span></li>
+                    <li data-type="holy" data-lat="24.6959" data-lng="84.9911" data-country="印度"><span class="place-name">菩提伽耶（佛陀成道處）</span><span class="place-addr">印度 比哈爾邦 Bodh Gaya</span></li>
+                    <li data-type="holy" data-lat="25.3810" data-lng="83.0245" data-country="印度"><span class="place-name">鹿野苑（初轉法輪處）</span><span class="place-addr">印度 北方邦 瓦拉納西 Sarnath Deer Park</span></li>
+                    <li data-type="holy" data-lat="25.0127" data-lng="85.4140" data-country="印度"><span class="place-name">竹林精舍（佛教第一座精舍）</span><span class="place-addr">印度 比哈爾邦 王舍城 Rajgir Venuvana</span></li>
+                    <li data-type="holy" data-lat="26.7411" data-lng="83.8889" data-country="印度"><span class="place-name">拘尸那羅（佛陀涅槃處）</span><span class="place-addr">印度 北方邦 Kushinagar</span></li>
+                </ul>
+            </div>
+
+            <div class="region-block" data-region="japan">
+                <h3>日本 <small>總本部與主要道場</small></h3>
+                <ul class="place-list">
+                    <li data-type="hq" data-lat="35.6888" data-lng="139.4135" data-country="日本" data-page="index.html"><span class="place-name">真如苑 總本部（聖地親苑 Oyasono）</span><span class="place-addr">日本 東京都立川市柴崎町1-2-13</span></li>
+                    <li data-type="temple" data-lat="35.6896" data-lng="139.4124" data-country="日本"><span class="place-name">慧燈院</span><span class="place-addr">日本 東京都立川市柴崎町1丁目4</span></li>
+                    <li data-type="temple" data-lat="35.7133" data-lng="139.4057" data-country="日本" data-page="05S.html"><span class="place-name">真如苑 應現院（Ogen Center）</span><span class="place-addr">日本 東京都立川市泉町935-32</span></li>
+                    <li data-type="temple" data-lat="35.6883" data-lng="139.7423" data-country="日本" data-page="13S.html"><span class="place-name">真如苑 友心院（Yushin Center／半藏門博物館）</span><span class="place-addr">日本 東京都千代田區一番町25</span></li>
+                    <li data-type="temple" data-lat="34.8540" data-lng="135.6370" data-country="日本" data-page="07S.html"><span class="place-name">真如苑 悠音精舍（Yuon Sanctuary）</span><span class="place-addr">日本 大阪府高槻市安滿1-10-1</span></li>
+                </ul>
+            </div>
+
+            <div class="region-block" data-region="asia">
+                <h3>亞洲</h3>
+                <ul class="place-list">
+                    <li data-type="hq" data-lat="25.0800" data-lng="121.5720" data-country="臺灣" data-page="10S.html"><span class="place-name">真如苑 臺灣本部（臺北）</span><span class="place-addr">臺灣 臺北市中山區堤頂大道二段</span></li>
+                    <li data-type="branch" data-lat="24.9560" data-lng="121.2250" data-country="臺灣"><span class="place-name">真如苑 中壢佈教所</span><span class="place-addr">臺灣 桃園市中壢區復興路</span></li>
+                    <li data-type="branch" data-lat="24.1500" data-lng="120.6620" data-country="臺灣"><span class="place-name">真如苑 臺中佈教所</span><span class="place-addr">臺灣 臺中市西區臺灣大道二段</span></li>
+                    <li data-type="branch" data-lat="22.6100" data-lng="120.3000" data-country="臺灣"><span class="place-name">真如苑 高雄佈教所</span><span class="place-addr">臺灣 高雄市前鎮區中山二路</span></li>
+                    <li data-type="temple" data-lat="22.2800" data-lng="114.1840" data-country="香港"><span class="place-name">真如苑 香港精舍（銅鑼灣）</span><span class="place-addr">香港 銅鑼灣 百樂商業中心</span></li>
+                    <li data-type="temple" data-lat="37.5370" data-lng="126.9650" data-country="韓國"><span class="place-name">真如苑 韓國首爾精舍</span><span class="place-addr">韓國 首爾 龍山區 元曉路97街</span></li>
+                    <li data-type="temple" data-lat="35.1850" data-lng="129.0900" data-country="韓國"><span class="place-name">真如苑 韓國釜山精舍</span><span class="place-addr">韓國 釜山 蓮堤區 盤松路</span></li>
+                    <li data-type="branch" data-lat="35.2240" data-lng="128.5800" data-country="韓國"><span class="place-name">真如苑 昌原佈教所</span><span class="place-addr">韓國 慶尚南道 昌原市 馬山會原區</span></li>
+                    <li data-type="branch" data-lat="33.4870" data-lng="126.4940" data-country="韓國"><span class="place-name">真如苑 濟州佈教所</span><span class="place-addr">韓國 濟州道 濟州市 月朗路</span></li>
+                    <li data-type="temple" data-lat="13.7230" data-lng="100.5720" data-country="泰國"><span class="place-name">真如苑 泰國（曼谷）</span><span class="place-addr">泰國 曼谷 空堤縣 Sukhumvit 34</span></li>
+                    <li data-type="branch" data-lat="3.1180" data-lng="101.6320" data-country="馬來西亞"><span class="place-name">真如苑 吉隆坡佈教所</span><span class="place-addr">馬來西亞 雪蘭莪 八打靈再也 Seksyen 19</span></li>
+                    <li data-type="temple" data-lat="1.3150" data-lng="103.9080" data-country="新加坡"><span class="place-name">真如苑 新加坡精舍</span><span class="place-addr">新加坡 Jalan Kechot</span></li>
+                    <li data-type="temple" data-lat="6.8960" data-lng="79.8820" data-country="斯里蘭卡"><span class="place-name">真如苑 斯里蘭卡精舍（科特）</span><span class="place-addr">斯里蘭卡 斯里賈亞瓦德納普拉科特 Kirimandala Mawatha</span></li>
+                </ul>
+            </div>
+
+            <div class="region-block" data-region="oceania">
+                <h3>大洋洲</h3>
+                <ul class="place-list">
+                    <li data-type="temple" data-lat="-33.8190" data-lng="151.1610" data-country="澳洲"><span class="place-name">真如苑 澳洲精舍（雪梨）</span><span class="place-addr">澳洲 新南威爾斯州 Lane Cove, Longueville Road</span></li>
+                </ul>
+            </div>
+
+            <div class="region-block" data-region="namerica">
+                <h3>北美洲</h3>
+                <ul class="place-list">
+                    <li data-type="hq" data-lat="37.4700" data-lng="-122.2400" data-country="美國"><span class="place-name">真如苑 美國本部（加州紅木城）</span><span class="place-addr">美國 加州 Redwood City, Bret Harte Drive</span></li>
+                    <li data-type="temple" data-lat="37.8040" data-lng="-122.4350" data-country="美國"><span class="place-name">真如苑 舊金山瑪莉娜精舍</span><span class="place-addr">美國 加州 San Francisco, 1400 Jefferson St</span></li>
+                    <li data-type="temple" data-lat="33.8910" data-lng="-117.8210" data-country="美國"><span class="place-name">真如苑 洛杉磯精舍</span><span class="place-addr">美國 加州 Yorba Linda, 18111 Bastanchury Rd</span></li>
+                    <li data-type="temple" data-lat="47.4360" data-lng="-122.3280" data-country="美國"><span class="place-name">真如苑 西雅圖精舍</span><span class="place-addr">美國 華盛頓州 Burien, 519 S 186th St</span></li>
+                    <li data-type="branch" data-lat="36.0300" data-lng="-115.0500" data-country="美國"><span class="place-name">真如苑 內華達佈教所</span><span class="place-addr">美國 內華達州 Henderson, Cactus Garden Dr</span></li>
+                    <li data-type="temple" data-lat="42.0000" data-lng="-87.9690" data-country="美國"><span class="place-name">真如苑 芝加哥精舍</span><span class="place-addr">美國 伊利諾州 Elk Grove Village, 120 E Devon Ave</span></li>
+                    <li data-type="temple" data-lat="41.0400" data-lng="-73.7580" data-country="美國"><span class="place-name">真如苑 紐約精舍</span><span class="place-addr">美國 紐約州 White Plains, 370 North Street</span></li>
+                    <li data-type="center" data-lat="40.7500" data-lng="-73.9860" data-country="美國"><span class="place-name">真如中心 NY（Shinnyo Center）</span><span class="place-addr">美國 紐約 19 W 36th St</span></li>
+                    <li data-type="temple" data-lat="21.4515" data-lng="-158.0150" data-country="美國"><span class="place-name">布哇真如苑</span><span class="place-addr">美國 夏威夷 Mililani, 95-520 Wikao Street</span></li>
+                    <li data-type="temple" data-lat="21.2960" data-lng="-157.8260" data-country="美國"><span class="place-name">真如苑 夏威夷精舍（檀香山）</span><span class="place-addr">美國 夏威夷 Honolulu, South Beretania Street</span></li>
+                    <li data-type="branch" data-lat="21.3920" data-lng="-157.9690" data-country="美國"><span class="place-name">真如苑 歐胡島佈教所</span><span class="place-addr">美國 夏威夷 Pearl City, 880 Kamehameha Hwy</span></li>
+                    <li data-type="branch" data-lat="19.6450" data-lng="-155.9960" data-country="美國"><span class="place-name">真如苑 科納佈教所</span><span class="place-addr">美國 夏威夷 Kailua-Kona, 75 Henry St</span></li>
+                    <li data-type="branch" data-lat="20.8840" data-lng="-156.4600" data-country="美國"><span class="place-name">真如苑 茂宜島佈教所</span><span class="place-addr">美國 夏威夷 Kahului, 89 Ho'okele St</span></li>
+                    <li data-type="branch" data-lat="49.2860" data-lng="-123.1150" data-country="加拿大"><span class="place-name">真如苑 溫哥華佈教所</span><span class="place-addr">加拿大 卑詩省 Vancouver, West Pender Street</span></li>
+                </ul>
+            </div>
+
+            <div class="region-block" data-region="samerica">
+                <h3>中南美洲</h3>
+                <ul class="place-list">
+                    <li data-type="branch" data-lat="19.4290" data-lng="-99.1790" data-country="墨西哥"><span class="place-name">真如苑 墨西哥佈教所</span><span class="place-addr">墨西哥 墨西哥城 Anzures</span></li>
+                    <li data-type="temple" data-lat="-23.5640" data-lng="-46.6450" data-country="巴西"><span class="place-name">真如苑 巴西精舍（聖保羅）</span><span class="place-addr">巴西 聖保羅 Bela Vista, Rua Doutor Fausto Ferraz 74</span></li>
+                    <li data-type="branch" data-lat="-1.4430" data-lng="-48.4810" data-country="巴西"><span class="place-name">真如苑 巴西貝倫佈教所</span><span class="place-addr">巴西 帕拉州 Belém, Rua Bernal do Couto 498</span></li>
+                    <li data-type="branch" data-lat="-12.0940" data-lng="-77.0710" data-country="秘魯"><span class="place-name">真如苑 秘魯佈教所（利馬）</span><span class="place-addr">秘魯 利馬 Magdalena del Mar</span></li>
+                </ul>
+            </div>
+
+            <div class="region-block" data-region="europe">
+                <h3>歐洲</h3>
+                <ul class="place-list">
+                    <li data-type="hq" data-lat="48.8840" data-lng="2.3010" data-country="法國"><span class="place-name">真如苑 歐洲本部（法國巴黎）</span><span class="place-addr">法國 巴黎 Rue Ampère</span></li>
+                    <li data-type="temple" data-lat="51.3770" data-lng="-0.3190" data-country="英國"><span class="place-name">真如苑 英國精舍（倫敦）</span><span class="place-addr">英國 Surbiton, Woodstock Lane North</span></li>
+                    <li data-type="temple" data-lat="50.8400" data-lng="4.3760" data-country="比利時"><span class="place-name">真如苑 比利時精舍（布魯塞爾）</span><span class="place-addr">比利時 布魯塞爾 Belliardstraat</span></li>
+                    <li data-type="branch" data-lat="52.3130" data-lng="4.8640" data-country="荷蘭"><span class="place-name">真如苑 阿姆斯特丹佈教所</span><span class="place-addr">荷蘭 Amstelveen, Frans Halslaan 37</span></li>
+                    <li data-type="temple" data-lat="53.5680" data-lng="9.9970" data-country="德國"><span class="place-name">真如苑 德國漢堡精舍</span><span class="place-addr">德國 Hamburg, Heimhuder Straße 5</span></li>
+                    <li data-type="temple" data-lat="48.0870" data-lng="11.5290" data-country="德國"><span class="place-name">真如苑 德國慕尼黑精舍</span><span class="place-addr">德國 München, Heilmannstraße 11C</span></li>
+                    <li data-type="branch" data-lat="50.1180" data-lng="8.6560" data-country="德國"><span class="place-name">真如苑 德國法蘭克福佈教所</span><span class="place-addr">德國 Frankfurt, Bockenheimer Landstraße 101</span></li>
+                    <li data-type="branch" data-lat="52.5020" data-lng="13.3290" data-country="德國"><span class="place-name">真如苑 德國柏林佈教所</span><span class="place-addr">德國 Berlin, Joachimsthaler Str. 10</span></li>
+                    <li data-type="temple" data-lat="45.4560" data-lng="9.2050" data-country="義大利"><span class="place-name">真如苑 義大利精舍（米蘭）</span><span class="place-addr">義大利 米蘭 Via Giorgio Vasari</span></li>
+                    <li data-type="branch" data-lat="41.9230" data-lng="12.4590" data-country="義大利"><span class="place-name">真如苑 羅馬佈教所</span><span class="place-addr">義大利 羅馬 Via Teulada 71</span></li>
+                    <li data-type="branch" data-lat="43.4620" data-lng="-3.8050" data-country="西班牙"><span class="place-name">真如苑 聖坦德佈教所</span><span class="place-addr">西班牙 Santander, Paseo de Pereda 17</span></li>
+                    <li data-type="branch" data-lat="59.3360" data-lng="18.0090" data-country="瑞典"><span class="place-name">真如苑 斯德哥爾摩佈教所</span><span class="place-addr">瑞典 Stockholm, Hornsbergs Strand 22</span></li>
+                    <li data-type="branch" data-lat="50.4440" data-lng="30.5150" data-country="烏克蘭"><span class="place-name">真如苑 基輔佈教所</span><span class="place-addr">烏克蘭 基輔 Volodymyrska Street 49A</span></li>
+                </ul>
+            </div>
+
+            <div class="region-block" data-region="africa">
+                <h3>非洲</h3>
+                <ul class="place-list">
+                    <li data-type="branch" data-lat="-1.2980" data-lng="36.8130" data-country="肯亞"><span class="place-name">真如苑 肯亞佈教所（奈洛比）</span><span class="place-addr">肯亞 奈洛比 Mara Road</span></li>
+                </ul>
+            </div>
+
+            <div class="alert alert-theme-primary small mt-4">
+                <i class="fas fa-info-circle me-1"></i>
+                據點清單參考 Padlet「世界的真如苑」整理。地圖上的位置是依地址估計的約略座標，導航時請以 Google 地圖的地址搜尋結果為準；各據點的最新資訊請以真如苑官方公告為準。
+            </div>
+        </section>
+
+        <div class="back-to-home-btn-container">
+            <a href="index.html" class="back-to-home-btn"><i class="fas fa-home me-2"></i> 回到首頁</a>
+        </div>
+    </main>
+
+    <div class="modal fade" id="aiChatModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-robot"></i> 站內搜尋助理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message bot-message">
+                            <div class="message-content">您好！我可以從本站的景點、餐廳、交通、Q&A等資訊中為您搜尋答案。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group">
+                        <textarea id="chatInput" class="form-control" placeholder="輸入您的問題..." rows="1"></textarea>
+                        <button id="btn-send-ai-message" class="btn btn-primary" type="button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="page-footer" class="text-white py-4 mt-5" style="background-color: var(--theme-amber);"><div class="container text-center"><h5 class="mb-1">回歸親苑の簡易指南</h5><p class="mb-0 text-white-50 small">提供統整資料作為參考，建議出發前與經親事務局再確認</p></div></footer>
+
+    <div id="floating-horses-container">
+        <a href="#" id="horse-to-top" class="floating-horse" title="回到頂部"><img src="horse_alpha.png" alt="回到頂部"></a>
+        <a href="#page-footer" id="horse-to-bottom" class="floating-horse" title="前往頁尾"><img src="horse_alpha.png" alt="前往頁尾"></a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="app.js"></script>
+
+    <!-- START: 世界地圖 -->
+    <script>
+    (function () {
+        const OYASONO = [35.6888, 139.4135];
+        const REGION_LABELS = { all: '全部', holy: '佛教聖地', japan: '日本', asia: '亞洲', oceania: '大洋洲', namerica: '北美洲', samerica: '中南美洲', europe: '歐洲', africa: '非洲' };
+        const TYPE_COLORS = { holy: '#8A54A2', hq: '#EE3239', temple: '#0077B6', branch: '#40916C', center: '#6c757d' };
+        const TYPE_LABELS = { holy: '佛教聖地', hq: '本部', temple: '精舍', branch: '佈教所', center: '中心' };
+
+        const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+        function distanceKm(a, b) {
+            const R = 6371, rad = Math.PI / 180;
+            const dLat = (b[0] - a[0]) * rad, dLng = (b[1] - a[1]) * rad;
+            const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * rad) * Math.cos(b[0] * rad) * Math.sin(dLng / 2) ** 2;
+            return 2 * R * Math.asin(Math.sqrt(h));
+        }
+
+        // 1) 由清單讀出據點資料
+        const places = [];
+        document.querySelectorAll('#place-directory .region-block').forEach(block => {
+            const region = block.dataset.region;
+            block.querySelectorAll('li[data-lat]').forEach(li => {
+                const name = li.querySelector('.place-name').textContent.trim();
+                const addr = li.querySelector('.place-addr').textContent.trim();
+                const lat = parseFloat(li.dataset.lat), lng = parseFloat(li.dataset.lng);
+                // 美洲經度 +360，讓地圖以太平洋為中心時，美洲顯示在日本東邊（距離計算不受影響）
+                const p = { region, li, name, addr, type: li.dataset.type, country: li.dataset.country, page: li.dataset.page || '', latlng: [lat, lng < -30 ? lng + 360 : lng] };
+                // 把清單項目改成可點擊的按鈕
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'place-btn';
+                btn.innerHTML = `<span class="legend-dot dot-${esc(p.type)}"></span><span><span class="place-name">${esc(name)}</span><span class="place-addr">${esc(addr)}</span></span>`;
+                li.replaceChildren(btn);
+                p.btn = btn;
+                places.push(p);
+            });
+            const count = block.querySelectorAll('li[data-lat]').length;
+            const h3 = block.querySelector('h3');
+            if (h3 && !h3.querySelector('.count-badge')) h3.insertAdjacentHTML('beforeend', ` <small class="count-badge">（${count}）</small>`);
+        });
+
+        // 所有據點卡片統一高度：取最高的一張（視窗寬度改變時重新計算）
+        const directory = document.getElementById('place-directory');
+        function syncCardHeight() {
+            directory.style.removeProperty('--card-h');
+            const max = Math.max(...places.filter(p => p.btn.offsetParent).map(p => p.btn.offsetHeight));
+            if (isFinite(max) && max > 0) directory.style.setProperty('--card-h', max + 'px');
+        }
+        syncCardHeight();
+        let resizeTimer;
+        window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(syncCardHeight, 150); });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncCardHeight);
+
+        // 2) 統計
+        const sites = places.filter(p => p.type !== 'holy');
+        document.getElementById('stat-places').textContent = sites.length;
+        document.getElementById('stat-countries').textContent = new Set(sites.map(p => p.country)).size;
+        document.getElementById('stat-holy').textContent = places.length - sites.length;
+
+        // 3) 地圖
+        if (typeof L === 'undefined') {
+            document.getElementById('world-map').innerHTML = '<div class="p-4 text-center text-muted">地圖載入失敗，請確認網路連線後重新整理。下方清單仍可使用。</div>';
+            return;
+        }
+        const allBounds = L.latLngBounds(places.map(p => p.latlng));
+        const showAll = () => map.flyToBounds(allBounds, { padding: [20, 20], duration: 1 });
+        const map = L.map('world-map', { minZoom: 1, scrollWheelZoom: false }).fitBounds(allBounds, { padding: [20, 20] });
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+        }).addTo(map);
+        map.on('focus', () => map.scrollWheelZoom.enable());
+        map.on('blur', () => map.scrollWheelZoom.disable());
+
+        // 台灣 → 親苑 路線
+        const taipei = places.find(p => p.page === '10S.html');
+        if (taipei) {
+            L.polyline([taipei.latlng, OYASONO], { color: '#EE3239', weight: 2, dashArray: '6 6', opacity: 0.8 })
+                .bindTooltip('臺灣 → 親苑（航班請見「航班指南」）', { sticky: true }).addTo(map);
+        }
+
+        places.forEach(p => {
+            const isHq = p.type === 'hq';
+            const marker = L.circleMarker(p.latlng, {
+                radius: isHq ? 9 : 7, color: '#fff', weight: 2,
+                fillColor: TYPE_COLORS[p.type] || '#333', fillOpacity: 0.95
+            });
+            const dist = distanceKm(OYASONO, p.latlng);
+            const distText = p.latlng[0] === OYASONO[0] && p.latlng[1] === OYASONO[1] ? '這裡就是親苑'
+                : `距離親苑約 ${dist < 100 ? dist.toFixed(1) : Math.round(dist).toLocaleString()} 公里`;
+            const gmap = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name.replace(/（.*?）/g, '') + ' ' + p.addr);
+            marker.bindPopup(`
+                <div class="popup-title">${esc(p.name)}</div>
+                <div class="popup-addr">${esc(TYPE_LABELS[p.type] || '')}｜${esc(p.addr)}</div>
+                <div class="popup-dist"><i class="fas fa-route me-1"></i>${distText}</div>
+                <div class="popup-links">
+                    <a href="${gmap}" target="_blank" rel="noopener noreferrer"><i class="fas fa-map-location-dot me-1"></i>Google 地圖</a>
+                    ${p.page ? `<a href="${esc(p.page)}"><i class="fas fa-book-open me-1"></i>本站指南</a>` : ''}
+                </div>`);
+            marker.bindTooltip(p.name, { direction: 'top', offset: [0, -6] });
+            marker.addTo(map);
+            p.marker = marker;
+
+            p.btn.addEventListener('click', () => {
+                document.getElementById('map-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                map.flyTo(p.latlng, Math.max(map.getZoom(), p.type === 'holy' ? 6 : 12), { duration: 1.2 });
+                map.once('moveend', () => marker.openPopup());
+            });
+        });
+
+        // 4) 區域篩選
+        const filterEl = document.getElementById('region-filter');
+        const regions = ['all', ...new Set(places.map(p => p.region))];
+        filterEl.innerHTML = regions.map(r => {
+            const n = r === 'all' ? places.length : places.filter(p => p.region === r).length;
+            return `<button type="button" class="region-chip${r === 'all' ? ' active' : ''}" data-region="${r}" aria-pressed="${r === 'all'}">${REGION_LABELS[r] || r}<span class="count">${n}</span></button>`;
+        }).join('');
+
+        function applyRegion(region) {
+            filterEl.querySelectorAll('.region-chip').forEach(c => {
+                const on = c.dataset.region === region;
+                c.classList.toggle('active', on);
+                c.setAttribute('aria-pressed', on);
+            });
+            const shown = [];
+            places.forEach(p => {
+                const visible = region === 'all' || p.region === region;
+                if (visible) { p.marker.addTo(map); shown.push(p.latlng); } else { p.marker.remove(); }
+            });
+            document.querySelectorAll('#place-directory .region-block').forEach(b => {
+                b.classList.toggle('is-hidden', region !== 'all' && b.dataset.region !== region);
+            });
+            map.closePopup();
+            if (region === 'all') showAll();
+            else if (shown.length === 1) map.flyTo(shown[0], 10, { duration: 1 });
+            else map.flyToBounds(L.latLngBounds(shown), { padding: [40, 40], maxZoom: 9, duration: 1 });
+        }
+        filterEl.addEventListener('click', e => {
+            const chip = e.target.closest('.region-chip');
+            if (chip) applyRegion(chip.dataset.region);
+        });
+    })();
+    </script>
+    <!-- END: 世界地圖 -->
+
+    <!-- START: 雙白馬功能性腳本 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const topHorse = document.getElementById('horse-to-top');
+        const bottomHorse = document.getElementById('horse-to-bottom');
+        const pageFooter = document.getElementById('page-footer');
+        if (topHorse) topHorse.addEventListener('click', e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        if (bottomHorse && pageFooter) bottomHorse.addEventListener('click', e => { e.preventDefault(); pageFooter.scrollIntoView({ behavior: 'smooth' }); });
+    });
+    </script>
+    <!-- END: 雙白馬功能性腳本 -->
+</body>
+</html>
