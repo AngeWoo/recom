@@ -7,6 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -295,6 +296,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/4.7.1/maplibre-gl.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.min.js"></script>
     <script src="app.js"></script>
 
     <!-- START: 世界地圖 -->
@@ -364,10 +367,28 @@
         const allBounds = L.latLngBounds(places.map(p => p.latlng));
         const showAll = () => map.flyToBounds(allBounds, { padding: [20, 20], duration: 1 });
         const map = L.map('world-map', { minZoom: 1, scrollWheelZoom: false }).fitBounds(allBounds, { padding: [20, 20] });
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
-        }).addTo(map);
+        // 底圖：OpenFreeMap 向量圖磚（免金鑰），地名優先顯示繁體中文；瀏覽器不支援 WebGL 時改用 OSM 一般圖磚
+        const OSM_ATTR = '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>';
+        const ZH_HANT_NAME = ['coalesce', ['get', 'name:zh-Hant'], ['get', 'name:zh'], ['get', 'name']];
+        let vectorOk = false;
+        try {
+            vectorOk = typeof L.maplibreGL === 'function' && !!document.createElement('canvas').getContext('webgl2');
+        } catch (e) { vectorOk = false; }
+        if (vectorOk) {
+            const base = L.maplibreGL({
+                style: 'https://tiles.openfreemap.org/styles/liberty',
+                attribution: '<a href="https://openfreemap.org" target="_blank" rel="noopener">OpenFreeMap</a> ' + OSM_ATTR
+            }).addTo(map);
+            const gl = base.getMaplibreMap();
+            gl.on('style.load', () => {
+                gl.getStyle().layers.forEach(layer => {
+                    if (layer.type !== 'symbol' || !layer.layout || !layer.layout['text-field']) return;
+                    try { gl.setLayoutProperty(layer.id, 'text-field', ZH_HANT_NAME); } catch (e) { /* 略過不支援的圖層 */ }
+                });
+            });
+        } else {
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: OSM_ATTR }).addTo(map);
+        }
         map.on('focus', () => map.scrollWheelZoom.enable());
         map.on('blur', () => map.scrollWheelZoom.disable());
 
